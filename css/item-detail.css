@@ -21,7 +21,7 @@
 .modal {
   width: 100%;
   max-width: 960px;
-  height: 85vh;
+  max-height: 90vh;
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -79,7 +79,6 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--gap-lg);
   height: 100%;
-  max-height: 100%;
   overflow: hidden;
 }
 
@@ -87,9 +86,21 @@
   display: flex;
   flex-direction: column;
   gap: var(--gap-md);
-  overflow-y: auto;
   min-height: 0;
-  max-height: 100%;
+  overflow: hidden;
+}
+
+.modal-col-left .tooltip-card {
+  flex-shrink: 0;
+}
+
+.modal-col-left-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
   padding-right: var(--gap-sm);
 }
 
@@ -99,7 +110,6 @@
   gap: var(--gap-md);
   overflow-y: auto;
   min-height: 0;
-  max-height: 100%;
   border-left: 1px solid var(--border);
   padding-left: var(--gap-lg);
 }
@@ -676,9 +686,14 @@
   .modal-layout {
     grid-template-columns: 1fr;
     height: auto;
+    overflow: visible;
   }
 
   .modal-col-left {
+    overflow: visible;
+  }
+
+  .modal-col-left-scroll {
     overflow-y: visible;
     padding-right: 0;
   }

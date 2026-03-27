@@ -178,11 +178,15 @@ export function openItemDetail(item) {
   const layout = document.createElement('div');
   layout.className = 'modal-layout';
 
-  // Left column: tooltip + detail data
+  // Left column: tooltip (fixed) + scrollable detail
   const leftCol = document.createElement('div');
   leftCol.className = 'modal-col-left';
 
   leftCol.appendChild(tooltip);
+
+  // Scrollable area for detail data
+  const leftScroll = document.createElement('div');
+  leftScroll.className = 'modal-col-left-scroll';
 
   // Detailed Data Section (collapsible)
   const detailToggle = document.createElement('button');
@@ -207,8 +211,9 @@ export function openItemDetail(item) {
   }
   detailWrap.appendChild(buildBasicInfo(item));
 
-  leftCol.appendChild(detailToggle);
-  leftCol.appendChild(detailWrap);
+  leftScroll.appendChild(detailToggle);
+  leftScroll.appendChild(detailWrap);
+  leftCol.appendChild(leftScroll);
 
   layout.appendChild(leftCol);
 
