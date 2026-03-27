@@ -184,30 +184,15 @@ export function openItemDetail(item) {
 
   leftCol.appendChild(tooltip);
 
-  const detailToggle = document.createElement('button');
-  detailToggle.className = 'detail-toggle-btn';
-  detailToggle.textContent = '상세 데이터 보기';
-  const detailWrap = document.createElement('div');
-  detailWrap.className = 'detail-data-section';
-  detailWrap.hidden = true;
-
-  detailToggle.addEventListener('click', () => {
-    detailWrap.hidden = !detailWrap.hidden;
-    detailToggle.textContent = detailWrap.hidden ? '상세 데이터 보기' : '상세 데이터 접기';
-    detailToggle.classList.toggle('open', !detailWrap.hidden);
-  });
-
+  // 상세 데이터 상시 표시
   const visibleOptions = item.옵션?.filter(o => o.ID !== 0);
   if (visibleOptions?.length) {
-    detailWrap.appendChild(buildOptionsSection(visibleOptions));
+    leftCol.appendChild(buildOptionsSection(visibleOptions));
   }
   if (item.스킬?.length) {
-    detailWrap.appendChild(buildSkillsSection(item.스킬));
+    leftCol.appendChild(buildSkillsSection(item.스킬));
   }
-  detailWrap.appendChild(buildBasicInfo(item));
-
-  leftCol.appendChild(detailToggle);
-  leftCol.appendChild(detailWrap);
+  leftCol.appendChild(buildBasicInfo(item));
 
   layout.appendChild(leftCol);
 

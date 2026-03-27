@@ -250,37 +250,6 @@
   border-top: 1px solid rgba(90, 74, 42, 0.15);
 }
 
-/* ====== Detail Toggle ====== */
-.detail-toggle-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 8px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.detail-toggle-btn:hover {
-  color: var(--text-primary);
-  border-color: var(--text-muted);
-}
-
-.detail-toggle-btn.open {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
-.detail-data-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
-}
 
 /* ====== Detail Sections ====== */
 .detail-section {
