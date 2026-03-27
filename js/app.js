@@ -5,6 +5,7 @@ import {
   renderTable,
   renderPagination,
   updateTabCounts,
+  renderTypeTags,
   renderSubtypeTags,
   renderOptionTags,
   renderSkillTags,
@@ -18,6 +19,7 @@ import { initSupabase, fetchAllRatingSummaries } from './supabase.js?v=2.1.0';
 const state = {
   query: '',
   category: 'all',
+  types: [],
   subtypes: [],
   options: [],
   skills: [],
@@ -101,6 +103,7 @@ function bindEvents() {
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => {
       state.category = tab.dataset.cat;
+      state.types = [];
       state.subtypes = [];
       state.page = 1;
       syncUIFromState();
@@ -109,6 +112,7 @@ function bindEvents() {
   });
 
   // Dropdown toggles
+  setupDropdown('typeToggle', 'typeDropdown');
   setupDropdown('subtypeToggle', 'subtypeDropdown');
   setupDropdown('optionToggle', 'optionDropdown');
   setupDropdown('skillToggle', 'skillDropdown');
@@ -195,6 +199,9 @@ function applyFilters() {
 
 function handleRemoveFilter(type, value) {
   switch (type) {
+    case 'type':
+      state.types = state.types.filter(t => t !== value);
+      break;
     case 'subtype':
       state.subtypes = state.subtypes.filter(s => s !== value);
       break;
@@ -235,6 +242,7 @@ function handleSkillToggle(skillName) {
 }
 
 function handleClearAll() {
+  state.types = [];
   state.subtypes = [];
   state.options = [];
   state.skills = [];
@@ -271,10 +279,31 @@ function syncUIFromState() {
   document.getElementById('lvMin').value = state.lvMin || '';
   document.getElementById('lvMax').value = state.lvMax || '';
 
-  // Subtype tags
+  // Type & Subtype tags
   const db = getDB();
   if (db) {
     const cat = state.category === 'all' ? null : state.category;
+
+    // Type tags
+    let types;
+    if (cat) {
+      types = db.typesByCategory[cat] || new Set();
+    } else {
+      types = new Set();
+      for (const s of Object.values(db.typesByCategory)) {
+        for (const v of s) types.add(v);
+      }
+    }
+    renderTypeTags(types, state.types, (t) => {
+      toggleArrayItem(state.types, t);
+      updateToggleState('typeToggle', state.types);
+      state.page = 1;
+      syncUIFromState();
+      applyFilters();
+    });
+    updateToggleState('typeToggle', state.types);
+
+    // Subtype tags
     let subtypes;
     if (cat) {
       subtypes = db.subtypesByCategory[cat] || new Set();

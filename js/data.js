@@ -33,6 +33,15 @@ export async function loadData() {
     item._category = categoryOf(item.타입);
   }
 
+  // Collect unique types per category
+  const typesByCategory = {};
+  for (const item of validItems) {
+    if (!item.타입) continue;
+    const cat = item._category;
+    if (!typesByCategory[cat]) typesByCategory[cat] = new Set();
+    typesByCategory[cat].add(item.타입);
+  }
+
   // Collect unique subtypes per category
   const subtypesByCategory = {};
   for (const item of validItems) {
@@ -71,6 +80,7 @@ export async function loadData() {
     weaponMap,
     armorMap,
     legend,
+    typesByCategory,
     subtypesByCategory,
     categoryCounts,
     uniqueOptions,

@@ -12,6 +12,12 @@ export function filterItems(items, state) {
     result = result.filter(item => item._category === state.category);
   }
 
+  // Type filter
+  if (state.types?.length) {
+    const ts = new Set(state.types);
+    result = result.filter(item => item.타입 && ts.has(item.타입));
+  }
+
   // Subtype filter
   if (state.subtypes?.length) {
     const subs = new Set(state.subtypes);

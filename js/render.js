@@ -217,6 +217,25 @@ export function updateTabCounts(counts) {
   }
 }
 
+/** Render type filter tags */
+export function renderTypeTags(types, activeTypes, onToggle) {
+  const container = document.getElementById('typeTags');
+  container.innerHTML = '';
+  if (!types || types.size === 0) {
+    container.innerHTML = '<span style="color:var(--text-muted);font-size:0.8rem">해당 카테고리에 타입이 없습니다</span>';
+    return;
+  }
+
+  const sorted = [...types].sort();
+  for (const t of sorted) {
+    const btn = document.createElement('button');
+    btn.className = `filter-tag${activeTypes.includes(t) ? ' active' : ''}`;
+    btn.textContent = t;
+    btn.addEventListener('click', () => onToggle(t));
+    container.appendChild(btn);
+  }
+}
+
 /** Render subtype filter tags */
 export function renderSubtypeTags(subtypes, activeSubtypes, onToggle) {
   const container = document.getElementById('subtypeTags');
@@ -285,6 +304,11 @@ export function renderActiveFilters(state, onRemove, onClearAll) {
 
   const badges = [];
 
+  if (state.types?.length) {
+    for (const t of state.types) {
+      badges.push({ label: `타입: ${t}`, remove: () => onRemove('type', t) });
+    }
+  }
   if (state.subtypes?.length) {
     for (const sub of state.subtypes) {
       badges.push({ label: `세부: ${sub}`, remove: () => onRemove('subtype', sub) });
