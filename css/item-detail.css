@@ -21,7 +21,7 @@
 .modal {
   width: 100%;
   max-width: 960px;
-  max-height: 90vh;
+  max-height: 800px;
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -93,7 +93,7 @@
   gap: var(--gap-md);
   position: sticky;
   top: 0;
-  max-height: 100vh;
+  max-height: 750px;
   overflow-y: auto;
   border-left: 1px solid var(--border);
   padding-left: var(--gap-lg);
