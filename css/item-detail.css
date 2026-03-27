@@ -79,6 +79,7 @@
 .modal-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(0, 1fr);
   gap: var(--gap-lg);
   flex: 1 1 0%;
   min-height: 0;
@@ -90,6 +91,7 @@
   flex-direction: column;
   gap: var(--gap-md);
   min-height: 0;
+  max-height: 100%;
   overflow-y: auto;
   padding-right: var(--gap-sm);
 }
@@ -100,6 +102,7 @@
   gap: var(--gap-md);
   overflow-y: auto;
   min-height: 0;
+  max-height: 100%;
   border-left: 1px solid var(--border);
   padding-left: var(--gap-lg);
 }
