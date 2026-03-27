@@ -100,7 +100,7 @@ export function openItemDetail(item) {
 
   const ELEM_COLORS = {
     '화염': '#e8632b', '공기': '#a0d8a0', '물': '#4a90d9',
-    '독': '#7dc850', '빛': '#f0e060', '암흑': '#b070d0', '물리': '#c8c8c8',
+    '독': '#7dc850', '빛': '#f0e060', '어둠': '#b070d0', '물리': '#c8c8c8',
   };
 
   if (isWeapon) {
@@ -114,7 +114,7 @@ export function openItemDetail(item) {
 
     // 속성
     if (ws) {
-      const elemName = (ws.속성 || '물리').replace('바람', '공기').replace('신성', '빛').replace('기본(속성미지정)', '물리');
+      const elemName = (ws.속성 || '물리').replace('바람', '공기').replace('신성', '빛').replace('암흑', '어둠').replace('기본(속성미지정)', '물리');
       const elemLabel = document.createElement('div');
       elemLabel.className = 'tooltip-dmg-type';
       elemLabel.textContent = `${elemName} 피해`;
