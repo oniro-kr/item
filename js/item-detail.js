@@ -65,7 +65,16 @@ export function openItemDetail(item) {
   const infoCol = document.createElement('div');
   infoCol.className = 'modal-col-info';
 
-  // English name
+  // Item image
+  const imgWrap = document.createElement('div');
+  imgWrap.className = 'detail-img-wrap';
+  const img = document.createElement('img');
+  img.className = 'detail-img';
+  img.src = item.이미지 || 'img/no_image.svg';
+  img.alt = item.한국어이름;
+  imgWrap.appendChild(img);
+  infoCol.appendChild(imgWrap);
+
   const enName = document.createElement('p');
   enName.className = 'detail-en-name';
   enName.textContent = item.에디터이름;

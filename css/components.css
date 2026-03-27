@@ -321,6 +321,21 @@
   min-width: 160px;
 }
 
+.item-name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+  background: var(--bg-tertiary);
+  flex-shrink: 0;
+}
+
 .item-name {
   font-weight: 500;
 }

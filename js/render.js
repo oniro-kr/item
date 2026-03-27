@@ -1,4 +1,4 @@
-import { optionDisplayName, formatOptionValue, OPTION_NAMES } from './utils.js?v=2.0.0';
+import { rarityClass, optionDisplayName, formatOptionValue, OPTION_NAMES } from './utils.js?v=2.0.0';
 import { getRatingSummary } from './supabase.js?v=2.0.0';
 
 const tbody = document.getElementById('itemTableBody');
@@ -55,17 +55,30 @@ export function renderTable(pageItems, totalItems) {
     tdLevel.className = 'col-level';
     tdLevel.textContent = item.레벨;
 
-    // Name
+    // Name (with thumbnail)
     const tdName = document.createElement('td');
     tdName.className = 'col-name';
+    const nameWrapper = document.createElement('div');
+    nameWrapper.className = 'item-name-wrapper';
+    const thumb = document.createElement('img');
+    thumb.className = 'item-thumb';
+    thumb.src = item.이미지 || 'img/no_image.svg';
+    thumb.alt = '';
+    thumb.loading = 'lazy';
+    thumb.width = 36;
+    thumb.height = 36;
+    nameWrapper.appendChild(thumb);
+    const nameText = document.createElement('div');
     const nameDiv = document.createElement('div');
     nameDiv.className = `item-name rarity-text-${rarityClass(item.표시희귀도)}`;
     nameDiv.textContent = item.한국어이름 || item.내부이름;
-    tdName.appendChild(nameDiv);
+    nameText.appendChild(nameDiv);
     const enDiv = document.createElement('div');
     enDiv.className = 'item-name-en';
     enDiv.textContent = item.에디터이름 || '';
-    tdName.appendChild(enDiv);
+    nameText.appendChild(enDiv);
+    nameWrapper.appendChild(nameText);
+    tdName.appendChild(nameWrapper);
 
     // Type
     const tdType = document.createElement('td');
