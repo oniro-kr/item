@@ -178,19 +178,11 @@ export function openItemDetail(item) {
   const layout = document.createElement('div');
   layout.className = 'modal-layout';
 
-  // Left column: tooltip (top, shrinkable) + detail scroll area (bottom)
+  // Left column: all scrollable together
   const leftCol = document.createElement('div');
   leftCol.className = 'modal-col-left';
 
-  // Tooltip wrapper - scrolls internally if too tall
-  const tooltipWrap = document.createElement('div');
-  tooltipWrap.className = 'modal-tooltip-wrap';
-  tooltipWrap.appendChild(tooltip);
-  leftCol.appendChild(tooltipWrap);
-
-  // Scroll area for detail data
-  const detailArea = document.createElement('div');
-  detailArea.className = 'modal-detail-area';
+  leftCol.appendChild(tooltip);
 
   const detailToggle = document.createElement('button');
   detailToggle.className = 'detail-toggle-btn';
@@ -214,9 +206,8 @@ export function openItemDetail(item) {
   }
   detailWrap.appendChild(buildBasicInfo(item));
 
-  detailArea.appendChild(detailToggle);
-  detailArea.appendChild(detailWrap);
-  leftCol.appendChild(detailArea);
+  leftCol.appendChild(detailToggle);
+  leftCol.appendChild(detailWrap);
 
   layout.appendChild(leftCol);
 

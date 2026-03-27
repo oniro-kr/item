@@ -90,23 +90,8 @@
   flex-direction: column;
   gap: var(--gap-md);
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
   padding-right: var(--gap-sm);
-}
-
-.modal-tooltip-wrap {
-  flex-shrink: 1;
-  min-height: 0;
-  overflow-y: auto;
-}
-
-.modal-detail-area {
-  flex: 1 1 0%;
-  min-height: 0;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
 }
 
 .modal-col-right {
@@ -695,16 +680,8 @@
   }
 
   .modal-col-left {
-    overflow: visible;
+    overflow-y: visible;
     padding-right: 0;
-  }
-
-  .modal-tooltip-wrap {
-    overflow-y: visible;
-  }
-
-  .modal-detail-area {
-    overflow-y: visible;
   }
 
   .modal-col-right {
