@@ -90,20 +90,7 @@
   flex-direction: column;
   gap: var(--gap-md);
   min-height: 0;
-  overflow: hidden;
-}
-
-.modal-col-left .tooltip-card {
-  flex-shrink: 0;
-}
-
-.modal-col-left-scroll {
-  flex: 1;
-  min-height: 0;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
   padding-right: var(--gap-sm);
 }
 
@@ -693,10 +680,6 @@
   }
 
   .modal-col-left {
-    overflow: visible;
-  }
-
-  .modal-col-left-scroll {
     overflow-y: visible;
     padding-right: 0;
   }
