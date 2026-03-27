@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5XCPBK0GWJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-5XCPBK0GWJ');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oniro Item DB - 오니로 아이템 데이터베이스</title>
+  <meta name="description" content="Oniro ARPG 아이템 데이터베이스 - 무기, 방어구, 장신구 등 1,200+ 아이템 검색, 필터, 상세 스탯 확인 및 유저 평가">
+  <meta name="keywords" content="Oniro, 오니로, ARPG, 아이템, 데이터베이스, 무기, 방어구, 장신구, 액션RPG, 핵앤슬래시">
+  <meta name="author" content="Oniro Item DB">
+  <meta name="theme-color" content="#121220">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Oniro Item DB - 오니로 아이템 데이터베이스">
+  <meta property="og:description" content="Oniro ARPG 아이템 데이터베이스 - 1,200+ 아이템 검색, 상세 스탯, 유저 평가 시스템">
+  <meta property="og:image" content="https://jjinbbang2.github.io/oniro/img/og-image.svg">
+  <meta property="og:url" content="https://jjinbbang2.github.io/oniro/">
+  <meta property="og:site_name" content="Oniro Item DB">
+  <meta property="og:locale" content="ko_KR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Oniro Item DB - 오니로 아이템 데이터베이스">
+  <meta name="twitter:description" content="Oniro ARPG 아이템 데이터베이스 - 1,200+ 아이템 검색, 상세 스탯, 유저 평가">
+  <meta name="twitter:image" content="https://jjinbbang2.github.io/oniro/img/og-image.svg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+  <link rel="apple-touch-icon" href="img/favicon.svg">
+
+  <link rel="stylesheet" href="css/reset.css?v=1.4.18">
+  <link rel="stylesheet" href="css/variables.css?v=1.4.18">
+  <link rel="stylesheet" href="css/layout.css?v=1.4.18">
+  <link rel="stylesheet" href="css/components.css?v=1.4.18">
+  <link rel="stylesheet" href="css/item-detail.css?v=1.4.18">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <img src="img/favicon.svg" alt="Oniro" class="site-logo-icon" width="28" height="28">
+      <h1 class="site-logo">Oniro Item DB</h1>
+      <span class="site-version">v1.4.4</span>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- Search Bar -->
+    <section class="search-section">
+      <div class="search-bar">
+        <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="아이템 이름 검색 (한글/영문)"
+          autocomplete="off"
+        >
+        <button id="searchClear" class="search-clear" hidden aria-label="검색어 지우기">&times;</button>
+      </div>
+    </section>
+
+    <!-- Category Tabs -->
+    <nav class="category-tabs" aria-label="아이템 카테고리">
+      <button class="tab active" data-cat="all">전체<span class="tab-count"></span></button>
+      <button class="tab" data-cat="무기">무기<span class="tab-count"></span></button>
+      <button class="tab" data-cat="방어구">방어구<span class="tab-count"></span></button>
+      <button class="tab" data-cat="장신구">장신구<span class="tab-count"></span></button>
+      <button class="tab" data-cat="보조">보조<span class="tab-count"></span></button>
+      <button class="tab" data-cat="기타">기타<span class="tab-count"></span></button>
+    </nav>
+
+    <!-- Filters -->
+    <section class="filter-section">
+      <div class="filter-row">
+        <!-- Subtype Filter -->
+        <div class="filter-group">
+          <button class="filter-toggle" id="subtypeToggle">
+            세부타입 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="filter-dropdown" id="subtypeDropdown" hidden>
+            <div class="filter-tags" id="subtypeTags"></div>
+          </div>
+        </div>
+
+        <!-- Rarity Filter -->
+        <div class="filter-group">
+          <button class="filter-toggle" id="rarityToggle">
+            희귀도 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="filter-dropdown" id="rarityDropdown" hidden>
+            <div class="filter-tags" id="rarityTags">
+              <button class="filter-tag" data-rarity="일반">일반</button>
+              <button class="filter-tag" data-rarity="마법">마법</button>
+              <button class="filter-tag" data-rarity="희귀">희귀</button>
+              <button class="filter-tag" data-rarity="전설">전설</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Option Filter -->
+        <div class="filter-group">
+          <button class="filter-toggle" id="optionToggle">
+            옵션 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="filter-dropdown filter-dropdown-search" id="optionDropdown" hidden>
+            <input type="text" class="filter-search" id="optionSearch" placeholder="옵션 검색..." autocomplete="off">
+            <div class="filter-tags filter-tags-scroll" id="optionTags"></div>
+          </div>
+        </div>
+
+        <!-- Skill Filter -->
+        <div class="filter-group">
+          <button class="filter-toggle" id="skillToggle">
+            스킬 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="filter-dropdown filter-dropdown-search" id="skillDropdown" hidden>
+            <input type="text" class="filter-search" id="skillSearch" placeholder="스킬 검색..." autocomplete="off">
+            <div class="filter-tags filter-tags-scroll" id="skillTags"></div>
+          </div>
+        </div>
+
+        <!-- Level Range -->
+        <div class="filter-group filter-level">
+          <label>레벨</label>
+          <input type="number" id="lvMin" class="level-input" placeholder="최소" min="1">
+          <span class="level-sep">~</span>
+          <input type="number" id="lvMax" class="level-input" placeholder="최대" min="1">
+        </div>
+      </div>
+
+      <!-- Active Filters Display -->
+      <div class="active-filters" id="activeFilters" hidden>
+        <span class="active-filters-label">필터:</span>
+        <div class="active-filters-list" id="activeFiltersList"></div>
+        <button class="active-filters-clear" id="clearAllFilters">전체 해제</button>
+      </div>
+    </section>
+
+    <!-- Result Info & Sort -->
+    <section class="result-bar">
+      <span class="result-count" id="resultCount">로딩 중...</span>
+      <div class="sort-controls">
+        <label class="sort-label" for="sortSelect">정렬</label>
+        <select id="sortSelect" class="sort-select">
+          <option value="level-asc">레벨 낮은순</option>
+          <option value="level-desc">레벨 높은순</option>
+          <option value="name-asc">이름 가나다순</option>
+          <option value="name-desc">이름 역순</option>
+          <option value="rarity-desc">희귀도 높은순</option>
+          <option value="rarity-asc">희귀도 낮은순</option>
+          <option value="rating-desc">별점 높은순</option>
+          <option value="rating-asc">별점 낮은순</option>
+          <option value="id-asc">ID 순</option>
+        </select>
+        <label class="sort-label" for="perPageSelect">표시</label>
+        <select id="perPageSelect" class="sort-select">
+          <option value="30">30개</option>
+          <option value="50">50개</option>
+          <option value="100">100개</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Item Table -->
+    <section class="table-section">
+      <div class="table-wrapper">
+        <table class="item-table" id="itemTable">
+          <thead>
+            <tr>
+              <th class="col-level">레벨</th>
+              <th class="col-name">아이템</th>
+              <th class="col-type">타입</th>
+              <th class="col-subtype">세부</th>
+              <th class="col-rarity">희귀도</th>
+              <th class="col-rating">별점</th>
+              <th class="col-options">주요 옵션</th>
+              <th class="col-skills">주요 스킬</th>
+            </tr>
+          </thead>
+          <tbody id="itemTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <p>데이터 로딩 중...</p>
+      </div>
+
+      <!-- No Results -->
+      <div class="no-results" id="noResults" hidden>
+        <p>검색 결과가 없습니다.</p>
+      </div>
+    </section>
+
+    <!-- Pagination -->
+    <nav class="pagination" id="pagination" aria-label="페이지 이동">
+    </nav>
+  </main>
+
+  <!-- Item Detail Modal -->
+  <div class="modal-overlay" id="modalOverlay" hidden>
+    <div class="modal" id="itemModal" role="dialog" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <button class="modal-close" id="modalClose" aria-label="닫기">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Scripts -->
+  <script type="module" src="js/app.js?v=1.4.18"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#121220"/>
+      <stop offset="50%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#0d0d1a"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4cbb8"/>
+      <stop offset="35%" stop-color="#b0a694"/>
+      <stop offset="70%" stop-color="#8a8070"/>
+      <stop offset="100%" stop-color="#5c5448"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5b7fff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#5b7fff" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#5b7fff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="textShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Decorative line -->
+  <rect x="200" y="420" width="800" height="1" fill="url(#accent)"/>
+  <!-- Title -->
+  <text x="600" y="300" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="140" font-weight="bold" fill="url(#stone)" filter="url(#glow)" letter-spacing="12">ONIRO</text>
+  <!-- Subtitle -->
+  <text x="600" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#8a8298" letter-spacing="8">ITEM DATABASE</text>
+  <!-- Description -->
+  <text x="600" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#6a6a82">Action RPG Item Search &amp; Rating</text>
+  <!-- Version badge -->
+  <rect x="540" y="510" width="120" height="28" rx="14" fill="#1f1f3a" stroke="#2d2d52" stroke-width="1"/>
+  <text x="600" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#6a6a82">v1.4.4</text>
+</svg>

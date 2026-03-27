@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c9c0a8"/>
+      <stop offset="40%" stop-color="#9a9080"/>
+      <stop offset="100%" stop-color="#5c5448"/>
+    </linearGradient>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#0d0d1a"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#bg)"/>
+  <text x="32" y="44" text-anchor="middle" font-family="Georgia, serif" font-size="36" font-weight="bold" fill="url(#stone)" filter="url(#glow)" letter-spacing="-1">O</text>
+  <circle cx="32" cy="36" r="13" fill="none" stroke="url(#stone)" stroke-width="1.5" opacity="0.3"/>
+</svg>
