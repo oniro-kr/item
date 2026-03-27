@@ -1,5 +1,5 @@
-import { loadData, getDB } from './data.js?v=1.4.18';
-import { filterItems, paginate } from './search.js?v=1.4.18';
+import { loadData, getDB } from './data.js?v=2.0.0';
+import { filterItems, paginate } from './search.js?v=2.0.0';
 import {
   showLoading,
   renderTable,
@@ -9,17 +9,16 @@ import {
   renderOptionTags,
   renderSkillTags,
   renderActiveFilters,
-} from './render.js?v=1.4.18';
-import { initModal, openItemDetail, setOnRatingSubmitted } from './item-detail.js?v=1.4.18';
-import { debounce, parseHash, writeHash } from './utils.js?v=1.4.18';
-import { initSupabase, fetchAllRatingSummaries } from './supabase.js?v=1.4.18';
+} from './render.js?v=2.0.0';
+import { initModal, openItemDetail, setOnRatingSubmitted } from './item-detail.js?v=2.0.0';
+import { debounce, parseHash, writeHash } from './utils.js?v=2.0.0';
+import { initSupabase, fetchAllRatingSummaries } from './supabase.js?v=2.0.0';
 
 /** Application state */
 const state = {
   query: '',
   category: 'all',
   subtypes: [],
-  rarities: [],
   options: [],
   skills: [],
   lvMin: null,
@@ -111,21 +110,8 @@ function bindEvents() {
 
   // Dropdown toggles
   setupDropdown('subtypeToggle', 'subtypeDropdown');
-  setupDropdown('rarityToggle', 'rarityDropdown');
   setupDropdown('optionToggle', 'optionDropdown');
   setupDropdown('skillToggle', 'skillDropdown');
-
-  // Rarity tags
-  document.querySelectorAll('#rarityTags .filter-tag').forEach(tag => {
-    tag.addEventListener('click', () => {
-      const r = tag.dataset.rarity;
-      toggleArrayItem(state.rarities, r);
-      tag.classList.toggle('active');
-      updateToggleState('rarityToggle', state.rarities);
-      state.page = 1;
-      applyFilters();
-    });
-  });
 
   // Option search + filter
   document.getElementById('optionSearch').addEventListener('input', debounce((e) => {
@@ -212,9 +198,6 @@ function handleRemoveFilter(type, value) {
     case 'subtype':
       state.subtypes = state.subtypes.filter(s => s !== value);
       break;
-    case 'rarity':
-      state.rarities = state.rarities.filter(r => r !== value);
-      break;
     case 'lvMin':
       state.lvMin = null;
       document.getElementById('lvMin').value = '';
@@ -253,7 +236,6 @@ function handleSkillToggle(skillName) {
 
 function handleClearAll() {
   state.subtypes = [];
-  state.rarities = [];
   state.options = [];
   state.skills = [];
   state.lvMin = null;
@@ -320,11 +302,6 @@ function syncUIFromState() {
     updateToggleState('skillToggle', state.skills);
   }
 
-  // Rarity tag active state
-  document.querySelectorAll('#rarityTags .filter-tag').forEach(tag => {
-    tag.classList.toggle('active', state.rarities.includes(tag.dataset.rarity));
-  });
-  updateToggleState('rarityToggle', state.rarities);
 }
 
 // ──────────── Helpers ────────────

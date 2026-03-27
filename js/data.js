@@ -1,11 +1,11 @@
-import { categoryOf, OPTION_NAMES } from './utils.js?v=1.4.18';
+import { categoryOf, OPTION_NAMES } from './utils.js?v=2.0.0';
 
 /** Loaded database */
 let db = null;
 
 /** Load JSON and build indices */
 export async function loadData() {
-  const resp = await fetch('json/Oniro_ItemDB_1.4.4_v4.json?v=1.4.18');
+  const resp = await fetch('json/Oniro_ItemDB_V1.json?v=2.0.0');
   const raw = await resp.json();
 
   const items = raw['아이템 옵션+스킬 DB'] || [];
@@ -27,7 +27,7 @@ export async function loadData() {
   // Filter out items without a Korean name and add category field
   const isValidName = (name) => name && name.trim() !== '' && name.trim() !== '-' && name.trim() !== 'N';
   const validItems = items.filter(item =>
-    isValidName(item.한국어이름) || isValidName(item.에디터이름)
+    item.아이템ID != null && (isValidName(item.한국어이름) || isValidName(item.에디터이름))
   );
   for (const item of validItems) {
     item._category = categoryOf(item.타입);

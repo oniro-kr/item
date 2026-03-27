@@ -12,7 +12,7 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Oniro Item DB - 오니로 아이템 데이터베이스</title>
-  <meta name="description" content="Oniro ARPG 아이템 데이터베이스 - 무기, 방어구, 장신구 등 1,200+ 아이템 검색, 필터, 상세 스탯 확인 및 유저 평가">
+  <meta name="description" content="Oniro ARPG 아이템 데이터베이스 - 무기, 방어구, 장신구 등 600+ 전설 아이템 검색, 필터, 상세 스탯 확인 및 유저 평가">
   <meta name="keywords" content="Oniro, 오니로, ARPG, 아이템, 데이터베이스, 무기, 방어구, 장신구, 액션RPG, 핵앤슬래시">
   <meta name="author" content="Oniro Item DB">
   <meta name="theme-color" content="#121220">
@@ -20,7 +20,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Oniro Item DB - 오니로 아이템 데이터베이스">
-  <meta property="og:description" content="Oniro ARPG 아이템 데이터베이스 - 1,200+ 아이템 검색, 상세 스탯, 유저 평가 시스템">
+  <meta property="og:description" content="Oniro ARPG 아이템 데이터베이스 - 600+ 전설 아이템 검색, 상세 스탯, 유저 평가 시스템">
   <meta property="og:image" content="https://jjinbbang2.github.io/oniro/img/og-image.svg">
   <meta property="og:url" content="https://jjinbbang2.github.io/oniro/">
   <meta property="og:site_name" content="Oniro Item DB">
@@ -29,18 +29,18 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Oniro Item DB - 오니로 아이템 데이터베이스">
-  <meta name="twitter:description" content="Oniro ARPG 아이템 데이터베이스 - 1,200+ 아이템 검색, 상세 스탯, 유저 평가">
+  <meta name="twitter:description" content="Oniro ARPG 아이템 데이터베이스 - 600+ 전설 아이템 검색, 상세 스탯, 유저 평가">
   <meta name="twitter:image" content="https://jjinbbang2.github.io/oniro/img/og-image.svg">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="apple-touch-icon" href="img/favicon.svg">
 
-  <link rel="stylesheet" href="css/reset.css?v=1.4.18">
-  <link rel="stylesheet" href="css/variables.css?v=1.4.18">
-  <link rel="stylesheet" href="css/layout.css?v=1.4.18">
-  <link rel="stylesheet" href="css/components.css?v=1.4.18">
-  <link rel="stylesheet" href="css/item-detail.css?v=1.4.18">
+  <link rel="stylesheet" href="css/reset.css?v=2.0.0">
+  <link rel="stylesheet" href="css/variables.css?v=2.0.0">
+  <link rel="stylesheet" href="css/layout.css?v=2.0.0">
+  <link rel="stylesheet" href="css/components.css?v=2.0.0">
+  <link rel="stylesheet" href="css/item-detail.css?v=2.0.0">
 </head>
 <body>
   <!-- Header -->
@@ -48,7 +48,7 @@
     <div class="header-inner">
       <img src="img/favicon.svg" alt="Oniro" class="site-logo-icon" width="28" height="28">
       <h1 class="site-logo">Oniro Item DB</h1>
-      <span class="site-version">v1.4.4</span>
+      <span class="site-version">v2.0.0</span>
     </div>
   </header>
 
@@ -78,7 +78,6 @@
       <button class="tab" data-cat="방어구">방어구<span class="tab-count"></span></button>
       <button class="tab" data-cat="장신구">장신구<span class="tab-count"></span></button>
       <button class="tab" data-cat="보조">보조<span class="tab-count"></span></button>
-      <button class="tab" data-cat="기타">기타<span class="tab-count"></span></button>
     </nav>
 
     <!-- Filters -->
@@ -91,21 +90,6 @@
           </button>
           <div class="filter-dropdown" id="subtypeDropdown" hidden>
             <div class="filter-tags" id="subtypeTags"></div>
-          </div>
-        </div>
-
-        <!-- Rarity Filter -->
-        <div class="filter-group">
-          <button class="filter-toggle" id="rarityToggle">
-            희귀도 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <div class="filter-dropdown" id="rarityDropdown" hidden>
-            <div class="filter-tags" id="rarityTags">
-              <button class="filter-tag" data-rarity="일반">일반</button>
-              <button class="filter-tag" data-rarity="마법">마법</button>
-              <button class="filter-tag" data-rarity="희귀">희귀</button>
-              <button class="filter-tag" data-rarity="전설">전설</button>
-            </div>
           </div>
         </div>
 
@@ -158,8 +142,6 @@
           <option value="level-desc">레벨 높은순</option>
           <option value="name-asc">이름 가나다순</option>
           <option value="name-desc">이름 역순</option>
-          <option value="rarity-desc">희귀도 높은순</option>
-          <option value="rarity-asc">희귀도 낮은순</option>
           <option value="rating-desc">별점 높은순</option>
           <option value="rating-asc">별점 낮은순</option>
           <option value="id-asc">ID 순</option>
@@ -183,7 +165,6 @@
               <th class="col-name">아이템</th>
               <th class="col-type">타입</th>
               <th class="col-subtype">세부</th>
-              <th class="col-rarity">희귀도</th>
               <th class="col-rating">별점</th>
               <th class="col-options">주요 옵션</th>
               <th class="col-skills">주요 스킬</th>
@@ -226,6 +207,6 @@
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Scripts -->
-  <script type="module" src="js/app.js?v=1.4.18"></script>
+  <script type="module" src="js/app.js?v=2.0.0"></script>
 </body>
 </html>

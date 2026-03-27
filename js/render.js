@@ -1,5 +1,5 @@
-import { rarityClass, optionDisplayName, formatOptionValue, OPTION_NAMES } from './utils.js?v=1.4.18';
-import { getRatingSummary } from './supabase.js?v=1.4.18';
+import { optionDisplayName, formatOptionValue, OPTION_NAMES } from './utils.js?v=2.0.0';
+import { getRatingSummary } from './supabase.js?v=2.0.0';
 
 const tbody = document.getElementById('itemTableBody');
 const paginationEl = document.getElementById('pagination');
@@ -77,14 +77,6 @@ export function renderTable(pageItems, totalItems) {
     tdSub.className = 'col-subtype';
     tdSub.textContent = item.세부타입 || '-';
 
-    // Rarity
-    const tdRarity = document.createElement('td');
-    tdRarity.className = 'col-rarity';
-    const badge = document.createElement('span');
-    badge.className = `rarity-badge rarity-${rarityClass(item.표시희귀도)}`;
-    badge.textContent = item.표시희귀도;
-    tdRarity.appendChild(badge);
-
     // Rating
     const tdRating = document.createElement('td');
     tdRating.className = 'col-rating';
@@ -134,7 +126,7 @@ export function renderTable(pageItems, totalItems) {
       tdSkills.appendChild(pills);
     }
 
-    tr.append(tdLevel, tdName, tdType, tdSub, tdRarity, tdRating, tdOptions, tdSkills);
+    tr.append(tdLevel, tdName, tdType, tdSub, tdRating, tdOptions, tdSkills);
     fragment.appendChild(tr);
   }
 
@@ -283,11 +275,6 @@ export function renderActiveFilters(state, onRemove, onClearAll) {
   if (state.subtypes?.length) {
     for (const sub of state.subtypes) {
       badges.push({ label: `세부: ${sub}`, remove: () => onRemove('subtype', sub) });
-    }
-  }
-  if (state.rarities?.length) {
-    for (const r of state.rarities) {
-      badges.push({ label: `희귀도: ${r}`, remove: () => onRemove('rarity', r) });
     }
   }
   if (state.options?.length) {

@@ -337,10 +337,6 @@
   white-space: nowrap;
 }
 
-.col-rarity {
-  width: 70px;
-}
-
 .rarity-badge {
   display: inline-block;
   padding: 2px 8px;

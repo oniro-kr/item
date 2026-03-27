@@ -118,7 +118,6 @@ export function parseHash() {
   if (params.get('q')) state.query = params.get('q');
   if (params.get('cat')) state.category = params.get('cat');
   if (params.get('sub')) state.subtypes = params.get('sub').split(',');
-  if (params.get('rarity')) state.rarities = params.get('rarity').split(',');
   if (params.get('lvMin')) state.lvMin = +params.get('lvMin');
   if (params.get('lvMax')) state.lvMax = +params.get('lvMax');
   if (params.get('sort')) state.sort = params.get('sort');
@@ -134,7 +133,6 @@ export function writeHash(state) {
   if (state.query) params.set('q', state.query);
   if (state.category && state.category !== 'all') params.set('cat', state.category);
   if (state.subtypes?.length) params.set('sub', state.subtypes.join(','));
-  if (state.rarities?.length) params.set('rarity', state.rarities.join(','));
   if (state.lvMin) params.set('lvMin', state.lvMin);
   if (state.lvMax) params.set('lvMax', state.lvMax);
   if (state.sort && state.sort !== 'level') params.set('sort', state.sort);

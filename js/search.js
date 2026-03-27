@@ -1,5 +1,4 @@
-import { rarityWeight } from './utils.js?v=1.4.18';
-import { getRatingSummary } from './supabase.js?v=1.4.18';
+import { getRatingSummary } from './supabase.js?v=2.0.0';
 
 /**
  * Filter and sort items based on current state.
@@ -17,12 +16,6 @@ export function filterItems(items, state) {
   if (state.subtypes?.length) {
     const subs = new Set(state.subtypes);
     result = result.filter(item => item.세부타입 && subs.has(item.세부타입));
-  }
-
-  // Rarity filter
-  if (state.rarities?.length) {
-    const rars = new Set(state.rarities);
-    result = result.filter(item => rars.has(item.표시희귀도));
   }
 
   // Level range
@@ -72,8 +65,6 @@ export function filterItems(items, state) {
         return (a.레벨 - b.레벨) * dir;
       case 'name':
         return a.한국어이름.localeCompare(b.한국어이름, 'ko') * dir;
-      case 'rarity':
-        return (rarityWeight(a.표시희귀도) - rarityWeight(b.표시희귀도)) * dir;
       case 'rating': {
         const ra = getRatingSummary(a.아이템ID);
         const rb = getRatingSummary(b.아이템ID);
