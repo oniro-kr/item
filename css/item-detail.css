@@ -46,7 +46,8 @@
 }
 
 .modal-title {
-  display: none;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .modal-close {

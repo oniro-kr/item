@@ -53,8 +53,8 @@ export function initModal() {
 
 /** Open modal for an item */
 export function openItemDetail(item) {
-  titleEl.textContent = '';
-  titleEl.className = 'modal-title';
+  titleEl.textContent = item.한국어이름;
+  titleEl.className = `modal-title rarity-text-${rarityClass(item.표시희귀도)}`;
   bodyEl.innerHTML = '';
 
   // ── Tooltip Card ──
