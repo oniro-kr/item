@@ -241,7 +241,6 @@ function buildBasicInfo(item) {
     ['타입', item.타입],
     ['세부타입', item.세부타입 || '-'],
     ['희귀도', item.표시희귀도],
-    ['레벨', item.레벨],
     ['요구 레벨', item.요구레벨],
     ['소켓', `${item.소켓수} / ${item.최대소켓}`],
     ['보조배율', item.보조배율],
