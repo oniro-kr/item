@@ -1,11 +1,11 @@
-import { categoryOf, OPTION_NAMES } from './utils.js?v=2.0.0';
+import { categoryOf, OPTION_NAMES } from './utils.js?v=2.1.0';
 
 /** Loaded database */
 let db = null;
 
 /** Load JSON and build indices */
 export async function loadData() {
-  const resp = await fetch('json/Oniro_ItemDB_V1.json?v=2.0.0');
+  const resp = await fetch('json/Oniro_ItemDB_V1.json?v=2.1.0');
   const raw = await resp.json();
 
   const items = raw['아이템 옵션+스킬 DB'] || [];
