@@ -178,13 +178,20 @@ export function openItemDetail(item) {
   const layout = document.createElement('div');
   layout.className = 'modal-layout';
 
-  // Left column: tooltip + detail data (all scrollable)
+  // Left column: tooltip (top, shrinkable) + detail scroll area (bottom)
   const leftCol = document.createElement('div');
   leftCol.className = 'modal-col-left';
 
-  leftCol.appendChild(tooltip);
+  // Tooltip wrapper - scrolls internally if too tall
+  const tooltipWrap = document.createElement('div');
+  tooltipWrap.className = 'modal-tooltip-wrap';
+  tooltipWrap.appendChild(tooltip);
+  leftCol.appendChild(tooltipWrap);
 
-  // Detailed Data Section (collapsible)
+  // Scroll area for detail data
+  const detailArea = document.createElement('div');
+  detailArea.className = 'modal-detail-area';
+
   const detailToggle = document.createElement('button');
   detailToggle.className = 'detail-toggle-btn';
   detailToggle.textContent = '상세 데이터 보기';
@@ -207,8 +214,9 @@ export function openItemDetail(item) {
   }
   detailWrap.appendChild(buildBasicInfo(item));
 
-  leftCol.appendChild(detailToggle);
-  leftCol.appendChild(detailWrap);
+  detailArea.appendChild(detailToggle);
+  detailArea.appendChild(detailWrap);
+  leftCol.appendChild(detailArea);
 
   layout.appendChild(leftCol);
 
