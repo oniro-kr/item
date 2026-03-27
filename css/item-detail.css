@@ -21,7 +21,7 @@
 .modal {
   width: 100%;
   max-width: 960px;
-  max-height: 800px;
+  height: min(90vh, 800px);
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -68,7 +68,7 @@
 
 .modal-body {
   padding: 0 var(--gap-lg) var(--gap-lg);
-  overflow-y: auto;
+  overflow: hidden;
   flex: 1;
   min-height: 0;
 }
@@ -77,23 +77,22 @@
 .modal-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
   gap: var(--gap-lg);
-  align-items: start;
+  height: 100%;
 }
 
 .modal-col-left {
   display: flex;
   flex-direction: column;
   gap: var(--gap-md);
+  overflow-y: auto;
 }
 
 .modal-col-right {
   display: flex;
   flex-direction: column;
   gap: var(--gap-md);
-  position: sticky;
-  top: 0;
-  max-height: 750px;
   overflow-y: auto;
   border-left: 1px solid var(--border);
   padding-left: var(--gap-lg);
