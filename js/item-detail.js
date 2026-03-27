@@ -195,6 +195,10 @@ export function openItemDetail(item) {
     detailWrap.hidden = !detailWrap.hidden;
     detailToggle.textContent = detailWrap.hidden ? '상세 데이터 보기' : '상세 데이터 접기';
     detailToggle.classList.toggle('open', !detailWrap.hidden);
+    // 펼칠 때 스크롤 위치를 토글 버튼으로 이동
+    if (!detailWrap.hidden) {
+      detailToggle.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
 
   const visibleOptions = item.옵션?.filter(o => o.ID !== 0);
