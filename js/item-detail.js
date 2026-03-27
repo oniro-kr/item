@@ -96,7 +96,7 @@ export function openItemDetail(item) {
 
   // Weapon / Armor info
   const isWeapon = item.타입 === '무기' || item._category === '무기';
-  const isArmor = ['갑옷(상의)', '투구', '장갑', '신발', '벨트'].includes(item.타입);
+  const isArmor = ['갑옷', '투구', '장갑', '신발', '벨트'].includes(item.타입);
 
   const ELEM_COLORS = {
     '화염': '#e8632b', '공기': '#a0d8a0', '물': '#4a90d9',

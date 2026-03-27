@@ -22,8 +22,8 @@ export function rarityWeight(rarity) {
 /** Category grouping: 타입 → 대분류 */
 export function categoryOf(type) {
   if (type === '무기') return '무기';
-  if (['갑옷(상의)', '투구', '장갑', '신발', '벨트'].includes(type)) return '방어구';
-  if (['반지', '목걸이', '귀걸이'].includes(type)) return '장신구';
+  if (['갑옷', '투구', '장갑', '신발', '벨트'].includes(type)) return '방어구';
+  if (['반지', '부적', '귀걸이'].includes(type)) return '장신구';
   if (type === '보조무기') return '보조';
   return '기타';
 }
