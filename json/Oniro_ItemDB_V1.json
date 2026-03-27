@@ -19053,7 +19053,7 @@
         }
       ],
       "접사": "Defence Increased By 91-101%\n+20 to All Statistics\n+15 to All Resistances\n+20% to Oni Resistance\n+20% to Globe Drop Chance\nUnique: +1 to All Skills",
-      "접사(한국어)": "방어 91-101% 만큼 증가\n+20 모든 능력치\n+15 모든 저항\n+20% 오니 저항\n+20% 구슬 드롭 확률\n유일무이: +1을 모든 스킬에 더함",
+      "접사(한국어)": "방어 91-101% 만큼 증가\n+20 모든 통계\n+15 모든 저항\n+20% 오니 저항\n+20% 구슬 드롭 확률\n유일무이: +1을 모든 스킬에 더함",
       "이미지": "img/items/코이의 비늘.png"
     },
     {
@@ -19505,7 +19505,7 @@
         }
       ],
       "접사": "Defence Increased By 150%\n+30 to Strength\n+12 to All Statistics\n+12% to Weaken Resistance",
-      "접사(한국어)": "방어 150% 만큼 증가\n+30 힘\n+12 모든 능력치\n+12% 약화 저항",
+      "접사(한국어)": "방어 150% 만큼 증가\n+30 힘\n+12 모든 통계\n+12% 약화 저항",
       "이미지": ""
     },
     {
@@ -20189,7 +20189,7 @@
         }
       ],
       "접사": "Defence Increased By 112-118%\n+25 to All Statistics\n+185-200 to Health\n+25 to All Resistances",
-      "접사(한국어)": "방어 112-118% 만큼 증가\n+25 모든 능력치\n+185-200 건강\n+25 모든 저항",
+      "접사(한국어)": "방어 112-118% 만큼 증가\n+25 모든 통계\n+185-200 건강\n+25 모든 저항",
       "이미지": "img/items/오멘.png"
     },
     {
@@ -29256,7 +29256,7 @@
         }
       ],
       "접사": "Darkness Damage Increased By 309%\n+115 to Spirit\n+20 to All Statistics\n+30 to Darkness Damage\n+6.2% to Darkness Penetration\n+15% to Undead Resistance\n+15% to Spirit Resistance\nUnique: Grants Soul Harvest (1-3) While Equipped",
-      "접사(한국어)": "어둠 피해 309% 만큼 증가\n+115 정신\n+20 모든 능력치\n+30 어둠 피해\n+6.2% 어둠 관통\n+15% 언데드 저항\n+15% 영혼 저항\n유일무이: 장착 시 영혼 수확 (1-3) 부여",
+      "접사(한국어)": "어둠 피해 309% 만큼 증가\n+115 정신\n+20 모든 통계\n+30 어둠 피해\n+6.2% 어둠 관통\n+15% 언데드 저항\n+15% 영혼 저항\n유일무이: 장착 시 영혼 수확 (1-3) 부여",
       "이미지": "img/items/소울리버.png"
     },
     {
@@ -34499,7 +34499,7 @@
         }
       ],
       "접사": "+10 to All Statistics\n+65 to Health\n+14 to All Resistances\n+13.8% to Magic Find\nUnique: +2 to All Skills",
-      "접사(한국어)": "+10 모든 능력치\n+65 건강\n+14 모든 저항\n+13.8% 마법 찾기\n유일무이: +2을 모든 스킬에 더함",
+      "접사(한국어)": "+10 모든 통계\n+65 건강\n+14 모든 저항\n+13.8% 마법 찾기\n유일무이: +2을 모든 스킬에 더함",
       "이미지": "img/items/슬픈 광대.png"
     },
     {
@@ -36519,7 +36519,7 @@
         }
       ],
       "접사": "Defence Increased By 213-284%\n+15-21 to All Statistics\n+10-14 to Fire Damage\n+9-13 to Air Damage\n+9-15 to Water Damage\n+9-15 to Poison Damage\n+9-13 to Light Damage\n+10-18 to All Resistances\n+7.5-12.2% to Magic Find",
-      "접사(한국어)": "방어 213-284% 만큼 증가\n+15-21 모든 능력치\n+10-14 화염 피해\n+9-13 공기 피해\n+9-15 수 피해\n+9-15 독 피해\n+9-13 빛 피해\n+10-18 모든 저항\n+7.5-12.2% 마법 찾기",
+      "접사(한국어)": "방어 213-284% 만큼 증가\n+10-25 모든 통계\n+10-14 화염 피해\n+9-13 공기 피해\n+9-15 수 피해\n+9-15 독 피해\n+9-13 빛 피해\n+10-18 모든 저항\n+7.5-12.2% 마법 찾기",
       "이미지": "img/items/크로마틱 레이스.png"
     },
     {
@@ -37358,7 +37358,7 @@
         }
       ],
       "접사": "+19 to All Statistics\n+191 to Health\n+10% to Energy Cost Reduction\n+11 to All Resistances\nUnique: +2 to All Skills",
-      "접사(한국어)": "+19 모든 능력치\n+191 건강\n+10% 에너지 비용 감소\n+11 모든 저항\n유일무이: +2을 모든 스킬에 더함",
+      "접사(한국어)": "+19 모든 통계\n+191 건강\n+10% 에너지 비용 감소\n+11 모든 저항\n유일무이: +2을 모든 스킬에 더함",
       "이미지": "img/items/빛나는 태양의 눈.png"
     },
     {
@@ -38835,7 +38835,7 @@
         }
       ],
       "접사": "+17 to All Statistics\n+20% to Alteration Reduction\n+0.3 to Energy Regen\n+10% to Magic Find",
-      "접사(한국어)": "+17 모든 능력치\n+20% 변경 감소\n+0.3 에너지 재생\n+10% 마법 찾기",
+      "접사(한국어)": "+17 모든 통계\n+20% 변경 감소\n+0.3 에너지 재생\n+10% 마법 찾기",
       "이미지": ""
     },
     {
