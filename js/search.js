@@ -55,26 +55,37 @@ export function filterItems(items, state) {
     );
   }
 
-  // Sort
-  const [sortField, sortDir] = (state.sortKey || 'level-asc').split('-');
+  // Sort (2차 정렬: 레벨 높은순)
+  const [sortField, sortDir] = (state.sortKey || 'level-desc').split('-');
   const dir = sortDir === 'desc' ? -1 : 1;
 
   result.sort((a, b) => {
+    let cmp = 0;
     switch (sortField) {
       case 'level':
-        return (a.레벨 - b.레벨) * dir;
+        cmp = (a.레벨 - b.레벨) * dir;
+        break;
       case 'name':
-        return a.한국어이름.localeCompare(b.한국어이름, 'ko') * dir;
+        cmp = a.한국어이름.localeCompare(b.한국어이름, 'ko') * dir;
+        break;
       case 'rating': {
         const ra = getRatingSummary(a.아이템ID);
         const rb = getRatingSummary(b.아이템ID);
-        return (ra.avg - rb.avg || ra.count - rb.count) * dir;
+        cmp = (ra.avg - rb.avg || ra.count - rb.count) * dir;
+        break;
       }
       case 'id':
-        return (a.아이템ID - b.아이템ID) * dir;
+        cmp = (a.아이템ID - b.아이템ID) * dir;
+        break;
       default:
-        return (a.레벨 - b.레벨) * dir;
+        cmp = (a.레벨 - b.레벨) * dir;
+        break;
     }
+    // 동일 값이면 레벨 높은순
+    if (cmp === 0 && sortField !== 'level') {
+      cmp = b.레벨 - a.레벨;
+    }
+    return cmp;
   });
 
   return result;

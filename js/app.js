@@ -23,7 +23,7 @@ const state = {
   skills: [],
   lvMin: null,
   lvMax: null,
-  sortKey: 'level-asc',
+  sortKey: 'level-desc',
   page: 1,
   perPage: 30,
 };
