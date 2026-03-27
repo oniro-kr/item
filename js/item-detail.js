@@ -178,19 +178,11 @@ export function openItemDetail(item) {
   const layout = document.createElement('div');
   layout.className = 'modal-layout';
 
-  // Left column: tooltip (top, min-height 보장) + detail (bottom, 독립 스크롤)
+  // Left column: 전부 하나의 스크롤
   const leftCol = document.createElement('div');
   leftCol.className = 'modal-col-left';
 
-  // 툴팁 영역 - 최소 높이 보장, 내부 스크롤
-  const tooltipArea = document.createElement('div');
-  tooltipArea.className = 'modal-tooltip-area';
-  tooltipArea.appendChild(tooltip);
-  leftCol.appendChild(tooltipArea);
-
-  // 상세 데이터 영역 - 남은 공간에서 독립 스크롤
-  const detailArea = document.createElement('div');
-  detailArea.className = 'modal-detail-area';
+  leftCol.appendChild(tooltip);
 
   const detailToggle = document.createElement('button');
   detailToggle.className = 'detail-toggle-btn';
@@ -214,9 +206,8 @@ export function openItemDetail(item) {
   }
   detailWrap.appendChild(buildBasicInfo(item));
 
-  detailArea.appendChild(detailToggle);
-  detailArea.appendChild(detailWrap);
-  leftCol.appendChild(detailArea);
+  leftCol.appendChild(detailToggle);
+  leftCol.appendChild(detailWrap);
 
   layout.appendChild(leftCol);
 

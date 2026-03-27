@@ -90,29 +90,8 @@
   flex-direction: column;
   gap: var(--gap-md);
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
   padding-right: var(--gap-sm);
-}
-
-/* 툴팁 영역: 상세 닫힘=전체 차지, 상세 열림=최소 60% 유지 + 내부 스크롤 */
-.modal-tooltip-area {
-  flex: 1 1 auto;
-  min-height: 60%;
-  overflow-y: auto;
-}
-
-/* 상세 데이터 영역: 닫힘=버튼만, 열림=남은 공간에서 스크롤 */
-.modal-detail-area {
-  flex: 0 1 auto;
-  max-height: 40%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap-md);
-}
-
-.modal-detail-area:has(.detail-data-section:not([hidden])) {
-  flex: 1 0 auto;
 }
 
 .modal-col-right {
@@ -702,16 +681,6 @@
   .modal-col-left {
     overflow: visible;
     padding-right: 0;
-  }
-
-  .modal-tooltip-area {
-    overflow-y: visible;
-    min-height: auto;
-  }
-
-  .modal-detail-area {
-    overflow-y: visible;
-    max-height: none;
   }
 
   .modal-col-right {
