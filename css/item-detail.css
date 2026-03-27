@@ -135,7 +135,7 @@
   border: 2px solid #5a4a2a;
   border-radius: var(--radius-md);
   overflow: hidden;
-  min-height: 560px;
+  min-height: 580px;
   display: flex;
   flex-direction: column;
   box-shadow:
