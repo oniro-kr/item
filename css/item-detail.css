@@ -692,12 +692,11 @@
 
   .modal-body {
     overflow-y: auto;
+    display: block;
   }
 
   .modal-layout {
-    grid-template-columns: 1fr;
-    height: auto;
-    overflow: visible;
+    display: block;
   }
 
   .modal-col-left {
@@ -716,11 +715,12 @@
   }
 
   .modal-col-right {
+    overflow-y: visible;
     border-left: none;
     padding-left: 0;
     border-top: 1px solid var(--border);
     padding-top: var(--gap-lg);
-    overflow-y: visible;
+    margin-top: var(--gap-lg);
   }
 
   .tooltip-damage {
