@@ -86,6 +86,7 @@
   flex-direction: column;
   gap: var(--gap-md);
   overflow-y: auto;
+  min-height: 0;
   padding-right: var(--gap-sm);
 }
 
@@ -94,6 +95,7 @@
   flex-direction: column;
   gap: var(--gap-md);
   overflow-y: auto;
+  min-height: 0;
   border-left: 1px solid var(--border);
   padding-left: var(--gap-lg);
 }
