@@ -69,7 +69,7 @@
 .modal-body {
   padding: 0 var(--gap-lg) var(--gap-lg);
   overflow: hidden;
-  flex: 1;
+  flex: 1 1 0;
   min-height: 0;
 }
 
@@ -79,6 +79,8 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--gap-lg);
   height: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .modal-col-left {
@@ -87,6 +89,7 @@
   gap: var(--gap-md);
   overflow-y: auto;
   min-height: 0;
+  max-height: 100%;
   padding-right: var(--gap-sm);
 }
 
@@ -96,6 +99,7 @@
   gap: var(--gap-md);
   overflow-y: auto;
   min-height: 0;
+  max-height: 100%;
   border-left: 1px solid var(--border);
   padding-left: var(--gap-lg);
 }
