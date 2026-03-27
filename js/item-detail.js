@@ -51,78 +51,170 @@ export function initModal() {
   });
 }
 
+/** Element color map */
+const ELEMENT_COLORS = {
+  '화염': '#e8632b', '불': '#e8632b',
+  '물': '#4a90d9', '수': '#4a90d9',
+  '공기': '#a0d8a0', '바람': '#a0d8a0',
+  '독': '#7dc850', '빛': '#f0e060', '신성': '#f0e060',
+  '암흑': '#b070d0', '어둠': '#b070d0',
+  '물리': '#c8c8c8', '기본(속성미지정)': '#c8c8c8',
+};
+
 /** Open modal for an item */
 export function openItemDetail(item) {
-  titleEl.textContent = item.한국어이름;
-  titleEl.className = `modal-title rarity-text-${rarityClass(item.표시희귀도)}`;
+  titleEl.textContent = '';
+  titleEl.className = 'modal-title';
   bodyEl.innerHTML = '';
 
-  // 2-column layout wrapper
-  const layout = document.createElement('div');
-  layout.className = 'modal-layout';
+  // ── Tooltip Card ──
+  const tooltip = document.createElement('div');
+  tooltip.className = 'tooltip-card';
 
-  // Left: item info
-  const infoCol = document.createElement('div');
-  infoCol.className = 'modal-col-info';
+  // Item name header
+  const nameBar = document.createElement('div');
+  nameBar.className = 'tooltip-name-bar';
+  const nameEl = document.createElement('span');
+  nameEl.className = `tooltip-item-name rarity-text-${rarityClass(item.표시희귀도)}`;
+  nameEl.textContent = item.한국어이름;
+  nameBar.appendChild(nameEl);
+  tooltip.appendChild(nameBar);
 
-  // Item image
-  const imgWrap = document.createElement('div');
-  imgWrap.className = 'detail-img-wrap';
-  const img = document.createElement('img');
-  img.className = 'detail-img';
-  img.src = item.이미지 || 'img/no_image.svg';
-  img.alt = item.한국어이름;
-  imgWrap.appendChild(img);
-  infoCol.appendChild(imgWrap);
+  // Top row: image + weapon/armor core stats
+  const topRow = document.createElement('div');
+  topRow.className = 'tooltip-top';
 
-  const enName = document.createElement('p');
-  enName.className = 'detail-en-name';
-  enName.textContent = item.에디터이름;
-  infoCol.appendChild(enName);
+  const imgEl = document.createElement('img');
+  imgEl.className = 'tooltip-img';
+  imgEl.src = item.이미지 || 'img/no_image.svg';
+  imgEl.alt = '';
+  topRow.appendChild(imgEl);
 
-  // Basic Info
-  infoCol.appendChild(buildBasicInfo(item));
+  const coreInfo = document.createElement('div');
+  coreInfo.className = 'tooltip-core';
 
-  // Weapon stats
-  if (item.타입 === '무기' || item._category === '무기') {
-    const ws = getWeaponStats(item.아이템ID);
-    if (ws) {
-      infoCol.appendChild(buildWeaponStats(ws));
-      infoCol.appendChild(buildDisclaimer());
-    }
+  // Rarity + subtype labels
+  const rarityLabel = document.createElement('div');
+  rarityLabel.className = 'tooltip-rarity';
+  rarityLabel.textContent = item.표시희귀도 === '전설' ? '전설적인' : item.표시희귀도;
+  coreInfo.appendChild(rarityLabel);
+
+  const subtypeLabel = document.createElement('div');
+  subtypeLabel.className = 'tooltip-subtype';
+  subtypeLabel.textContent = item.세부타입 || item.타입;
+  coreInfo.appendChild(subtypeLabel);
+
+  // Weapon damage or Armor defense
+  const ws = (item.타입 === '무기' || item._category === '무기') ? getWeaponStats(item.아이템ID) : null;
+  const armorTypes = ['갑옷(상의)', '투구', '장갑', '신발', '벨트'];
+  const as = armorTypes.includes(item.타입) ? getArmorStats(item.아이템ID) : null;
+
+  if (ws) {
+    const dmgRange = document.createElement('div');
+    dmgRange.className = 'tooltip-damage';
+    dmgRange.textContent = `${ws.최소피해} - ${ws.최대피해}`;
+    coreInfo.appendChild(dmgRange);
+
+    const dmgType = document.createElement('div');
+    dmgType.className = 'tooltip-dmg-type';
+    const elemName = (ws.속성 || '물리').replace('바람', '공기').replace('신성', '빛').replace('기본(속성미지정)', '물리');
+    dmgType.textContent = `${elemName} 피해`;
+    dmgType.style.color = ELEMENT_COLORS[ws.속성] || ELEMENT_COLORS['물리'];
+    coreInfo.appendChild(dmgType);
+
+    const atkSpd = document.createElement('div');
+    atkSpd.className = 'tooltip-atkspd';
+    atkSpd.textContent = `${ws.공격속도} 초당 공격`;
+    coreInfo.appendChild(atkSpd);
+  } else if (as) {
+    const defVal = document.createElement('div');
+    defVal.className = 'tooltip-damage';
+    defVal.textContent = `${as.최소방어력} - ${as.최대방어력}`;
+    coreInfo.appendChild(defVal);
+
+    const defLabel = document.createElement('div');
+    defLabel.className = 'tooltip-dmg-type';
+    defLabel.textContent = '방어력';
+    coreInfo.appendChild(defLabel);
   }
 
-  // Armor stats
-  if (['갑옷(상의)', '투구', '장갑', '신발', '벨트'].includes(item.타입)) {
-    const as = getArmorStats(item.아이템ID);
-    if (as) {
-      infoCol.appendChild(buildArmorStats(as));
-      infoCol.appendChild(buildDisclaimer());
+  topRow.appendChild(coreInfo);
+  tooltip.appendChild(topRow);
+
+  // Info bar: required level + sockets
+  const infoBar = document.createElement('div');
+  infoBar.className = 'tooltip-info-bar';
+  const lvlEl = document.createElement('span');
+  lvlEl.textContent = `필요 레벨: ${item.요구레벨}`;
+  const socketEl = document.createElement('span');
+  socketEl.className = 'tooltip-sockets';
+  socketEl.textContent = `${item.최대소켓}`;
+  socketEl.innerHTML = `${item.최대소켓}<svg viewBox="0 0 16 16" width="14" height="14" style="vertical-align:-2px;margin-left:2px"><circle cx="8" cy="8" r="6" fill="none" stroke="#6a6a82" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="#6a6a82"/></svg>`;
+  infoBar.append(lvlEl, socketEl);
+  tooltip.appendChild(infoBar);
+
+  // Affix text (접사 한국어)
+  const affixText = item['접사(한국어)'] || '';
+  if (affixText) {
+    const affixSection = document.createElement('div');
+    affixSection.className = 'tooltip-affix';
+    const lines = affixText.split('\n').filter(l => l.trim());
+    for (const line of lines) {
+      const p = document.createElement('div');
+      p.className = 'tooltip-affix-line';
+      // Skill lines (유일무이:)
+      if (line.startsWith('유일무이:') || line.startsWith('세트:')) {
+        p.classList.add('tooltip-affix-skill');
+      }
+      p.textContent = line;
+      affixSection.appendChild(p);
     }
+    tooltip.appendChild(affixSection);
   }
 
-  // Options
+  // English name footer
+  const enFooter = document.createElement('div');
+  enFooter.className = 'tooltip-en-name';
+  enFooter.textContent = item.에디터이름;
+  tooltip.appendChild(enFooter);
+
+  bodyEl.appendChild(tooltip);
+
+  // ── Detailed Data Section (collapsible) ──
+  const detailToggle = document.createElement('button');
+  detailToggle.className = 'detail-toggle-btn';
+  detailToggle.textContent = '상세 데이터 보기';
+  const detailWrap = document.createElement('div');
+  detailWrap.className = 'detail-data-section';
+  detailWrap.hidden = true;
+
+  detailToggle.addEventListener('click', () => {
+    detailWrap.hidden = !detailWrap.hidden;
+    detailToggle.textContent = detailWrap.hidden ? '상세 데이터 보기' : '상세 데이터 접기';
+    detailToggle.classList.toggle('open', !detailWrap.hidden);
+  });
+
+  // Options table
   const visibleOptions = item.옵션?.filter(o => o.ID !== 0);
   if (visibleOptions?.length) {
-    infoCol.appendChild(buildOptionsSection(visibleOptions));
+    detailWrap.appendChild(buildOptionsSection(visibleOptions));
   }
 
-  // Skills
+  // Skills detail
   if (item.스킬?.length) {
-    infoCol.appendChild(buildSkillsSection(item.스킬));
+    detailWrap.appendChild(buildSkillsSection(item.스킬));
   }
 
-  layout.appendChild(infoCol);
+  // Basic info grid
+  detailWrap.appendChild(buildBasicInfo(item));
 
-  // Right: rating section
+  bodyEl.appendChild(detailToggle);
+  bodyEl.appendChild(detailWrap);
+
+  // ── Rating Section ──
   if (isSupabaseReady()) {
-    const ratingCol = document.createElement('div');
-    ratingCol.className = 'modal-col-rating';
-    ratingCol.appendChild(buildRatingSection(item.아이템ID));
-    layout.appendChild(ratingCol);
+    bodyEl.appendChild(buildRatingSection(item.아이템ID));
   }
-
-  bodyEl.appendChild(layout);
 
   overlay.hidden = false;
   document.body.style.overflow = 'hidden';
@@ -171,86 +263,6 @@ function buildBasicInfo(item) {
   return section;
 }
 
-/** Build weapon stats section */
-function buildWeaponStats(ws) {
-  const section = createSection('무기 상세');
-  const grid = document.createElement('div');
-  grid.className = 'weapon-stats';
-
-  const cards = [
-    ['기본 피해', ws.기본피해, null],
-    ['공격 속도', ws.공격속도, null],
-    ['피해 범위', `${ws.최소피해} ~ ${ws.최대피해}`, `변동 ${ws.피해변동}`],
-    ['속성', (ws.속성 || '물리').replace('바람', '공기').replace('신성', '빛'), null],
-  ];
-
-  for (const [label, value, sub] of cards) {
-    const card = document.createElement('div');
-    card.className = 'stat-card';
-
-    const labelEl = document.createElement('div');
-    labelEl.className = 'stat-card-label';
-    labelEl.textContent = label;
-
-    const valueEl = document.createElement('div');
-    valueEl.className = 'stat-card-value';
-    valueEl.textContent = value;
-
-    card.append(labelEl, valueEl);
-
-    if (sub) {
-      const subEl = document.createElement('div');
-      subEl.className = 'stat-card-sub';
-      subEl.textContent = sub;
-      card.appendChild(subEl);
-    }
-
-    grid.appendChild(card);
-  }
-
-  section.appendChild(grid);
-  return section;
-}
-
-/** Build armor stats section */
-function buildArmorStats(as) {
-  const section = createSection('방어구 상세');
-  const grid = document.createElement('div');
-  grid.className = 'weapon-stats';
-
-  const cards = [
-    ['방어력', as.방어력, null],
-    ['방어 범위', `${as.최소방어력} ~ ${as.최대방어력}`, `변동 ${as.방어변동}`],
-    ['장비 종류', as.장비종류, as.장비세부종류 || null],
-  ];
-
-  for (const [label, value, sub] of cards) {
-    const card = document.createElement('div');
-    card.className = 'stat-card';
-
-    const labelEl = document.createElement('div');
-    labelEl.className = 'stat-card-label';
-    labelEl.textContent = label;
-
-    const valueEl = document.createElement('div');
-    valueEl.className = 'stat-card-value';
-    valueEl.textContent = value;
-
-    card.append(labelEl, valueEl);
-
-    if (sub) {
-      const subEl = document.createElement('div');
-      subEl.className = 'stat-card-sub';
-      subEl.textContent = sub;
-      card.appendChild(subEl);
-    }
-
-    grid.appendChild(card);
-  }
-
-  section.appendChild(grid);
-  return section;
-}
 
 /** Build options table */
 function buildOptionsSection(options) {
@@ -685,14 +697,6 @@ function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
-}
-
-/** Build disclaimer notice */
-function buildDisclaimer() {
-  const p = document.createElement('p');
-  p.className = 'detail-disclaimer';
-  p.textContent = '* 인게임 데이터와 다를 수 있습니다';
-  return p;
 }
 
 /** Helper: create a detail section with title */
