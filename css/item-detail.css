@@ -20,7 +20,7 @@
 /* ====== Modal ====== */
 .modal {
   width: 100%;
-  max-width: 520px;
+  max-width: 960px;
   max-height: 90vh;
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -68,10 +68,34 @@
 
 .modal-body {
   padding: 0 var(--gap-lg) var(--gap-lg);
-  overflow-y: auto;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ====== Two-Column Layout ====== */
+.modal-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-lg);
+  height: 100%;
+}
+
+.modal-col-left {
   display: flex;
   flex-direction: column;
   gap: var(--gap-md);
+  overflow-y: auto;
+  padding-right: var(--gap-sm);
+}
+
+.modal-col-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  overflow-y: auto;
+  border-left: 1px solid var(--border);
+  padding-left: var(--gap-lg);
 }
 
 /* ====== Tooltip Card (Game Style) ====== */
@@ -636,6 +660,28 @@
     max-height: 100vh;
     height: 100vh;
     border-radius: 0;
+  }
+
+  .modal-body {
+    overflow-y: auto;
+  }
+
+  .modal-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .modal-col-left {
+    overflow-y: visible;
+    padding-right: 0;
+  }
+
+  .modal-col-right {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border);
+    padding-top: var(--gap-lg);
+    overflow-y: visible;
   }
 
   .tooltip-damage {

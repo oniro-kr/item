@@ -146,9 +146,17 @@ export function openItemDetail(item) {
   enFooter.textContent = item.에디터이름;
   tooltip.appendChild(enFooter);
 
-  bodyEl.appendChild(tooltip);
+  // ── 2-column layout (PC: side-by-side, mobile: stacked) ──
+  const layout = document.createElement('div');
+  layout.className = 'modal-layout';
 
-  // ── Detailed Data Section (collapsible) ──
+  // Left column: tooltip + detail data
+  const leftCol = document.createElement('div');
+  leftCol.className = 'modal-col-left';
+
+  leftCol.appendChild(tooltip);
+
+  // Detailed Data Section (collapsible)
   const detailToggle = document.createElement('button');
   detailToggle.className = 'detail-toggle-btn';
   detailToggle.textContent = '상세 데이터 보기';
@@ -162,27 +170,29 @@ export function openItemDetail(item) {
     detailToggle.classList.toggle('open', !detailWrap.hidden);
   });
 
-  // Options table
   const visibleOptions = item.옵션?.filter(o => o.ID !== 0);
   if (visibleOptions?.length) {
     detailWrap.appendChild(buildOptionsSection(visibleOptions));
   }
-
-  // Skills detail
   if (item.스킬?.length) {
     detailWrap.appendChild(buildSkillsSection(item.스킬));
   }
-
-  // Basic info grid
   detailWrap.appendChild(buildBasicInfo(item));
 
-  bodyEl.appendChild(detailToggle);
-  bodyEl.appendChild(detailWrap);
+  leftCol.appendChild(detailToggle);
+  leftCol.appendChild(detailWrap);
 
-  // ── Rating Section ──
+  layout.appendChild(leftCol);
+
+  // Right column: rating
   if (isSupabaseReady()) {
-    bodyEl.appendChild(buildRatingSection(item.아이템ID));
+    const rightCol = document.createElement('div');
+    rightCol.className = 'modal-col-right';
+    rightCol.appendChild(buildRatingSection(item.아이템ID));
+    layout.appendChild(rightCol);
   }
+
+  bodyEl.appendChild(layout);
 
   overlay.hidden = false;
   document.body.style.overflow = 'hidden';
