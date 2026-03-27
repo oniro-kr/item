@@ -1,5 +1,4 @@
-// getWeaponStats, getArmorStats - 추후 업데이트 시 사용 예정
-// import { getWeaponStats, getArmorStats } from './data.js?v=2.0.0';
+import { getWeaponStats, getArmorStats } from './data.js?v=2.0.0';
 import { rarityClass, optionDisplayName, formatOptionValue, showToast } from './utils.js?v=2.0.0';
 import { isSupabaseReady, getRatingSummary, fetchItemRatings, submitRating, updateRating, deleteRating, hasAlreadyRated } from './supabase.js?v=2.0.0';
 import { renderStars } from './render.js?v=2.0.0';
@@ -95,15 +94,44 @@ export function openItemDetail(item) {
   subtypeLabel.textContent = item.세부타입 || item.타입;
   coreInfo.appendChild(subtypeLabel);
 
-  // Weapon damage / Armor defense - 추후 업데이트 예정
+  // Weapon / Armor info
   const isWeapon = item.타입 === '무기' || item._category === '무기';
   const isArmor = ['갑옷(상의)', '투구', '장갑', '신발', '벨트'].includes(item.타입);
 
-  if (isWeapon || isArmor) {
-    const upcoming = document.createElement('div');
-    upcoming.className = 'tooltip-upcoming';
-    upcoming.textContent = isWeapon ? '무기 피해 정보 업데이트 예정' : '방어력 정보 업데이트 예정';
-    coreInfo.appendChild(upcoming);
+  const ELEM_COLORS = {
+    '화염': '#e8632b', '공기': '#a0d8a0', '물': '#4a90d9',
+    '독': '#7dc850', '빛': '#f0e060', '암흑': '#b070d0', '물리': '#c8c8c8',
+  };
+
+  if (isWeapon) {
+    const ws = getWeaponStats(item.아이템ID);
+
+    // 공격력 범위 - 업데이트 예정
+    const dmgRange = document.createElement('div');
+    dmgRange.className = 'tooltip-upcoming';
+    dmgRange.textContent = '공격력 범위 업데이트 예정';
+    coreInfo.appendChild(dmgRange);
+
+    // 속성
+    if (ws) {
+      const elemName = (ws.속성 || '물리').replace('바람', '공기').replace('신성', '빛').replace('기본(속성미지정)', '물리');
+      const elemLabel = document.createElement('div');
+      elemLabel.className = 'tooltip-dmg-type';
+      elemLabel.textContent = `${elemName} 피해`;
+      elemLabel.style.color = ELEM_COLORS[elemName] || ELEM_COLORS['물리'];
+      coreInfo.appendChild(elemLabel);
+
+      // 초당 공격
+      const atkSpd = document.createElement('div');
+      atkSpd.className = 'tooltip-atkspd';
+      atkSpd.textContent = `${ws.공격속도} 초당 공격`;
+      coreInfo.appendChild(atkSpd);
+    }
+  } else if (isArmor) {
+    const defUpcoming = document.createElement('div');
+    defUpcoming.className = 'tooltip-upcoming';
+    defUpcoming.textContent = '방어력 업데이트 예정';
+    coreInfo.appendChild(defUpcoming);
   }
 
   topRow.appendChild(coreInfo);
