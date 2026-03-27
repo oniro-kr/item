@@ -178,11 +178,19 @@ export function openItemDetail(item) {
   const layout = document.createElement('div');
   layout.className = 'modal-layout';
 
-  // Left column: all scrollable together
+  // Left column: tooltip (top, min-height 보장) + detail (bottom, 독립 스크롤)
   const leftCol = document.createElement('div');
   leftCol.className = 'modal-col-left';
 
-  leftCol.appendChild(tooltip);
+  // 툴팁 영역 - 최소 높이 보장, 내부 스크롤
+  const tooltipArea = document.createElement('div');
+  tooltipArea.className = 'modal-tooltip-area';
+  tooltipArea.appendChild(tooltip);
+  leftCol.appendChild(tooltipArea);
+
+  // 상세 데이터 영역 - 남은 공간에서 독립 스크롤
+  const detailArea = document.createElement('div');
+  detailArea.className = 'modal-detail-area';
 
   const detailToggle = document.createElement('button');
   detailToggle.className = 'detail-toggle-btn';
@@ -195,10 +203,6 @@ export function openItemDetail(item) {
     detailWrap.hidden = !detailWrap.hidden;
     detailToggle.textContent = detailWrap.hidden ? '상세 데이터 보기' : '상세 데이터 접기';
     detailToggle.classList.toggle('open', !detailWrap.hidden);
-    // 펼칠 때 스크롤 위치를 토글 버튼으로 이동
-    if (!detailWrap.hidden) {
-      detailToggle.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
   });
 
   const visibleOptions = item.옵션?.filter(o => o.ID !== 0);
@@ -210,8 +214,9 @@ export function openItemDetail(item) {
   }
   detailWrap.appendChild(buildBasicInfo(item));
 
-  leftCol.appendChild(detailToggle);
-  leftCol.appendChild(detailWrap);
+  detailArea.appendChild(detailToggle);
+  detailArea.appendChild(detailWrap);
+  leftCol.appendChild(detailArea);
 
   layout.appendChild(leftCol);
 
