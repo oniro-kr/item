@@ -88,6 +88,35 @@
   flex-direction: column;
   gap: var(--gap-md);
   overflow-y: auto;
+  padding-right: var(--gap-sm);
+}
+
+/* ====== Scrollbar Style ====== */
+.modal-col-left,
+.modal-col-right {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) transparent;
+}
+
+.modal-col-left::-webkit-scrollbar,
+.modal-col-right::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-col-left::-webkit-scrollbar-track,
+.modal-col-right::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-col-left::-webkit-scrollbar-thumb,
+.modal-col-right::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 3px;
+}
+
+.modal-col-left::-webkit-scrollbar-thumb:hover,
+.modal-col-right::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 .modal-col-right {
