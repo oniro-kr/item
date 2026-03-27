@@ -669,6 +669,7 @@
 
   .modal-body {
     overflow-y: auto;
+    padding-bottom: 30px;
   }
 
   .modal-layout {
