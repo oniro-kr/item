@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5XCPBK0GWJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-5XCPBK0GWJ');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사정거리 - Oniro Item DB</title>
+  <meta name="description" content="Oniro ARPG 무기별 사정거리 데이터 - 근접/원거리/마법 무기 사정거리 비교">
+  <meta name="theme-color" content="#121220">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+  <link rel="apple-touch-icon" href="../img/favicon.svg">
+
+  <link rel="stylesheet" href="../css/reset.css?v=2.4.0">
+  <link rel="stylesheet" href="../css/variables.css?v=2.4.0">
+  <link rel="stylesheet" href="../css/layout.css?v=2.4.0">
+  <link rel="stylesheet" href="../css/components.css?v=2.4.0">
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <img src="../img/favicon.svg" alt="Oniro" class="site-logo-icon" width="28" height="28">
+      <h1 class="site-logo">Oniro Item DB</h1>
+      <span class="site-version">v1.4.4</span>
+      <nav class="main-tabs">
+        <a class="main-tab" href="/item/">장비목록</a>
+        <a class="main-tab active" href="/item/weapon-range/">사정거리</a>
+        <a class="main-tab" href="/item/attack-speed/">공격속도</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div id="weaponRangeContent"></div>
+  </main>
+
+  <script type="module">
+    import { renderWeaponRange } from '../js/weapon-range.js?v=2.4.0';
+    renderWeaponRange(document.getElementById('weaponRangeContent'));
+  </script>
+</body>
+</html>

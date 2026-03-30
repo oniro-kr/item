@@ -14,8 +14,6 @@ import {
 import { initModal, openItemDetail, setOnRatingSubmitted } from './item-detail.js?v=2.1.1';
 import { debounce, parseHash, writeHash } from './utils.js?v=2.1.1';
 import { initSupabase, fetchAllRatingSummaries } from './supabase.js?v=2.1.1';
-import { renderWeaponRange } from './weapon-range.js?v=2.2.1';
-import { renderAttackSpeed } from './attack-speed.js?v=2.2.1';
 
 /** Application state */
 const state = {
@@ -99,23 +97,6 @@ function bindEvents() {
     state.page = 1;
     searchClear.hidden = true;
     applyFilters();
-  });
-
-  // Main page tabs
-  document.querySelectorAll('.main-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const page = tab.dataset.page;
-      document.getElementById('itemsPage').hidden = page !== 'items';
-      document.getElementById('weaponRangePage').hidden = page !== 'weapon-range';
-      document.getElementById('attackSpeedPage').hidden = page !== 'attack-speed';
-      if (page === 'weapon-range') {
-        renderWeaponRange(document.getElementById('weaponRangeContent'));
-      } else if (page === 'attack-speed') {
-        renderAttackSpeed(document.getElementById('attackSpeedContent'));
-      }
-    });
   });
 
   // Category tabs

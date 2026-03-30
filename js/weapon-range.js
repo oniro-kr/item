@@ -1,5 +1,3 @@
-let loaded = false;
-
 const CATEGORY_LABELS = {
   '근접': { label: '근접', cls: 'wr-cat-melee' },
   '물리원거리': { label: '물리 원거리', cls: 'wr-cat-phys' },
@@ -7,16 +5,12 @@ const CATEGORY_LABELS = {
 };
 
 export async function renderWeaponRange(container) {
-  if (loaded) return;
-  loaded = true;
-
   let data;
   try {
-    const res = await fetch('json/Oniro_WeaponRange_Data.json');
+    const res = await fetch('/item/json/Oniro_WeaponRange_Data.json');
     data = await res.json();
   } catch {
     container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:2rem;">데이터를 불러올 수 없습니다.</p>';
-    loaded = false;
     return;
   }
 
