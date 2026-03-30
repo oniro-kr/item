@@ -2,7 +2,6 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5XCPBK0GWJ"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -11,21 +10,16 @@
     gtag('config', 'G-5XCPBK0GWJ');
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>공격속도 - Oniro Item DB</title>
-  <meta name="description" content="Oniro ARPG 무기별 공격속도 데이터 - 기본속도, 공격범위, 추정 공식">
+  <title>무기 시스템 - Oniro Item DB</title>
+  <meta name="description" content="Oniro ARPG 무기 17종 종합 비교 - 사정거리, 공격속도, 판정방식, 투사체 속도">
   <meta name="theme-color" content="#121220">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
-  <link rel="apple-touch-icon" href="../img/favicon.svg">
-
-  <link rel="stylesheet" href="../css/reset.css?v=2.4.0">
-  <link rel="stylesheet" href="../css/variables.css?v=2.4.0">
-  <link rel="stylesheet" href="../css/layout.css?v=2.4.0">
-  <link rel="stylesheet" href="../css/components.css?v=2.4.0">
+  <link rel="stylesheet" href="../css/reset.css?v=2.5.0">
+  <link rel="stylesheet" href="../css/variables.css?v=2.5.0">
+  <link rel="stylesheet" href="../css/layout.css?v=2.5.0">
+  <link rel="stylesheet" href="../css/components.css?v=2.5.0">
 </head>
 <body>
-  <!-- Header -->
   <header class="site-header">
     <div class="header-inner">
       <img src="../img/favicon.svg" alt="Oniro" class="site-logo-icon" width="28" height="28">
@@ -33,19 +27,17 @@
       <span class="site-version">v1.4.4</span>
       <nav class="main-tabs">
         <a class="main-tab" href="/item/">장비목록</a>
-        <a class="main-tab" href="/item/weapon-range/">사정거리</a>
-        <a class="main-tab active" href="/item/attack-speed/">공격속도</a>
+        <a class="main-tab active" href="/item/weapons/">무기</a>
+        <a class="main-tab" href="/item/guide/">가이드</a>
       </nav>
     </div>
   </header>
-
   <main class="main-content">
-    <div id="attackSpeedContent"></div>
+    <div id="weaponsContent"></div>
   </main>
-
   <script type="module">
-    import { renderAttackSpeed } from '../js/attack-speed.js?v=2.4.0';
-    renderAttackSpeed(document.getElementById('attackSpeedContent'));
+    import { renderWeapons } from '../js/weapons.js?v=2.5.0';
+    renderWeapons(document.getElementById('weaponsContent'));
   </script>
 </body>
 </html>
