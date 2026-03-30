@@ -14,30 +14,33 @@ export async function renderAttackSpeed(container) {
     return;
   }
 
-  const speedSystem = data['공격 속도 시스템 (Attack Speed System)'];
-  const attackArea = data['공격 범위 (Attack Area)'];
-  const weaponSpeeds = speedSystem['구성요소']['무기_기본속도 (weaponBaseSpeed)']['무기별_기본속도'];
-  const dualWield = speedSystem['구성요소']['이도류_보너스 (Dual Wield Bonus)'];
-  const formula = speedSystem['추정_공식'];
-  const defence = speedSystem['방어 공식 (참고)'];
+  const speedSystem = data['공격 속도 시스템'];
+  const attackArea = data['공격 범위'];
+  const weaponSpeeds = speedSystem['구성요소']['무기 기본속도']['무기별 기본속도'];
+  const dualWield = speedSystem['구성요소']['이도류 보너스'];
+  const formula = speedSystem['추정 공식'];
+  const defence = speedSystem['방어 관련 공식 (참고)'];
 
   let html = '';
 
   // Section 1: System summary cards
   html += '<h3 class="as-section-title">공격속도 시스템</h3>';
   html += '<div class="wr-constants">';
-  html += buildCard('이도류 보너스', '+15%', `상수: ${dualWield['상수']}`);
-  html += buildCard('속도 범위', '0.6 ~ 1.35', '무기 기본속도 범위');
-  html += buildCard('방어력 계수', defence.DEFENCE_REDUCTION_PARAMETER, defence['추정_방어공식']);
-  html += buildCard('저항 계수', defence.RESISTENCE_REDUCTION_PARAMETER, defence['추정_저항공식']);
+  html += buildCard('이도류 보너스', `+${dualWield['수치'] * 100}%`, dualWield['설명']);
+  html += buildCard('속도 범위', speedSystem['구성요소']['무기 기본속도']['범위'], '무기 기본속도 범위');
+  html += buildCard('방어력 계수', defence['방어력 계수'], defence['추정 방어 공식']);
+  html += buildCard('저항 계수', defence['저항 계수'], defence['추정 저항 공식']);
   html += '</div>';
 
   // Formula box
   html += '<div class="as-formula-box">';
-  html += `<div class="as-formula-label">추정 공식</div>`;
+  html += '<div class="as-formula-label">추정 공식</div>';
   html += `<code class="as-formula">${formula['공식']}</code>`;
   html += `<div class="as-formula-example">${formula['예시']}</div>`;
   html += `<div class="as-formula-note">${formula['참고']}</div>`;
+  if (formula['주의']) {
+    html += `<div class="as-formula-note">${formula['주의']}</div>`;
+  }
   html += '</div>';
 
   // Section 2: Weapon speed bar chart
@@ -45,12 +48,12 @@ export async function renderAttackSpeed(container) {
   html += buildBarChart(weaponSpeeds);
 
   // Section 3: Collision mode classification
-  html += '<h3 class="as-section-title">무기별 충돌 모드 분류</h3>';
-  html += buildCollisionModes(attackArea['무기별 충돌 모드 분류']);
+  html += '<h3 class="as-section-title">무기별 판정 방식</h3>';
+  html += buildCollisionModes(attackArea['무기별 판정 방식']);
 
-  // Section 4: Attack area info
-  html += '<h3 class="as-section-title">투사체 히트 판정</h3>';
-  html += buildAttackAreaSection(attackArea);
+  // Section 4: Projectile hit detection
+  html += '<h3 class="as-section-title">투사체 적중 판정</h3>';
+  html += buildProjectileSection(attackArea['투사체 적중 판정']);
 
   container.innerHTML = html;
 }
@@ -68,14 +71,12 @@ function buildBarChart(weaponSpeeds) {
   const MAX = 1.4;
   const range = MAX - MIN;
 
-  // Sort weapons by max speed descending
   const entries = Object.entries(weaponSpeeds).sort((a, b) => {
     return Math.max(...b[1]) - Math.max(...a[1]);
   });
 
   let html = '<div class="as-bar-chart">';
 
-  // Scale labels
   html += '<div class="as-bar-scale">';
   for (let v = 0.6; v <= 1.4; v += 0.1) {
     const pct = ((v - MIN) / range) * 100;
@@ -84,22 +85,19 @@ function buildBarChart(weaponSpeeds) {
   html += '</div>';
 
   for (const [weapon, speeds] of entries) {
-    const name = weapon.replace(/\s*\(.*\)/, '');
     const minSpd = Math.min(...speeds);
     const maxSpd = Math.max(...speeds);
     const leftPct = ((minSpd - MIN) / range) * 100;
     const widthPct = ((maxSpd - minSpd) / range) * 100;
 
     html += '<div class="as-bar-row">';
-    html += `<div class="as-bar-label">${name}</div>`;
+    html += `<div class="as-bar-label">${weapon}</div>`;
     html += '<div class="as-bar-track">';
 
     if (speeds.length === 1) {
-      // Single dot
       const dotPct = ((speeds[0] - MIN) / range) * 100;
       html += `<div class="as-bar-dot" style="left:${dotPct}%" title="${speeds[0]}"></div>`;
     } else {
-      // Range bar with dots
       html += `<div class="as-bar-fill" style="left:${leftPct}%;width:${Math.max(widthPct, 0.5)}%"></div>`;
       for (const spd of speeds) {
         const dotPct = ((spd - MIN) / range) * 100;
@@ -118,9 +116,9 @@ function buildBarChart(weaponSpeeds) {
 
 function buildCollisionModes(modes) {
   const sections = [
-    { key: '사각형 (Rectangle) — rectWidth 사용', cls: 'wr-cat-melee', icon: '▬' },
-    { key: '원추형 (Cone) — maxAngle 사용', cls: 'wr-cat-phys', icon: '◥' },
-    { key: '투사체 (Projectile) — 별도 충돌체', cls: 'wr-cat-magic', icon: '→' },
+    { key: '사각형 (직선형 찌르기)', cls: 'wr-cat-melee', icon: '▬', field: '무기' },
+    { key: '원추형 (부채꼴 휘두르기)', cls: 'wr-cat-phys', icon: '◥', field: '근접무기' },
+    { key: '투사체 (발사형)', cls: 'wr-cat-magic', icon: '→', field: '무기' },
   ];
 
   let html = '<div class="as-area-grid">';
@@ -128,17 +126,13 @@ function buildCollisionModes(modes) {
   for (const sec of sections) {
     const data = modes[sec.key];
     if (!data) continue;
-    const weapons = data['무기'] || data['근접무기'] || {};
-    const weaponNames = Object.keys(weapons).map(w => {
-      const name = w.replace(/.*\((.+)\)/, '$1');
-      return name;
-    });
+    const weapons = data[sec.field] || [];
 
     html += '<div class="as-area-card">';
-    html += `<div class="as-area-card-title"><span class="${sec.cls}" style="margin-right:6px">${sec.icon}</span>${sec.key.split('—')[0].trim()}</div>`;
+    html += `<div class="as-area-card-title"><span class="${sec.cls}" style="margin-right:6px">${sec.icon}</span>${sec.key}</div>`;
     html += `<p>${data['설명']}</p>`;
     html += '<div class="as-collision-weapons">';
-    for (const name of weaponNames) {
+    for (const name of weapons) {
       html += `<span class="as-collision-tag">${name}</span>`;
     }
     html += '</div>';
@@ -149,26 +143,21 @@ function buildCollisionModes(modes) {
   return html;
 }
 
-function buildAttackAreaSection(attackArea) {
-  const projectile = attackArea['원거리 투사체 히트 판정'];
-  const arrow = projectile['화살/창/마법탄'];
-  const shuriken = projectile['수리검/쿠나이'];
-
+function buildProjectileSection(projectileData) {
   let html = '<div class="as-area-grid">';
 
-  // Arrow/Spear projectile
-  html += '<div class="as-area-card">';
-  html += '<div class="as-area-card-title">화살 / 창 / 마법탄</div>';
-  html += `<div class="as-area-detail">충돌체: ${arrow['충돌체']}</div>`;
-  html += `<div class="as-area-detail">크기: ${arrow['크기'].x} x ${arrow['크기'].y} x ${arrow['크기'].z} ${arrow['단위']}</div>`;
-  html += '</div>';
-
-  // Shuriken/Kunai
-  html += '<div class="as-area-card">';
-  html += '<div class="as-area-card-title">수리검 / 쿠나이</div>';
-  html += `<div class="as-area-detail">충돌체: ${shuriken['충돌체']}</div>`;
-  html += `<div class="as-area-detail">반지름: ${shuriken['반지름']} ${shuriken['단위']}</div>`;
-  html += '</div>';
+  for (const [name, info] of Object.entries(projectileData)) {
+    html += '<div class="as-area-card">';
+    html += `<div class="as-area-card-title">${name}</div>`;
+    html += `<div class="as-area-detail">판정 형태: ${info['판정 형태']}</div>`;
+    if (info['크기']) {
+      html += `<div class="as-area-detail">크기: ${info['크기']}</div>`;
+    }
+    if (info['반지름']) {
+      html += `<div class="as-area-detail">반지름: ${info['반지름']}</div>`;
+    }
+    html += '</div>';
+  }
 
   html += '</div>';
   return html;
