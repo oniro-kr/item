@@ -36,11 +36,11 @@
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="apple-touch-icon" href="img/favicon.svg">
 
-  <link rel="stylesheet" href="css/reset.css?v=2.1.1">
-  <link rel="stylesheet" href="css/variables.css?v=2.1.1">
-  <link rel="stylesheet" href="css/layout.css?v=2.1.1">
-  <link rel="stylesheet" href="css/components.css?v=2.1.1">
-  <link rel="stylesheet" href="css/item-detail.css?v=2.1.1">
+  <link rel="stylesheet" href="css/reset.css?v=2.2.0">
+  <link rel="stylesheet" href="css/variables.css?v=2.2.0">
+  <link rel="stylesheet" href="css/layout.css?v=2.2.0">
+  <link rel="stylesheet" href="css/components.css?v=2.2.0">
+  <link rel="stylesheet" href="css/item-detail.css?v=2.2.0">
 </head>
 <body>
   <!-- Header -->
@@ -53,6 +53,14 @@
   </header>
 
   <main class="main-content">
+    <!-- Main Page Tabs -->
+    <nav class="main-tabs">
+      <button class="main-tab active" data-page="items">장비목록</button>
+      <button class="main-tab" data-page="weapon-range">사정거리</button>
+    </nav>
+
+    <!-- === Items Page === -->
+    <div id="itemsPage">
     <!-- Search Bar -->
     <section class="search-section">
       <div class="search-bar">
@@ -200,6 +208,12 @@
     <!-- Pagination -->
     <nav class="pagination" id="pagination" aria-label="페이지 이동">
     </nav>
+    </div><!-- /itemsPage -->
+
+    <!-- === Weapon Range Page === -->
+    <div id="weaponRangePage" hidden>
+      <div id="weaponRangeContent"></div>
+    </div>
   </main>
 
   <!-- Item Detail Modal -->
@@ -217,6 +231,6 @@
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Scripts -->
-  <script type="module" src="js/app.js?v=2.1.1"></script>
+  <script type="module" src="js/app.js?v=2.2.0"></script>
 </body>
 </html>
