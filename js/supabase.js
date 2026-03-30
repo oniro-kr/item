@@ -23,7 +23,7 @@
  * CREATE POLICY "Anyone can insert" ON item_ratings FOR INSERT WITH CHECK (true);
  */
 
-import { t } from './i18n.js?v=3.0.0';
+import { t } from './i18n.js?v=3.1.0';
 
 // ── TODO: 여기에 본인의 Supabase 프로젝트 정보를 입력하세요 ──
 const SUPABASE_URL = 'https://vuebopglffbarpbvxtgf.supabase.co';

@@ -1,8 +1,8 @@
-import { getWeaponStats, getArmorStats } from './data.js?v=3.0.0';
-import { rarityClass, optionDisplayName, formatOptionValue, showToast } from './utils.js?v=3.0.0';
-import { isSupabaseReady, getRatingSummary, fetchItemRatings, submitRating, updateRating, deleteRating, hasAlreadyRated } from './supabase.js?v=3.0.0';
-import { renderStars } from './render.js?v=3.0.0';
-import { t, tGame, tGameBlock, tSkillName } from './i18n.js?v=3.0.0';
+import { getWeaponStats, getArmorStats } from './data.js?v=3.1.0';
+import { rarityClass, optionDisplayName, formatOptionValue, showToast } from './utils.js?v=3.1.0';
+import { isSupabaseReady, getRatingSummary, fetchItemRatings, submitRating, updateRating, deleteRating, hasAlreadyRated } from './supabase.js?v=3.1.0';
+import { renderStars } from './render.js?v=3.1.0';
+import { t, tGame, tGameBlock, tSkillName } from './i18n.js?v=3.1.0';
 
 const overlay = document.getElementById('modalOverlay');
 const modal = document.getElementById('itemModal');

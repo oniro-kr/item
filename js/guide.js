@@ -1,4 +1,4 @@
-import { t, tGame } from './i18n.js?v=3.0.0';
+import { t, tGame } from './i18n.js?v=3.1.0';
 
 const GUIDE_SECTIONS = [
   { key: '능력치 시스템', title: '능력치 시스템' },

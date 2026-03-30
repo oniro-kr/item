@@ -1,4 +1,4 @@
-import { tGame } from './i18n.js?v=3.0.0';
+import { tGame } from './i18n.js?v=3.1.0';
 
 /** Debounce function */
 export function debounce(fn, ms = 300) {
