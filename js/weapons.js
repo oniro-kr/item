@@ -12,6 +12,12 @@ const JUDGE_ICONS = {
   '투사체': '→',
 };
 
+const JUDGE_LABELS = {
+  '원추형': 'weapons.judgeCone',
+  '사각형': 'weapons.judgeRect',
+  '투사체': 'weapons.judgeProj',
+};
+
 export async function renderWeapons(container) {
   let data;
   try {
@@ -50,8 +56,8 @@ export async function renderWeapons(container) {
   // Section 4: Attack speed formula
   html += '<div class="as-formula-box">';
   html += `<div class="as-formula-label">${t('weapons.formula')}</div>`;
-  html += `<code class="as-formula">${speedData['추정 공식']}</code>`;
-  html += `<div class="as-formula-example">${t('weapons.dualBonus')}: ${speedData['이도류 보너스']} | ${t('weapons.speedRange')}: ${speedData['범위']}</div>`;
+  html += `<code class="as-formula">${t('weapons.formulaText')}</code>`;
+  html += `<div class="as-formula-example">${t('weapons.dualBonus')}: ${speedData['이도류 보너스']} | ${t('weapons.speedRange')}: ${t('weapons.speedRangeValue')}</div>`;
   html += '</div>';
 
   // Section 5: Attack detection modes
@@ -78,7 +84,7 @@ function buildWeaponTable(weapons) {
     const cat = CAT_STYLES[w.카테고리] || { cls: '', labelKey: '' };
     const catLabel = cat.labelKey ? t(cat.labelKey) : tGame(w.카테고리);
     const icon = JUDGE_ICONS[w.판정] || '';
-    const judgeLabel = tGame(w.판정);
+    const judgeLabel = JUDGE_LABELS[w.판정] ? t(JUDGE_LABELS[w.판정]) : tGame(w.판정);
     html += '<tr>';
     html += `<td><strong>${tGame(w.무기)}</strong></td>`;
     html += `<td>${tGame(w.손)}</td>`;
