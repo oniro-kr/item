@@ -81,7 +81,7 @@ function buildWeaponTable(weapons) {
     const judgeLabel = tGame(w.판정);
     html += '<tr>';
     html += `<td><strong>${tGame(w.무기)}</strong></td>`;
-    html += `<td>${w.손}</td>`;
+    html += `<td>${tGame(w.손)}</td>`;
     html += `<td><span class="wr-cat-badge ${cat.cls}">${catLabel}</span></td>`;
     html += `<td>${icon} ${judgeLabel}</td>`;
     html += `<td class="wr-num">${w.사정거리}</td>`;
@@ -144,9 +144,9 @@ function buildBarChart(weapons) {
 
 function buildJudgeModes(judgeData) {
   const sections = [
-    { key: '원추형 (부채꼴)', cls: 'wr-cat-phys', icon: '◥' },
-    { key: '사각형 (직선)', cls: 'wr-cat-melee', icon: '▬' },
-    { key: '투사체', cls: 'wr-cat-magic', icon: '→' },
+    { key: '원추형 (부채꼴)', cls: 'wr-cat-phys', icon: '◥', titleKey: 'weapons.judgeConeTitle', descKey: 'weapons.judgeConeDesc' },
+    { key: '사각형 (직선)', cls: 'wr-cat-melee', icon: '▬', titleKey: 'weapons.judgeRectTitle', descKey: 'weapons.judgeRectDesc' },
+    { key: '투사체', cls: 'wr-cat-magic', icon: '→', titleKey: 'weapons.judgeProjTitle', descKey: 'weapons.judgeProjDesc' },
   ];
 
   let html = '<div class="as-area-grid">';
@@ -156,8 +156,8 @@ function buildJudgeModes(judgeData) {
     if (!d) continue;
 
     html += '<div class="as-area-card">';
-    html += `<div class="as-area-card-title"><span class="${sec.cls}" style="margin-right:6px">${sec.icon}</span>${sec.key}</div>`;
-    html += `<p>${d['설명']}</p>`;
+    html += `<div class="as-area-card-title"><span class="${sec.cls}" style="margin-right:6px">${sec.icon}</span>${t(sec.titleKey)}</div>`;
+    html += `<p>${t(sec.descKey)}</p>`;
 
     const weapons = d['무기'] || [];
     if (weapons.length) {
@@ -169,9 +169,13 @@ function buildJudgeModes(judgeData) {
     }
 
     if (d['투사체 크기']) {
-      html += '<div style="margin-top:8px">';
-      for (const [k, v] of Object.entries(d['투사체 크기'])) {
-        html += `<div class="as-area-detail">${k}: ${v}</div>`;
+      const ps = d['투사체 크기'];
+      html += `<div style="margin-top:8px"><div class="as-area-detail" style="font-weight:600;margin-bottom:4px">${t('weapons.projSize')}</div>`;
+      if (ps['화살/창/마법탄']) {
+        html += `<div class="as-area-detail">${t('weapons.projArrow')}: ${ps['화살/창/마법탄']}</div>`;
+      }
+      if (ps['수리검/쿠나이']) {
+        html += `<div class="as-area-detail">${t('weapons.projShuriken')}: ${t('weapons.projRadius', '0.15')}</div>`;
       }
       html += '</div>';
     }

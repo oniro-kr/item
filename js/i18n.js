@@ -539,6 +539,12 @@ const SUPPLEMENTARY = {
   '휩쓸기': { en:'Sweep', ja:'スウィープ', zh:'横扫', fr:'Balayage', de:'Fegen', es:'Barrido', it:'Spazzata', pt:'Varredura', ru:'Размах', tr:'Süpürme', ar:'كسح', id:'Sapuan', pl:'Zamach' },
   '영혼 수확': { en:'Soul Harvest', ja:'魂の収穫', zh:'灵魂收割', fr:'Récolte d\'âmes', de:'Seelenernte', es:'Cosecha de almas', it:'Raccolta anime', pt:'Colheita de almas', ru:'Жатва душ', tr:'Ruh Hasadı', ar:'حصاد الأرواح', id:'Panen Jiwa', pl:'Żniwa dusz' },
   '천둥폭풍': { en:'Thunderstorm', ja:'雷嵐', zh:'雷暴', fr:'Orage', de:'Gewitter', es:'Tormenta eléctrica', it:'Temporale', pt:'Tempestade', ru:'Гроза', tr:'Gök Gürültüsü Fırtınası', ar:'عاصفة رعدية', id:'Badai Petir', pl:'Burza' },
+  // Weapon page terms
+  '양손': { en:'Two-hand', ja:'両手', zh:'双手', fr:'Deux mains', de:'Zweihand', es:'Dos manos', it:'Due mani', pt:'Duas mãos', ru:'Двуруч.', tr:'Çift El', ar:'يدين', id:'Dua Tangan', pl:'Dwuręczne' },
+  '한손': { en:'One-hand', ja:'片手', zh:'单手', fr:'Une main', de:'Einhand', es:'Una mano', it:'Una mano', pt:'Uma mão', ru:'Одноруч.', tr:'Tek El', ar:'يد واحدة', id:'Satu Tangan', pl:'Jednoręczne' },
+  '두 손 망치': { en:'Two-handed Mace', ja:'両手メイス', zh:'双手锤', fr:'Masse à deux mains', de:'Zweihandkeule', es:'Maza a dos manos', it:'Mazza a due mani', pt:'Maça a duas mãos', ru:'Двуручная булава', tr:'Çift El Topuzu', ar:'صولجان بيدين', id:'Gada Dua Tangan', pl:'Maczuga dwuręczna' },
+  '망치': { en:'Mace', ja:'メイス', zh:'锤', fr:'Masse', de:'Keule', es:'Maza', it:'Mazza', pt:'Maça', ru:'Булава', tr:'Topuz', ar:'صولجان', id:'Gada', pl:'Maczuga' },
+
   '서리': { en:'Frost', ja:'霜', zh:'霜', fr:'Givre', de:'Frost', es:'Escarcha', it:'Gelo', pt:'Geada', ru:'Мороз', tr:'Ayaz', ar:'صقيع', id:'Es', pl:'Mróz' },
   '소환': { en:'Summon', ja:'召喚', zh:'召唤', fr:'Invocation', de:'Beschwörung', es:'Invocación', it:'Evocazione', pt:'Invocação', ru:'Призыв', tr:'Çağırma', ar:'استدعاء', id:'Pemanggilan', pl:'Przywołanie' },
   '화살': { en:'Arrow', ja:'矢', zh:'箭', fr:'Flèche', de:'Pfeil', es:'Flecha', it:'Freccia', pt:'Flecha', ru:'Стрела', tr:'Ok', ar:'سهم', id:'Panah', pl:'Strzała' },
