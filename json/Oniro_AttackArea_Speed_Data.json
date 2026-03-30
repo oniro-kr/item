@@ -8,11 +8,51 @@
       },
       "maxAngle": "원추형 공격의 최대 각도 (도). Ability ScriptableObject에 설정됨",
       "rectWidth": "사각형 공격의 너비. Ability ScriptableObject에 설정됨",
-      "RECT_WEAPON_TYPES": "사각형 충돌을 사용하는 무기 타입 비트마스크 (BaseAttack 클래스)"
+      "RECT_WEAPON_TYPES": {
+        "비트마스크값": 200720,
+        "설명": "사각형 충돌을 사용하는 무기 타입 비트마스크 (BaseAttack 클래스)",
+        "디코딩": "Mace2H(16) | Polearm(4096) | Knuckles(65536) | Daibo(131072) = 200720"
+      }
+    },
+    "무기별 충돌 모드 분류": {
+      "사각형 (Rectangle) — rectWidth 사용": {
+        "설명": "좁고 긴 찌르기/직선형 공격 궤적. rectWidth로 판정 너비 결정",
+        "무기": {
+          "Mace2H (두 손 망치)": 16,
+          "Polearm (장창)": 4096,
+          "Knuckles (너클)": 65536,
+          "Daibo (봉)": 131072
+        }
+      },
+      "원추형 (Cone) — maxAngle 사용": {
+        "설명": "부채꼴 형태의 휘두르기 공격. maxAngle로 판정 각도 결정",
+        "근접무기": {
+          "Sword (검)": 2,
+          "Sword2H (양손검)": 4,
+          "Mace (망치)": 8,
+          "Axe (도끼)": 32,
+          "Axe2H (양손도끼)": 64,
+          "Wand (완드)": 128,
+          "Staff (지팡이)": 256,
+          "Dagger (단검)": 2048,
+          "Kunai (쿠나이)": 8192
+        }
+      },
+      "투사체 (Projectile) — 별도 충돌체": {
+        "설명": "BaseAttack collisionMode 미적용. MissileAbility로 투사체 발사 후 BoxCollider/SphereCollider로 판정",
+        "무기": {
+          "Bow (활)": 512,
+          "Crossbow (석궁)": 1024,
+          "Shuriken (수리검)": 16384,
+          "Javelin (투창)": 32768
+        }
+      }
     },
     "근접 무기 히트 판정": {
-      "설명": "근접 무기는 캐릭터 전방에 사각형 또는 원추형 충돌 영역을 생성. collisionMode=1(기본)은 사각형 판정",
-      "참고": "maxAngle, rectWidth의 실제 값은 Ability ScriptableObject에 설정되며, Addressables 번들에서 동적 로드됨. 추출된 슬래시 이펙트 파티클은 shape_type=4(Circle), angle=25°"
+      "설명": "근접 무기는 캐릭터 전방에 사각형 또는 원추형 충돌 영역을 생성",
+      "사각형": "RECT_WEAPON_TYPES에 해당하는 4종(두 손 망치, 장창, 너클, 봉)은 rectWidth 기반 직선형 판정",
+      "원추형": "나머지 근접 무기 9종은 maxAngle 기반 부채꼴 판정",
+      "참고": "maxAngle, rectWidth의 실제 값은 Ability ScriptableObject에 설정되며, Addressables 번들에서 동적 로드됨"
     },
     "원거리 투사체 히트 판정": {
       "화살/창/마법탄": {

@@ -44,8 +44,12 @@ export async function renderAttackSpeed(container) {
   html += '<h3 class="as-section-title">무기별 기본 공격속도</h3>';
   html += buildBarChart(weaponSpeeds);
 
-  // Section 3: Attack area info
-  html += '<h3 class="as-section-title">공격 범위 (히트 판정)</h3>';
+  // Section 3: Collision mode classification
+  html += '<h3 class="as-section-title">무기별 충돌 모드 분류</h3>';
+  html += buildCollisionModes(attackArea['무기별 충돌 모드 분류']);
+
+  // Section 4: Attack area info
+  html += '<h3 class="as-section-title">투사체 히트 판정</h3>';
   html += buildAttackAreaSection(attackArea);
 
   container.innerHTML = html;
@@ -112,19 +116,45 @@ function buildBarChart(weaponSpeeds) {
   return html;
 }
 
+function buildCollisionModes(modes) {
+  const sections = [
+    { key: '사각형 (Rectangle) — rectWidth 사용', cls: 'wr-cat-melee', icon: '▬' },
+    { key: '원추형 (Cone) — maxAngle 사용', cls: 'wr-cat-phys', icon: '◥' },
+    { key: '투사체 (Projectile) — 별도 충돌체', cls: 'wr-cat-magic', icon: '→' },
+  ];
+
+  let html = '<div class="as-area-grid">';
+
+  for (const sec of sections) {
+    const data = modes[sec.key];
+    if (!data) continue;
+    const weapons = data['무기'] || data['근접무기'] || {};
+    const weaponNames = Object.keys(weapons).map(w => {
+      const name = w.replace(/.*\((.+)\)/, '$1');
+      return name;
+    });
+
+    html += '<div class="as-area-card">';
+    html += `<div class="as-area-card-title"><span class="${sec.cls}" style="margin-right:6px">${sec.icon}</span>${sec.key.split('—')[0].trim()}</div>`;
+    html += `<p>${data['설명']}</p>`;
+    html += '<div class="as-collision-weapons">';
+    for (const name of weaponNames) {
+      html += `<span class="as-collision-tag">${name}</span>`;
+    }
+    html += '</div>';
+    html += '</div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
 function buildAttackAreaSection(attackArea) {
   const projectile = attackArea['원거리 투사체 히트 판정'];
   const arrow = projectile['화살/창/마법탄'];
   const shuriken = projectile['수리검/쿠나이'];
 
   let html = '<div class="as-area-grid">';
-
-  // Melee info
-  html += '<div class="as-area-card">';
-  html += '<div class="as-area-card-title">근접 무기</div>';
-  html += `<p>${attackArea['근접 무기 히트 판정']['설명']}</p>`;
-  html += `<div class="as-area-detail">충돌 모드: ${attackArea['시스템']['collisionMode']['모드']}</div>`;
-  html += '</div>';
 
   // Arrow/Spear projectile
   html += '<div class="as-area-card">';
