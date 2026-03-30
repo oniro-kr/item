@@ -1,3 +1,5 @@
+import { t, tGame } from './i18n.js?v=3.0.0';
+
 const GUIDE_SECTIONS = [
   { key: '능력치 시스템', title: '능력치 시스템' },
   { key: '속성 시스템', title: '속성 시스템' },
@@ -20,7 +22,7 @@ export async function renderGuide(container) {
     const res = await fetch('/item/json/Oniro_Guide_MasterData.json');
     data = await res.json();
   } catch {
-    container.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:2rem;">데이터를 불러올 수 없습니다.</p>';
+    container.innerHTML = `<p style="color:var(--text-muted);text-align:center;padding:2rem;">${t('guide.loadFailed')}</p>`;
     return;
   }
 
@@ -28,7 +30,7 @@ export async function renderGuide(container) {
   const info = data['게임 정보'];
   let html = `<div class="guide-game-info">
     <span>${info['게임명']} v${info['버전']}</span>
-    <span>개발: ${info['개발사']}</span>
+    <span>${t('guide.dev')} ${info['개발사']}</span>
     <span>${info['데이터 출처']}</span>
   </div>`;
 
@@ -38,7 +40,7 @@ export async function renderGuide(container) {
     if (!sectionData) continue;
 
     html += `<details class="guide-section" open>
-      <summary class="guide-section-title">${sec.title}</summary>
+      <summary class="guide-section-title">${tGame(sec.title)}</summary>
       <div class="guide-section-body">
         ${renderValue(sectionData)}
       </div>
@@ -56,7 +58,7 @@ export async function renderGuide(container) {
   const limits = data['데이터 한계 및 미확인'];
   if (limits) {
     html += `<details class="guide-section">
-      <summary class="guide-section-title">데이터 한계 및 미확인</summary>
+      <summary class="guide-section-title">${t('guide.limits')}</summary>
       <div class="guide-section-body">
         ${renderValue(limits)}
       </div>
@@ -75,37 +77,34 @@ function renderValue(val, depth = 0) {
 
   if (Array.isArray(val)) {
     if (val.length === 0) return '';
-    // Simple string/number array
     if (typeof val[0] !== 'object') {
       return '<div class="guide-tags">' +
         val.map(v => `<span class="guide-tag">${v}</span>`).join('') +
         '</div>';
     }
-    // Array of objects (like 전투 공식 예시)
     return renderObjectArray(val);
   }
 
-  // Object
   let html = '<div class="guide-entries">';
   for (const [key, value] of Object.entries(val)) {
     if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
       html += `<div class="guide-entry">
-        <span class="guide-key">${key}</span>
+        <span class="guide-key">${tGame(key)}</span>
         <span class="guide-val">${value}</span>
       </div>`;
     } else if (Array.isArray(value) && value.length > 0 && typeof value[0] !== 'object') {
       html += `<div class="guide-entry">
-        <span class="guide-key">${key}</span>
+        <span class="guide-key">${tGame(key)}</span>
         <div class="guide-tags">${value.map(v => `<span class="guide-tag">${v}</span>`).join('')}</div>
       </div>`;
     } else if (Array.isArray(value) && value.length > 0 && typeof value[0] === 'object') {
       html += `<div class="guide-subsection">
-        <div class="guide-subheading">${key}</div>
+        <div class="guide-subheading">${tGame(key)}</div>
         ${renderObjectArray(value)}
       </div>`;
     } else if (typeof value === 'object' && value !== null) {
       html += `<div class="guide-subsection">
-        <div class="guide-subheading">${key}</div>
+        <div class="guide-subheading">${tGame(key)}</div>
         ${renderValue(value, depth + 1)}
       </div>`;
     }
@@ -119,24 +118,24 @@ function renderSlotOptions(data) {
   if (!pools) return '';
 
   let html = `<details class="guide-section" open>
-    <summary class="guide-section-title">장비별 보조 옵션 풀 (희귀 아이템)</summary>
+    <summary class="guide-section-title">${t('guide.slotOptionsTitle')}</summary>
     <div class="guide-section-body">
       <p class="guide-slot-desc">${data['설명'] || ''}</p>
-      <p class="guide-slot-source">출처: ${data['추출 방법'] || ''}</p>
+      <p class="guide-slot-source">${t('guide.source')} ${data['추출 방법'] || ''}</p>
       <div class="table-wrapper"><table class="item-table wr-table">
         <thead><tr>
-          <th>장비</th>
-          <th>카테고리</th>
-          <th>옵션 수</th>
-          <th>보조 옵션 목록</th>
-          <th>상태</th>
+          <th>${t('guide.slotEquip')}</th>
+          <th>${t('guide.slotCat')}</th>
+          <th>${t('guide.slotCount')}</th>
+          <th>${t('guide.slotList')}</th>
+          <th>${t('guide.slotStatus')}</th>
         </tr></thead><tbody>`;
 
   for (const [name, info] of Object.entries(pools)) {
     const optList = Array.isArray(info['옵션 목록'])
       ? info['옵션 목록'].map(o => {
           const optName = typeof o === 'string' ? o : o['옵션명'];
-          return `<span class="guide-tag">${optName}</span>`;
+          return `<span class="guide-tag">${tGame(optName)}</span>`;
         }).join('')
       : `<span class="guide-val" style="font-size:0.75rem;color:var(--text-muted)">${info['옵션 목록'] || '—'}</span>`;
 
@@ -145,8 +144,8 @@ function renderSlotOptions(data) {
       : `<span style="color:var(--warning)">${info['추출 상태']}</span>`;
 
     html += `<tr>
-      <td><strong>${name}</strong></td>
-      <td>${info['카테고리'] || ''}</td>
+      <td><strong>${tGame(name)}</strong></td>
+      <td>${tGame(info['카테고리'] || '')}</td>
       <td style="text-align:center">${info['옵션 수']}</td>
       <td><div class="guide-tags">${optList}</div></td>
       <td>${status}</td>
@@ -155,7 +154,6 @@ function renderSlotOptions(data) {
 
   html += `</tbody></table></div>`;
 
-  // 참고사항
   const ref = data['참고'];
   if (ref) {
     html += `<div class="guide-entries" style="margin-top:var(--gap-md)">`;
@@ -175,7 +173,7 @@ function renderObjectArray(arr) {
 
   let html = '<div class="table-wrapper"><table class="item-table wr-table"><thead><tr>';
   for (const k of keys) {
-    html += `<th>${k}</th>`;
+    html += `<th>${tGame(k)}</th>`;
   }
   html += '</tr></thead><tbody>';
 

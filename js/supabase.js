@@ -23,6 +23,8 @@
  * CREATE POLICY "Anyone can insert" ON item_ratings FOR INSERT WITH CHECK (true);
  */
 
+import { t } from './i18n.js?v=3.0.0';
+
 // ── TODO: 여기에 본인의 Supabase 프로젝트 정보를 입력하세요 ──
 const SUPABASE_URL = 'https://vuebopglffbarpbvxtgf.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_01MjGKoqaQPoXXXtI1DA4g_7AfUc6pY';
@@ -157,7 +159,7 @@ function checkThrottle() {
 
   if (log.length >= THROTTLE_MAX) {
     const waitSec = Math.ceil((THROTTLE_WINDOW - (now - log[0])) / 1000);
-    throw new Error(`너무 빠른 등록입니다. ${waitSec}초 후 다시 시도해주세요`);
+    throw new Error(t('rating.errThrottle', waitSec));
   }
 
   log.push(now);
@@ -174,7 +176,7 @@ export async function submitRating(itemId, nickname, rating, comment = '', passw
   // IP 중복 체크
   if (clientIp) {
     const already = await hasAlreadyRated(itemId);
-    if (already) throw new Error('이미 이 아이템에 평가를 등록하셨습니다');
+    if (already) throw new Error(t('rating.errAlready'));
   }
 
   const { data, error } = await supabase
@@ -229,7 +231,7 @@ export async function updateRating(ratingId, rating, comment, password) {
     .eq('id', ratingId)
     .eq('password_hash', pwHash)
     .single();
-  if (!check) throw new Error('비밀번호가 일치하지 않습니다');
+  if (!check) throw new Error(t('rating.errPasswordMatch'));
 
   const { error } = await supabase
     .from('item_ratings')
@@ -255,7 +257,7 @@ export async function deleteRating(ratingId, password) {
     .eq('id', ratingId)
     .eq('password_hash', pwHash)
     .single();
-  if (!check) throw new Error('비밀번호가 일치하지 않습니다');
+  if (!check) throw new Error(t('rating.errPasswordMatch'));
 
   const { error } = await supabase
     .from('item_ratings')

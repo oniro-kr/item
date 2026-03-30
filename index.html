@@ -11,6 +11,7 @@
     gtag('config', 'G-5XCPBK0GWJ');
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="i18n-title" content="site.title">
   <title>Oniro Item DB - 오니로 아이템 데이터베이스</title>
   <meta name="description" content="Oniro ARPG 아이템 데이터베이스 - 무기, 방어구, 장신구 등 600+ 전설 아이템 검색, 필터, 상세 스탯 확인 및 유저 평가">
   <meta name="keywords" content="Oniro, 오니로, ARPG, 아이템, 데이터베이스, 무기, 방어구, 장신구, 액션RPG, 핵앤슬래시">
@@ -50,10 +51,11 @@
       <h1 class="site-logo">Oniro Item DB</h1>
       <span class="site-version">v1.4.4</span>
       <nav class="main-tabs">
-        <a class="main-tab active" href="/item/">장비목록</a>
-        <a class="main-tab" href="/item/weapons/">무기</a>
-        <!-- <a class="main-tab" href="/item/guide/">가이드</a> -->
+        <a class="main-tab active" href="/item/" data-i18n="nav.items">장비목록</a>
+        <a class="main-tab" href="/item/weapons/" data-i18n="nav.weapons">무기</a>
+        <!-- <a class="main-tab" href="/item/guide/" data-i18n="nav.guide">가이드</a> -->
       </nav>
+      <div class="lang-selector" id="langSelector"></div>
     </div>
   </header>
 
@@ -71,19 +73,20 @@
           id="searchInput"
           class="search-input"
           placeholder="아이템 이름 검색 (한글/영문)"
+          data-i18n-placeholder="search.placeholder"
           autocomplete="off"
         >
-        <button id="searchClear" class="search-clear" hidden aria-label="검색어 지우기">&times;</button>
+        <button id="searchClear" class="search-clear" hidden aria-label="검색어 지우기" data-i18n-aria="search.clear">&times;</button>
       </div>
     </section>
 
     <!-- Category Tabs -->
-    <nav class="category-tabs" aria-label="아이템 카테고리">
-      <button class="tab active" data-cat="all">전체<span class="tab-count"></span></button>
-      <button class="tab" data-cat="무기">무기<span class="tab-count"></span></button>
-      <button class="tab" data-cat="방어구">방어구<span class="tab-count"></span></button>
-      <button class="tab" data-cat="장신구">장신구<span class="tab-count"></span></button>
-      <button class="tab" data-cat="보조">보조<span class="tab-count"></span></button>
+    <nav class="category-tabs" aria-label="아이템 카테고리" data-i18n-aria="category.label">
+      <button class="tab active" data-cat="all"><span data-i18n="cat.all">전체</span><span class="tab-count"></span></button>
+      <button class="tab" data-cat="무기"><span data-i18n="cat.weapon">무기</span><span class="tab-count"></span></button>
+      <button class="tab" data-cat="방어구"><span data-i18n="cat.armor">방어구</span><span class="tab-count"></span></button>
+      <button class="tab" data-cat="장신구"><span data-i18n="cat.accessory">장신구</span><span class="tab-count"></span></button>
+      <button class="tab" data-cat="보조"><span data-i18n="cat.offhand">보조</span><span class="tab-count"></span></button>
     </nav>
 
     <!-- Filters -->
@@ -92,7 +95,7 @@
         <!-- Type Filter -->
         <div class="filter-group">
           <button class="filter-toggle" id="typeToggle">
-            타입 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <span data-i18n="filter.type">타입</span> <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="filter-dropdown" id="typeDropdown" hidden>
             <div class="filter-tags" id="typeTags"></div>
@@ -102,7 +105,7 @@
         <!-- Subtype Filter -->
         <div class="filter-group">
           <button class="filter-toggle" id="subtypeToggle">
-            세부타입 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <span data-i18n="filter.subtype">세부타입</span> <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="filter-dropdown" id="subtypeDropdown" hidden>
             <div class="filter-tags" id="subtypeTags"></div>
@@ -112,10 +115,10 @@
         <!-- Option Filter -->
         <div class="filter-group">
           <button class="filter-toggle" id="optionToggle">
-            옵션 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <span data-i18n="filter.option">옵션</span> <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="filter-dropdown filter-dropdown-search" id="optionDropdown" hidden>
-            <input type="text" class="filter-search" id="optionSearch" placeholder="옵션 검색..." autocomplete="off">
+            <input type="text" class="filter-search" id="optionSearch" placeholder="옵션 검색..." data-i18n-placeholder="filter.optionSearch" autocomplete="off">
             <div class="filter-tags filter-tags-scroll" id="optionTags"></div>
           </div>
         </div>
@@ -123,50 +126,50 @@
         <!-- Skill Filter -->
         <div class="filter-group">
           <button class="filter-toggle" id="skillToggle">
-            스킬 <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            <span data-i18n="filter.skill">스킬</span> <svg class="chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
           <div class="filter-dropdown filter-dropdown-search" id="skillDropdown" hidden>
-            <input type="text" class="filter-search" id="skillSearch" placeholder="스킬 검색..." autocomplete="off">
+            <input type="text" class="filter-search" id="skillSearch" placeholder="스킬 검색..." data-i18n-placeholder="filter.skillSearch" autocomplete="off">
             <div class="filter-tags filter-tags-scroll" id="skillTags"></div>
           </div>
         </div>
 
         <!-- Level Range -->
         <div class="filter-group filter-level">
-          <label>레벨</label>
-          <input type="number" id="lvMin" class="level-input" placeholder="최소" min="1">
+          <label data-i18n="filter.level">레벨</label>
+          <input type="number" id="lvMin" class="level-input" placeholder="최소" data-i18n-placeholder="filter.lvMin" min="1">
           <span class="level-sep">~</span>
-          <input type="number" id="lvMax" class="level-input" placeholder="최대" min="1">
+          <input type="number" id="lvMax" class="level-input" placeholder="최대" data-i18n-placeholder="filter.lvMax" min="1">
         </div>
       </div>
 
       <!-- Active Filters Display -->
       <div class="active-filters" id="activeFilters" hidden>
-        <span class="active-filters-label">필터:</span>
+        <span class="active-filters-label" data-i18n="filter.label">필터:</span>
         <div class="active-filters-list" id="activeFiltersList"></div>
-        <button class="active-filters-clear" id="clearAllFilters">전체 해제</button>
+        <button class="active-filters-clear" id="clearAllFilters" data-i18n="filter.clearAll">전체 해제</button>
       </div>
     </section>
 
     <!-- Result Info & Sort -->
     <section class="result-bar">
-      <span class="result-count" id="resultCount">로딩 중...</span>
+      <span class="result-count" id="resultCount" data-i18n="result.loading">로딩 중...</span>
       <div class="sort-controls">
-        <label class="sort-label" for="sortSelect">정렬</label>
+        <label class="sort-label" for="sortSelect" data-i18n="sort.label">정렬</label>
         <select id="sortSelect" class="sort-select">
-          <option value="level-desc">레벨 높은순</option>
-          <option value="level-asc">레벨 낮은순</option>
-          <option value="name-asc">이름 가나다순</option>
-          <option value="name-desc">이름 역순</option>
-          <option value="rating-desc">별점 높은순</option>
-          <option value="rating-asc">별점 낮은순</option>
-          <option value="id-asc">ID 순</option>
+          <option value="level-desc" data-i18n="sort.levelDesc">레벨 높은순</option>
+          <option value="level-asc" data-i18n="sort.levelAsc">레벨 낮은순</option>
+          <option value="name-asc" data-i18n="sort.nameAsc">이름 가나다순</option>
+          <option value="name-desc" data-i18n="sort.nameDesc">이름 역순</option>
+          <option value="rating-desc" data-i18n="sort.ratingDesc">별점 높은순</option>
+          <option value="rating-asc" data-i18n="sort.ratingAsc">별점 낮은순</option>
+          <option value="id-asc" data-i18n="sort.idAsc">ID 순</option>
         </select>
-        <label class="sort-label" for="perPageSelect">표시</label>
+        <label class="sort-label" for="perPageSelect" data-i18n="display.label">표시</label>
         <select id="perPageSelect" class="sort-select">
-          <option value="30">30개</option>
-          <option value="50">50개</option>
-          <option value="100">100개</option>
+          <option value="30" data-i18n="display.30">30개</option>
+          <option value="50" data-i18n="display.50">50개</option>
+          <option value="100" data-i18n="display.100">100개</option>
         </select>
       </div>
     </section>
@@ -177,13 +180,13 @@
         <table class="item-table" id="itemTable">
           <thead>
             <tr>
-              <th class="col-level">레벨</th>
-              <th class="col-name">아이템</th>
-              <th class="col-type">타입</th>
-              <th class="col-subtype">세부</th>
-              <th class="col-rating">별점</th>
-              <th class="col-options">주요 옵션</th>
-              <th class="col-skills">주요 스킬</th>
+              <th class="col-level" data-i18n="table.level">레벨</th>
+              <th class="col-name" data-i18n="table.item">아이템</th>
+              <th class="col-type" data-i18n="table.type">타입</th>
+              <th class="col-subtype" data-i18n="table.subtype">세부</th>
+              <th class="col-rating" data-i18n="table.rating">별점</th>
+              <th class="col-options" data-i18n="table.options">주요 옵션</th>
+              <th class="col-skills" data-i18n="table.skills">주요 스킬</th>
             </tr>
           </thead>
           <tbody id="itemTableBody">
@@ -194,17 +197,17 @@
       <!-- Loading -->
       <div class="loading" id="loading">
         <div class="loading-spinner"></div>
-        <p>데이터 로딩 중...</p>
+        <p data-i18n="result.dataLoading">데이터 로딩 중...</p>
       </div>
 
       <!-- No Results -->
       <div class="no-results" id="noResults" hidden>
-        <p>검색 결과가 없습니다.</p>
+        <p data-i18n="result.noResults">검색 결과가 없습니다.</p>
       </div>
     </section>
 
     <!-- Pagination -->
-    <nav class="pagination" id="pagination" aria-label="페이지 이동">
+    <nav class="pagination" id="pagination" aria-label="페이지 이동" data-i18n-aria="pagination.label">
     </nav>
   </main>
 
@@ -213,7 +216,7 @@
     <div class="modal" id="itemModal" role="dialog" aria-labelledby="modalTitle">
       <div class="modal-header">
         <h2 class="modal-title" id="modalTitle"></h2>
-        <button class="modal-close" id="modalClose" aria-label="닫기">&times;</button>
+        <button class="modal-close" id="modalClose" aria-label="닫기" data-i18n-aria="modal.close">&times;</button>
       </div>
       <div class="modal-body" id="modalBody">
       </div>
@@ -223,6 +226,6 @@
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Scripts -->
-  <script type="module" src="js/app.js?v=2.5.0"></script>
+  <script type="module" src="js/app.js?v=3.0.0"></script>
 </body>
 </html>

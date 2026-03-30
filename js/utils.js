@@ -1,3 +1,5 @@
+import { tGame } from './i18n.js?v=3.0.0';
+
 /** Debounce function */
 export function debounce(fn, ms = 300) {
   let timer;
@@ -65,9 +67,10 @@ export const OPTION_NAMES = {
   105: '모든 통계', 106: '모든 저항',
 };
 
-/** Get display name for an option */
+/** Get display name for an option (translated) */
 export function optionDisplayName(opt) {
-  return OPTION_NAMES[opt.ID] || opt.이름 || `옵션 #${opt.ID}`;
+  const koName = OPTION_NAMES[opt.ID] || opt.이름 || `옵션 #${opt.ID}`;
+  return tGame(koName);
 }
 
 /** Format option value */

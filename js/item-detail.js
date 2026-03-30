@@ -1,7 +1,8 @@
-import { getWeaponStats, getArmorStats } from './data.js?v=2.1.1';
-import { rarityClass, optionDisplayName, formatOptionValue, showToast } from './utils.js?v=2.1.1';
-import { isSupabaseReady, getRatingSummary, fetchItemRatings, submitRating, updateRating, deleteRating, hasAlreadyRated } from './supabase.js?v=2.1.1';
-import { renderStars } from './render.js?v=2.1.1';
+import { getWeaponStats, getArmorStats } from './data.js?v=3.0.0';
+import { rarityClass, optionDisplayName, formatOptionValue, showToast } from './utils.js?v=3.0.0';
+import { isSupabaseReady, getRatingSummary, fetchItemRatings, submitRating, updateRating, deleteRating, hasAlreadyRated } from './supabase.js?v=3.0.0';
+import { renderStars } from './render.js?v=3.0.0';
+import { t, tGame, tGameBlock, tSkillName } from './i18n.js?v=3.0.0';
 
 const overlay = document.getElementById('modalOverlay');
 const modal = document.getElementById('itemModal');
@@ -9,12 +10,12 @@ const titleEl = document.getElementById('modalTitle');
 const bodyEl = document.getElementById('modalBody');
 const closeBtn = document.getElementById('modalClose');
 
-/** Option type descriptions */
-const OPTION_TYPE_DESC = {
-  '고정': '인게임과 정확히 일치하는 확정값',
-  '변동': '데이터에 최소/최대 범위가 있고\n드랍 시 그 안에서 롤링',
-  '랜덤변동': 'base값은 있지만 게임 런타임에서 추가 변동됨\n예: 피해감소 5%→6.7%',
-  '랜덤부여': 'base값 0\n게임이 드랍 시 값을 부여\n예: 공속 0→22%',
+/** Option type description keys */
+const OPTION_TYPE_DESC_KEYS = {
+  '고정': 'optType.fixed.desc',
+  '변동': 'optType.variable.desc',
+  '랜덤변동': 'optType.randVar.desc',
+  '랜덤부여': 'optType.randGrant.desc',
 };
 
 /** Show/hide fixed tooltip popup */
@@ -53,7 +54,8 @@ export function initModal() {
 
 /** Open modal for an item */
 export function openItemDetail(item) {
-  titleEl.textContent = item.한국어이름;
+  const itemName = tGame(item.한국어이름);
+  titleEl.textContent = itemName;
   titleEl.className = `modal-title rarity-text-${rarityClass(item.표시희귀도)}`;
   bodyEl.innerHTML = '';
 
@@ -66,7 +68,7 @@ export function openItemDetail(item) {
   nameBar.className = 'tooltip-name-bar';
   const nameEl = document.createElement('span');
   nameEl.className = `tooltip-item-name rarity-text-${rarityClass(item.표시희귀도)}`;
-  nameEl.textContent = item.한국어이름;
+  nameEl.textContent = itemName;
   nameBar.appendChild(nameEl);
   tooltip.appendChild(nameBar);
 
@@ -86,12 +88,12 @@ export function openItemDetail(item) {
   // Rarity + subtype labels
   const rarityLabel = document.createElement('div');
   rarityLabel.className = 'tooltip-rarity';
-  rarityLabel.textContent = item.표시희귀도 === '전설' ? '전설적인' : item.표시희귀도;
+  rarityLabel.textContent = item.표시희귀도 === '전설' ? tGame('전설적인') : tGame(item.표시희귀도);
   coreInfo.appendChild(rarityLabel);
 
   const subtypeLabel = document.createElement('div');
   subtypeLabel.className = 'tooltip-subtype';
-  subtypeLabel.textContent = item.세부타입 || item.타입;
+  subtypeLabel.textContent = tGame(item.세부타입 || item.타입);
   coreInfo.appendChild(subtypeLabel);
 
   // Weapon / Armor info
@@ -106,31 +108,28 @@ export function openItemDetail(item) {
   if (isWeapon) {
     const ws = getWeaponStats(item.아이템ID);
 
-    // 공격력 범위 - 업데이트 예정
     const dmgRange = document.createElement('div');
     dmgRange.className = 'tooltip-upcoming';
-    dmgRange.textContent = '공격력 범위 업데이트 예정';
+    dmgRange.textContent = t('detail.dmgUpcoming');
     coreInfo.appendChild(dmgRange);
 
-    // 속성
     if (ws) {
       const elemName = (ws.속성 || '물리').replace('바람', '공기').replace('신성', '빛').replace('암흑', '어둠').replace('기본(속성미지정)', '물리');
       const elemLabel = document.createElement('div');
       elemLabel.className = 'tooltip-dmg-type';
-      elemLabel.textContent = `${elemName} 피해`;
+      elemLabel.textContent = t('detail.elemDmg', tGame(elemName));
       elemLabel.style.color = ELEM_COLORS[elemName] || ELEM_COLORS['물리'];
       coreInfo.appendChild(elemLabel);
 
-      // 초당 공격
       const atkSpd = document.createElement('div');
       atkSpd.className = 'tooltip-atkspd';
-      atkSpd.textContent = `${ws.공격속도} 초당 공격`;
+      atkSpd.textContent = t('detail.atkPerSec', ws.공격속도);
       coreInfo.appendChild(atkSpd);
     }
   } else if (isArmor) {
     const defUpcoming = document.createElement('div');
     defUpcoming.className = 'tooltip-upcoming';
-    defUpcoming.textContent = '방어력 업데이트 예정';
+    defUpcoming.textContent = t('detail.defUpcoming');
     coreInfo.appendChild(defUpcoming);
   }
 
@@ -141,10 +140,9 @@ export function openItemDetail(item) {
   const infoBar = document.createElement('div');
   infoBar.className = 'tooltip-info-bar';
   const lvlEl = document.createElement('span');
-  lvlEl.textContent = `필요 레벨: ${item.요구레벨}`;
+  lvlEl.textContent = t('detail.reqLevelShort', item.요구레벨);
   const socketEl = document.createElement('span');
   socketEl.className = 'tooltip-sockets';
-  socketEl.textContent = `${item.최대소켓}`;
   socketEl.innerHTML = `${item.최대소켓}<svg viewBox="0 0 16 16" width="14" height="14" style="vertical-align:-2px;margin-left:2px"><circle cx="8" cy="8" r="6" fill="none" stroke="#6a6a82" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="#6a6a82"/></svg>`;
   infoBar.append(lvlEl, socketEl);
   tooltip.appendChild(infoBar);
@@ -154,11 +152,11 @@ export function openItemDetail(item) {
   if (affixText) {
     const affixSection = document.createElement('div');
     affixSection.className = 'tooltip-affix';
-    const lines = affixText.split('\n').filter(l => l.trim());
+    const translatedAffix = tGameBlock(affixText);
+    const lines = translatedAffix.split('\n').filter(l => l.trim());
     for (const line of lines) {
       const p = document.createElement('div');
       p.className = 'tooltip-affix-line';
-      // Skill lines (유일무이:)
       if (line.startsWith('유일무이:') || line.startsWith('세트:')) {
         p.classList.add('tooltip-affix-skill');
       }
@@ -174,17 +172,15 @@ export function openItemDetail(item) {
   enFooter.textContent = item.에디터이름;
   tooltip.appendChild(enFooter);
 
-  // ── 2-column layout (PC: side-by-side, mobile: stacked) ──
+  // ── 2-column layout ──
   const layout = document.createElement('div');
   layout.className = 'modal-layout';
 
-  // Left column: 전부 하나의 스크롤
   const leftCol = document.createElement('div');
   leftCol.className = 'modal-col-left';
 
   leftCol.appendChild(tooltip);
 
-  // 상세 데이터 상시 표시
   const visibleOptions = item.옵션?.filter(o => o.ID !== 0);
   if (visibleOptions?.length) {
     leftCol.appendChild(buildOptionsSection(visibleOptions));
@@ -218,18 +214,18 @@ export function closeModal() {
 
 /** Build basic info section */
 function buildBasicInfo(item) {
-  const section = createSection('기본 정보');
+  const section = createSection(t('detail.basicInfo'));
   const grid = document.createElement('div');
   grid.className = 'detail-info-grid';
 
   const fields = [
-    ['타입', item.타입],
-    ['세부타입', item.세부타입 || '-'],
-    ['희귀도', item.표시희귀도],
-    ['요구 레벨', item.요구레벨],
-    ['소켓', `${item.소켓수} / ${item.최대소켓}`],
-    ['보조배율', item.보조배율],
-    ['아이템 ID', item.아이템ID],
+    [t('detail.type'), tGame(item.타입)],
+    [t('detail.subtype'), item.세부타입 ? tGame(item.세부타입) : '-'],
+    [t('detail.rarity'), tGame(item.표시희귀도)],
+    [t('detail.reqLevel'), item.요구레벨],
+    [t('detail.sockets'), `${item.소켓수} / ${item.최대소켓}`],
+    [t('detail.auxRatio'), item.보조배율],
+    [t('detail.itemId'), item.아이템ID],
   ];
 
   for (const [label, value] of fields) {
@@ -239,7 +235,7 @@ function buildBasicInfo(item) {
 
     const valueEl = document.createElement('span');
     valueEl.className = 'detail-value';
-    if (label === '희귀도') {
+    if (label === t('detail.rarity')) {
       valueEl.innerHTML = `<span class="rarity-badge rarity-${rarityClass(item.표시희귀도)}">${value}</span>`;
     } else {
       valueEl.textContent = value;
@@ -255,12 +251,12 @@ function buildBasicInfo(item) {
 
 /** Build options table */
 function buildOptionsSection(options) {
-  const section = createSection(`옵션 (${options.length})`);
+  const section = createSection(t('detail.options', options.length));
   const table = document.createElement('table');
   table.className = 'option-table';
 
   const thead = document.createElement('thead');
-  thead.innerHTML = `<tr><th>옵션</th><th>값</th><th>유형</th></tr>`;
+  thead.innerHTML = `<tr><th>${t('detail.optionCol')}</th><th>${t('detail.valueCol')}</th><th>${t('detail.typeCol')}</th></tr>`;
   table.appendChild(thead);
 
   const tbody = document.createElement('tbody');
@@ -284,19 +280,19 @@ function buildOptionsSection(options) {
     const typeBadge = document.createElement('span');
     const typeClass = { '고정': 'option-type-fixed', '변동': 'option-type-variable', '랜덤변동': 'option-type-rand-var', '랜덤부여': 'option-type-rand-grant' }[opt.유형] || 'option-type-fixed';
     typeBadge.className = `option-type-badge ${typeClass}`;
-    typeBadge.textContent = opt.유형;
+    typeBadge.textContent = tGame(opt.유형);
     tdType.appendChild(typeBadge);
 
-    const tooltip = OPTION_TYPE_DESC[opt.유형];
-    if (tooltip) {
+    const descKey = OPTION_TYPE_DESC_KEYS[opt.유형];
+    if (descKey) {
       const info = document.createElement('span');
       info.className = 'option-info-icon';
       info.innerHTML = '<svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="7"/><line x1="8" y1="7" x2="8" y2="11"/><circle cx="8" cy="5" r="0.5" fill="currentColor"/></svg>';
       info.addEventListener('click', (e) => {
         e.stopPropagation();
-        showOptionTooltip(info, tooltip);
+        showOptionTooltip(info, t(descKey));
       });
-      info.addEventListener('mouseenter', () => showOptionTooltip(info, tooltip));
+      info.addEventListener('mouseenter', () => showOptionTooltip(info, t(descKey)));
       info.addEventListener('mouseleave', hideOptionTooltip);
       tdType.appendChild(info);
     }
@@ -312,7 +308,7 @@ function buildOptionsSection(options) {
 
 /** Build skills section */
 function buildSkillsSection(skills) {
-  const section = createSection(`스킬 (${skills.length})`);
+  const section = createSection(t('detail.skills', skills.length));
 
   for (const skill of skills) {
     const card = document.createElement('div');
@@ -320,7 +316,7 @@ function buildSkillsSection(skills) {
 
     const name = document.createElement('div');
     name.className = 'skill-name';
-    name.textContent = skill['이름(한국어)'] || skill.이름;
+    name.textContent = tSkillName(skill['이름(한국어)'] || skill.이름);
 
     const meta = document.createElement('div');
     meta.className = 'skill-meta';
@@ -331,17 +327,17 @@ function buildSkillsSection(skills) {
       : `Lv.${skill.최소레벨}~${skill.최대레벨}`;
 
     const prob = document.createElement('span');
-    prob.textContent = skill['최소확률%'] !== undefined
-      ? (skill['최소확률%'] === skill['최대확률%']
-        ? `확률 ${skill['최소확률%']}%`
-        : `확률 ${skill['최소확률%']}%~${skill['최대확률%']}%`)
-      : '';
+    if (skill['최소확률%'] !== undefined) {
+      prob.textContent = skill['최소확률%'] === skill['최대확률%']
+        ? t('detail.probability', skill['최소확률%'])
+        : t('detail.probRange', skill['최소확률%'], skill['최대확률%']);
+    }
 
     const trigger = document.createElement('span');
-    trigger.textContent = skill.발동조건 || '';
+    trigger.textContent = tGame(skill.발동조건 || '');
 
     const type = document.createElement('span');
-    type.textContent = skill.타입;
+    type.textContent = tGame(skill.타입);
     type.style.color = 'var(--text-muted)';
     type.style.fontSize = '0.75rem';
 
@@ -361,34 +357,32 @@ export function setOnRatingSubmitted(fn) {
 
 /** Build rating section */
 function buildRatingSection(itemId) {
-  const section = createSection('평가');
+  const section = createSection(t('rating.title'));
 
   // Current summary
   const summary = getRatingSummary(itemId);
   const summaryEl = document.createElement('div');
   summaryEl.className = 'rating-summary';
   if (summary.count > 0) {
-    summaryEl.innerHTML = `<span class="rating-stars-lg">${renderStars(summary.avg)}</span> <span class="rating-avg-lg">${summary.avg}</span> <span class="rating-count-lg">(${summary.count}명 평가)</span>`;
+    summaryEl.innerHTML = `<span class="rating-stars-lg">${renderStars(summary.avg)}</span> <span class="rating-avg-lg">${summary.avg}</span> <span class="rating-count-lg">${t('rating.count', summary.count)}</span>`;
   } else {
-    summaryEl.innerHTML = '<span class="rating-empty-msg">아직 평가가 없습니다</span>';
+    summaryEl.innerHTML = `<span class="rating-empty-msg">${t('rating.noRatings')}</span>`;
   }
   section.appendChild(summaryEl);
 
-  // Form placeholder (비동기 체크 후 폼 또는 안내 메시지 표시)
   const formSlot = document.createElement('div');
   section.appendChild(formSlot);
 
   // Ratings list
   const listEl = document.createElement('div');
   listEl.className = 'rating-list';
-  listEl.innerHTML = '<p class="rating-loading">평가 불러오는 중...</p>';
+  listEl.innerHTML = `<p class="rating-loading">${t('rating.loading')}</p>`;
   section.appendChild(listEl);
 
-  // 비동기: 중복 체크 후 폼 렌더
   (async () => {
     const already = await hasAlreadyRated(itemId);
     if (already) {
-      formSlot.innerHTML = '<p class="rating-already">이미 이 아이템에 평가를 등록하셨습니다.</p>';
+      formSlot.innerHTML = `<p class="rating-already">${t('rating.already')}</p>`;
     } else {
       formSlot.appendChild(buildRatingForm(itemId, summaryEl, listEl));
     }
@@ -426,25 +420,25 @@ function buildRatingForm(itemId, summaryEl, listEl) {
   const nicknameInput = document.createElement('input');
   nicknameInput.type = 'text';
   nicknameInput.className = 'rating-nickname';
-  nicknameInput.placeholder = '닉네임 (최대 20자)';
+  nicknameInput.placeholder = t('rating.nickname');
   nicknameInput.maxLength = 20;
   nicknameInput.value = localStorage.getItem('oniro_nickname') || '';
 
   const commentInput = document.createElement('textarea');
   commentInput.className = 'rating-comment';
-  commentInput.placeholder = '한줄평 (선택, 최대 200자)';
+  commentInput.placeholder = t('rating.comment');
   commentInput.maxLength = 200;
   commentInput.rows = 2;
 
   const passwordInput = document.createElement('input');
   passwordInput.type = 'password';
   passwordInput.className = 'rating-password';
-  passwordInput.placeholder = '비밀번호 (수정/삭제 시 필요)';
+  passwordInput.placeholder = t('rating.password');
   passwordInput.maxLength = 30;
 
   const submitBtn = document.createElement('button');
   submitBtn.className = 'rating-submit';
-  submitBtn.textContent = '평가 등록';
+  submitBtn.textContent = t('rating.submit');
 
   const errorMsg = document.createElement('p');
   errorMsg.className = 'rating-error';
@@ -453,33 +447,30 @@ function buildRatingForm(itemId, summaryEl, listEl) {
     errorMsg.textContent = '';
     const nickname = nicknameInput.value.trim();
     const password = passwordInput.value;
-    if (!nickname) { errorMsg.textContent = '닉네임을 입력해주세요'; return; }
-    if (selectedRating === 0) { errorMsg.textContent = '별점을 선택해주세요'; return; }
-    if (!password) { errorMsg.textContent = '비밀번호를 입력해주세요'; return; }
+    if (!nickname) { errorMsg.textContent = t('rating.errNickname'); return; }
+    if (selectedRating === 0) { errorMsg.textContent = t('rating.errStar'); return; }
+    if (!password) { errorMsg.textContent = t('rating.errPassword'); return; }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = '등록 중...';
+    submitBtn.textContent = t('rating.submitting');
     try {
       await submitRating(itemId, nickname, selectedRating, commentInput.value.trim(), password);
       localStorage.setItem('oniro_nickname', nickname);
 
-      // Refresh summary
       const newSummary = getRatingSummary(itemId);
-      summaryEl.innerHTML = `<span class="rating-stars-lg">${renderStars(newSummary.avg)}</span> <span class="rating-avg-lg">${newSummary.avg}</span> <span class="rating-count-lg">(${newSummary.count}명 평가)</span>`;
+      summaryEl.innerHTML = `<span class="rating-stars-lg">${renderStars(newSummary.avg)}</span> <span class="rating-avg-lg">${newSummary.avg}</span> <span class="rating-count-lg">${t('rating.count', newSummary.count)}</span>`;
 
-      // 폼을 안내 메시지로 교체
-      form.parentElement.innerHTML = '<p class="rating-already">평가가 등록되었습니다.</p>';
+      form.parentElement.innerHTML = `<p class="rating-already">${t('rating.registered')}</p>`;
 
-      // Refresh list
       await loadRatingsList(itemId, listEl);
 
       if (_onRatingSubmitted) _onRatingSubmitted();
-      showToast('평가가 등록되었습니다');
+      showToast(t('rating.successSubmit'));
     } catch (err) {
-      errorMsg.textContent = '등록 실패: ' + err.message;
-      showToast('등록 실패: ' + err.message, 'error');
+      errorMsg.textContent = t('rating.failSubmit', err.message);
+      showToast(t('rating.failSubmit', err.message), 'error');
       submitBtn.disabled = false;
-      submitBtn.textContent = '평가 등록';
+      submitBtn.textContent = t('rating.submit');
     }
   });
 
@@ -492,9 +483,9 @@ function refreshSummaryEl(itemId, summaryEl) {
   if (!summaryEl) return;
   const s = getRatingSummary(itemId);
   if (s.count > 0) {
-    summaryEl.innerHTML = `<span class="rating-stars-lg">${renderStars(s.avg)}</span> <span class="rating-avg-lg">${s.avg}</span> <span class="rating-count-lg">(${s.count}명 평가)</span>`;
+    summaryEl.innerHTML = `<span class="rating-stars-lg">${renderStars(s.avg)}</span> <span class="rating-avg-lg">${s.avg}</span> <span class="rating-count-lg">${t('rating.count', s.count)}</span>`;
   } else {
-    summaryEl.innerHTML = '<span class="rating-empty-msg">아직 평가가 없습니다</span>';
+    summaryEl.innerHTML = `<span class="rating-empty-msg">${t('rating.noRatings')}</span>`;
   }
 }
 
@@ -504,7 +495,7 @@ async function loadRatingsList(itemId, container, summaryEl) {
   container.innerHTML = '';
 
   if (ratings.length === 0) {
-    container.innerHTML = '<p class="rating-empty-list">등록된 평가가 없습니다</p>';
+    container.innerHTML = `<p class="rating-empty-list">${t('rating.noList')}</p>`;
     return;
   }
 
@@ -527,18 +518,17 @@ async function loadRatingsList(itemId, container, summaryEl) {
       card.appendChild(commentEl);
     }
 
-    // 수정/삭제 아이콘 (비밀번호가 설정된 평가만, 날짜 옆에 배치)
     if (r.password_hash) {
       const editBtn = document.createElement('button');
       editBtn.className = 'rating-action-icon';
       editBtn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
-      editBtn.title = '수정';
+      editBtn.title = t('rating.edit');
       editBtn.addEventListener('click', () => showEditForm(r, itemId, card, container, summaryEl));
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'rating-action-icon rating-action-delete';
       deleteBtn.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>';
-      deleteBtn.title = '삭제';
+      deleteBtn.title = t('rating.delete');
       deleteBtn.addEventListener('click', () => showDeleteConfirm(r, itemId, card, container, summaryEl));
 
       header.append(editBtn, deleteBtn);
@@ -550,14 +540,12 @@ async function loadRatingsList(itemId, container, summaryEl) {
 
 /** Show inline edit form */
 function showEditForm(r, itemId, card, listContainer, summaryEl) {
-  // Replace card content with edit form
   const existing = card.querySelector('.rating-edit-form');
   if (existing) { existing.remove(); return; }
 
   const form = document.createElement('div');
   form.className = 'rating-edit-form';
 
-  // Star input
   const starInput = document.createElement('div');
   starInput.className = 'rating-star-input';
   let newRating = r.rating;
@@ -584,38 +572,38 @@ function showEditForm(r, itemId, card, listContainer, summaryEl) {
   const pwInput = document.createElement('input');
   pwInput.type = 'password';
   pwInput.className = 'rating-password';
-  pwInput.placeholder = '비밀번호 입력';
+  pwInput.placeholder = t('rating.passwordInput');
 
   const btnRow = document.createElement('div');
   btnRow.className = 'rating-edit-btns';
 
   const saveBtn = document.createElement('button');
   saveBtn.className = 'rating-submit';
-  saveBtn.textContent = '수정 완료';
+  saveBtn.textContent = t('rating.editDone');
 
   const cancelBtn = document.createElement('button');
   cancelBtn.className = 'rating-action-btn';
-  cancelBtn.textContent = '취소';
+  cancelBtn.textContent = t('rating.cancel');
   cancelBtn.addEventListener('click', () => form.remove());
 
   const errMsg = document.createElement('p');
   errMsg.className = 'rating-error';
 
   saveBtn.addEventListener('click', async () => {
-    if (!pwInput.value) { errMsg.textContent = '비밀번호를 입력해주세요'; return; }
+    if (!pwInput.value) { errMsg.textContent = t('rating.errPassword'); return; }
     saveBtn.disabled = true;
-    saveBtn.textContent = '수정 중...';
+    saveBtn.textContent = t('rating.editing');
     try {
       await updateRating(r.id, newRating, commentInput.value.trim(), pwInput.value);
       refreshSummaryEl(itemId, summaryEl);
       await loadRatingsList(itemId, listContainer, summaryEl);
       if (_onRatingSubmitted) _onRatingSubmitted();
-      showToast('평가가 수정되었습니다');
+      showToast(t('rating.successEdit'));
     } catch (err) {
       errMsg.textContent = err.message;
       saveBtn.disabled = false;
-      saveBtn.textContent = '수정 완료';
-      showToast('수정 실패: ' + err.message, 'error');
+      saveBtn.textContent = t('rating.editDone');
+      showToast(t('rating.failEdit', err.message), 'error');
     }
   });
 
@@ -635,38 +623,38 @@ function showDeleteConfirm(r, itemId, card, listContainer, summaryEl) {
   const pwInput = document.createElement('input');
   pwInput.type = 'password';
   pwInput.className = 'rating-password';
-  pwInput.placeholder = '비밀번호 입력';
+  pwInput.placeholder = t('rating.passwordInput');
 
   const btnRow = document.createElement('div');
   btnRow.className = 'rating-edit-btns';
 
   const delBtn = document.createElement('button');
   delBtn.className = 'rating-submit rating-submit-delete';
-  delBtn.textContent = '삭제 확인';
+  delBtn.textContent = t('rating.deleteDone');
 
   const cancelBtn = document.createElement('button');
   cancelBtn.className = 'rating-action-btn';
-  cancelBtn.textContent = '취소';
+  cancelBtn.textContent = t('rating.cancel');
   cancelBtn.addEventListener('click', () => confirm.remove());
 
   const errMsg = document.createElement('p');
   errMsg.className = 'rating-error';
 
   delBtn.addEventListener('click', async () => {
-    if (!pwInput.value) { errMsg.textContent = '비밀번호를 입력해주세요'; return; }
+    if (!pwInput.value) { errMsg.textContent = t('rating.errPassword'); return; }
     delBtn.disabled = true;
-    delBtn.textContent = '삭제 중...';
+    delBtn.textContent = t('rating.deleting');
     try {
       await deleteRating(r.id, pwInput.value);
       refreshSummaryEl(itemId, summaryEl);
       await loadRatingsList(itemId, listContainer, summaryEl);
       if (_onRatingSubmitted) _onRatingSubmitted();
-      showToast('평가가 삭제되었습니다');
+      showToast(t('rating.successDelete'));
     } catch (err) {
       errMsg.textContent = err.message;
       delBtn.disabled = false;
-      delBtn.textContent = '삭제 확인';
-      showToast('삭제 실패: ' + err.message, 'error');
+      delBtn.textContent = t('rating.deleteDone');
+      showToast(t('rating.failDelete', err.message), 'error');
     }
   });
 

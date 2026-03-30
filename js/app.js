@@ -1,5 +1,5 @@
-import { loadData, getDB } from './data.js?v=2.1.1';
-import { filterItems, paginate } from './search.js?v=2.1.1';
+import { loadData, getDB } from './data.js?v=3.0.0';
+import { filterItems, paginate } from './search.js?v=3.0.0';
 import {
   showLoading,
   renderTable,
@@ -10,10 +10,11 @@ import {
   renderOptionTags,
   renderSkillTags,
   renderActiveFilters,
-} from './render.js?v=2.1.1';
-import { initModal, openItemDetail, setOnRatingSubmitted } from './item-detail.js?v=2.1.1';
-import { debounce, parseHash, writeHash } from './utils.js?v=2.1.1';
-import { initSupabase, fetchAllRatingSummaries } from './supabase.js?v=2.1.1';
+} from './render.js?v=3.0.0';
+import { initModal, openItemDetail, setOnRatingSubmitted } from './item-detail.js?v=3.0.0';
+import { debounce, parseHash, writeHash } from './utils.js?v=3.0.0';
+import { initSupabase, fetchAllRatingSummaries } from './supabase.js?v=3.0.0';
+import { initI18n, createLanguageSelector, translatePage, t } from './i18n.js?v=3.0.0';
 
 /** Application state */
 const state = {
@@ -39,6 +40,20 @@ async function init() {
   showLoading(true);
 
   try {
+    // Init i18n first (loads language packs)
+    await initI18n((lang) => {
+      // On language change: re-translate page and re-render all dynamic content
+      translatePage();
+      const db = getDB();
+      if (db) {
+        updateTabCounts(db.categoryCounts);
+        syncUIFromState();
+        applyFilters();
+      }
+    });
+    createLanguageSelector('langSelector');
+    translatePage();
+
     const db = await loadData();
 
     // Restore from hash
@@ -72,7 +87,7 @@ async function init() {
   } catch (err) {
     showLoading(false);
     console.error('Failed to load data:', err);
-    document.getElementById('resultCount').textContent = '데이터 로딩 실패';
+    document.getElementById('resultCount').textContent = t('result.loadFailed');
   }
 }
 

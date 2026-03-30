@@ -1,5 +1,6 @@
-import { rarityClass, optionDisplayName, formatOptionValue, OPTION_NAMES } from './utils.js?v=2.1.1';
-import { getRatingSummary } from './supabase.js?v=2.1.1';
+import { rarityClass, optionDisplayName, formatOptionValue, OPTION_NAMES } from './utils.js?v=3.0.0';
+import { getRatingSummary } from './supabase.js?v=3.0.0';
+import { t, tGame, tGameBlock, tSkillName } from './i18n.js?v=3.0.0';
 
 const tbody = document.getElementById('itemTableBody');
 const paginationEl = document.getElementById('pagination');
@@ -37,12 +38,12 @@ export function renderTable(pageItems, totalItems) {
   if (totalItems === 0) {
     tbody.innerHTML = '';
     noResultsEl.hidden = false;
-    resultCountEl.textContent = '검색 결과가 없습니다';
+    resultCountEl.textContent = t('result.noResults');
     return;
   }
 
   noResultsEl.hidden = true;
-  resultCountEl.textContent = `총 ${totalItems.toLocaleString()}건`;
+  resultCountEl.textContent = t('result.total', totalItems.toLocaleString());
 
   const fragment = document.createDocumentFragment();
 
@@ -71,7 +72,7 @@ export function renderTable(pageItems, totalItems) {
     const nameText = document.createElement('div');
     const nameDiv = document.createElement('div');
     nameDiv.className = `item-name rarity-text-${rarityClass(item.표시희귀도)}`;
-    nameDiv.textContent = item.한국어이름 || item.내부이름;
+    nameDiv.textContent = tGame(item.한국어이름) || item.내부이름;
     nameText.appendChild(nameDiv);
     const enDiv = document.createElement('div');
     enDiv.className = 'item-name-en';
@@ -83,12 +84,12 @@ export function renderTable(pageItems, totalItems) {
     // Type
     const tdType = document.createElement('td');
     tdType.className = 'col-type';
-    tdType.textContent = item.타입;
+    tdType.textContent = tGame(item.타입);
 
     // Subtype
     const tdSub = document.createElement('td');
     tdSub.className = 'col-subtype';
-    tdSub.textContent = item.세부타입 || '-';
+    tdSub.textContent = item.세부타입 ? tGame(item.세부타입) : '-';
 
     // Rating
     const tdRating = document.createElement('td');
@@ -133,7 +134,8 @@ export function renderTable(pageItems, totalItems) {
       for (const skill of item.스킬) {
         const pill = document.createElement('span');
         pill.className = 'skill-pill';
-        pill.textContent = skill['이름(한국어)'] || skill.이름;
+        const skillKo = skill['이름(한국어)'] || skill.이름;
+        pill.textContent = tSkillName(skillKo);
         pills.appendChild(pill);
       }
       tdSkills.appendChild(pills);
@@ -222,16 +224,16 @@ export function renderTypeTags(types, activeTypes, onToggle) {
   const container = document.getElementById('typeTags');
   container.innerHTML = '';
   if (!types || types.size === 0) {
-    container.innerHTML = '<span style="color:var(--text-muted);font-size:0.8rem">해당 카테고리에 타입이 없습니다</span>';
+    container.innerHTML = `<span style="color:var(--text-muted);font-size:0.8rem">${t('filter.noTypes')}</span>`;
     return;
   }
 
   const sorted = [...types].sort();
-  for (const t of sorted) {
+  for (const typ of sorted) {
     const btn = document.createElement('button');
-    btn.className = `filter-tag${activeTypes.includes(t) ? ' active' : ''}`;
-    btn.textContent = t;
-    btn.addEventListener('click', () => onToggle(t));
+    btn.className = `filter-tag${activeTypes.includes(typ) ? ' active' : ''}`;
+    btn.textContent = tGame(typ);
+    btn.addEventListener('click', () => onToggle(typ));
     container.appendChild(btn);
   }
 }
@@ -241,7 +243,7 @@ export function renderSubtypeTags(subtypes, activeSubtypes, onToggle) {
   const container = document.getElementById('subtypeTags');
   container.innerHTML = '';
   if (!subtypes || subtypes.size === 0) {
-    container.innerHTML = '<span style="color:var(--text-muted);font-size:0.8rem">해당 카테고리에 세부타입이 없습니다</span>';
+    container.innerHTML = `<span style="color:var(--text-muted);font-size:0.8rem">${t('filter.noSubtypes')}</span>`;
     return;
   }
 
@@ -249,7 +251,7 @@ export function renderSubtypeTags(subtypes, activeSubtypes, onToggle) {
   for (const sub of sorted) {
     const btn = document.createElement('button');
     btn.className = `filter-tag${activeSubtypes.includes(sub) ? ' active' : ''}`;
-    btn.textContent = sub;
+    btn.textContent = tGame(sub);
     btn.addEventListener('click', () => onToggle(sub));
     container.appendChild(btn);
   }
@@ -261,18 +263,23 @@ export function renderOptionTags(uniqueOptions, activeOptions, searchQuery, onTo
   container.innerHTML = '';
   const q = (searchQuery || '').toLowerCase();
 
-  // Sort by Korean name
-  const sorted = [...uniqueOptions.entries()].sort((a, b) => a[1].localeCompare(b[1], 'ko'));
+  // Sort by display name
+  const sorted = [...uniqueOptions.entries()].sort((a, b) => {
+    const na = tGame(a[1]);
+    const nb = tGame(b[1]);
+    return na.localeCompare(nb);
+  });
   for (const [id, name] of sorted) {
-    if (q && !name.toLowerCase().includes(q)) continue;
+    const displayName = tGame(name);
+    if (q && !displayName.toLowerCase().includes(q) && !name.toLowerCase().includes(q)) continue;
     const btn = document.createElement('button');
     btn.className = `filter-tag${activeOptions.includes(id) ? ' active' : ''}`;
-    btn.textContent = name;
+    btn.textContent = displayName;
     btn.addEventListener('click', () => onToggle(id));
     container.appendChild(btn);
   }
   if (container.children.length === 0) {
-    container.innerHTML = '<span style="color:var(--text-muted);font-size:0.8rem">검색 결과 없음</span>';
+    container.innerHTML = `<span style="color:var(--text-muted);font-size:0.8rem">${t('filter.noResults')}</span>`;
   }
 }
 
@@ -282,17 +289,20 @@ export function renderSkillTags(uniqueSkills, activeSkills, searchQuery, onToggl
   container.innerHTML = '';
   const q = (searchQuery || '').toLowerCase();
 
-  const sorted = [...uniqueSkills].sort((a, b) => a.localeCompare(b, 'ko'));
+  const sorted = [...uniqueSkills].sort((a, b) => {
+    return tSkillName(a).localeCompare(tSkillName(b));
+  });
   for (const name of sorted) {
-    if (q && !name.toLowerCase().includes(q)) continue;
+    const displayName = tSkillName(name);
+    if (q && !displayName.toLowerCase().includes(q) && !name.toLowerCase().includes(q)) continue;
     const btn = document.createElement('button');
     btn.className = `filter-tag${activeSkills.includes(name) ? ' active' : ''}`;
-    btn.textContent = name;
+    btn.textContent = displayName;
     btn.addEventListener('click', () => onToggle(name));
     container.appendChild(btn);
   }
   if (container.children.length === 0) {
-    container.innerHTML = '<span style="color:var(--text-muted);font-size:0.8rem">검색 결과 없음</span>';
+    container.innerHTML = `<span style="color:var(--text-muted);font-size:0.8rem">${t('filter.noResults')}</span>`;
   }
 }
 
@@ -305,30 +315,30 @@ export function renderActiveFilters(state, onRemove, onClearAll) {
   const badges = [];
 
   if (state.types?.length) {
-    for (const t of state.types) {
-      badges.push({ label: `타입: ${t}`, remove: () => onRemove('type', t) });
+    for (const typ of state.types) {
+      badges.push({ label: t('filter.badge.type', tGame(typ)), remove: () => onRemove('type', typ) });
     }
   }
   if (state.subtypes?.length) {
     for (const sub of state.subtypes) {
-      badges.push({ label: `세부: ${sub}`, remove: () => onRemove('subtype', sub) });
+      badges.push({ label: t('filter.badge.subtype', tGame(sub)), remove: () => onRemove('subtype', sub) });
     }
   }
   if (state.options?.length) {
     for (const optId of state.options) {
-      badges.push({ label: `옵션: ${OPTION_NAMES[optId] || optId}`, remove: () => onRemove('option', optId) });
+      badges.push({ label: t('filter.badge.option', tGame(OPTION_NAMES[optId] || optId)), remove: () => onRemove('option', optId) });
     }
   }
   if (state.skills?.length) {
     for (const sk of state.skills) {
-      badges.push({ label: `스킬: ${sk}`, remove: () => onRemove('skill', sk) });
+      badges.push({ label: t('filter.badge.skill', tGame(sk)), remove: () => onRemove('skill', sk) });
     }
   }
   if (state.lvMin) {
-    badges.push({ label: `최소Lv ${state.lvMin}`, remove: () => onRemove('lvMin') });
+    badges.push({ label: t('filter.badge.lvMin', state.lvMin), remove: () => onRemove('lvMin') });
   }
   if (state.lvMax) {
-    badges.push({ label: `최대Lv ${state.lvMax}`, remove: () => onRemove('lvMax') });
+    badges.push({ label: t('filter.badge.lvMax', state.lvMax), remove: () => onRemove('lvMax') });
   }
 
   if (badges.length === 0) {
