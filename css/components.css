@@ -708,3 +708,195 @@
   color: var(--text-muted);
   text-align: right;
 }
+
+/* ====== Attack Speed Page ====== */
+.as-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: var(--gap-lg) 0 var(--gap-md);
+  padding-bottom: var(--gap-xs);
+  border-bottom: 1px solid var(--border);
+}
+
+.as-section-title:first-child {
+  margin-top: 0;
+}
+
+/* Formula box */
+.as-formula-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--gap-md);
+  margin-bottom: var(--gap-md);
+}
+
+.as-formula-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--gap-sm);
+}
+
+.as-formula {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  background: var(--bg-tertiary);
+  padding: var(--gap-sm) var(--gap-md);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--gap-sm);
+  overflow-x: auto;
+}
+
+.as-formula-example {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--gap-xs);
+}
+
+.as-formula-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Bar chart */
+.as-bar-chart {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--gap-md);
+  padding-top: var(--gap-lg);
+  position: relative;
+}
+
+.as-bar-scale {
+  position: relative;
+  height: 20px;
+  margin-left: 100px;
+  margin-right: 70px;
+  margin-bottom: var(--gap-sm);
+}
+
+.as-scale-label {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.as-bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  padding: 4px 0;
+}
+
+.as-bar-label {
+  width: 90px;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  text-align: right;
+}
+
+.as-bar-track {
+  flex: 1;
+  height: 20px;
+  background: var(--bg-tertiary);
+  border-radius: 10px;
+  position: relative;
+}
+
+.as-bar-fill {
+  position: absolute;
+  top: 3px;
+  height: 14px;
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent);
+  border-radius: 7px;
+  opacity: 0.5;
+}
+
+.as-bar-dot {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  transition: transform 0.15s;
+}
+
+.as-bar-dot:hover {
+  transform: translate(-50%, -50%) scale(1.4);
+}
+
+.as-bar-values {
+  width: 60px;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+/* Attack area cards */
+.as-area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--gap-md);
+}
+
+.as-area-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--gap-md);
+}
+
+.as-area-card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: var(--gap-sm);
+}
+
+.as-area-card p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--gap-sm);
+}
+
+.as-area-detail {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: 2px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .as-bar-label {
+    width: 60px;
+    font-size: 0.7rem;
+  }
+
+  .as-bar-scale {
+    margin-left: 70px;
+    margin-right: 50px;
+  }
+
+  .as-bar-values {
+    width: 50px;
+    font-size: 0.65rem;
+  }
+}

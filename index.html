@@ -36,11 +36,11 @@
   <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
   <link rel="apple-touch-icon" href="img/favicon.svg">
 
-  <link rel="stylesheet" href="css/reset.css?v=2.2.1">
-  <link rel="stylesheet" href="css/variables.css?v=2.2.1">
-  <link rel="stylesheet" href="css/layout.css?v=2.2.1">
-  <link rel="stylesheet" href="css/components.css?v=2.2.1">
-  <link rel="stylesheet" href="css/item-detail.css?v=2.2.1">
+  <link rel="stylesheet" href="css/reset.css?v=2.3.0">
+  <link rel="stylesheet" href="css/variables.css?v=2.3.0">
+  <link rel="stylesheet" href="css/layout.css?v=2.3.0">
+  <link rel="stylesheet" href="css/components.css?v=2.3.0">
+  <link rel="stylesheet" href="css/item-detail.css?v=2.3.0">
 </head>
 <body>
   <!-- Header -->
@@ -52,6 +52,7 @@
       <nav class="main-tabs">
         <button class="main-tab active" data-page="items">장비목록</button>
         <button class="main-tab" data-page="weapon-range">사정거리</button>
+        <button class="main-tab" data-page="attack-speed">공격속도</button>
       </nav>
     </div>
   </header>
@@ -213,6 +214,11 @@
     <div id="weaponRangePage" hidden>
       <div id="weaponRangeContent"></div>
     </div>
+
+    <!-- === Attack Speed Page === -->
+    <div id="attackSpeedPage" hidden>
+      <div id="attackSpeedContent"></div>
+    </div>
   </main>
 
   <!-- Item Detail Modal -->
@@ -230,6 +236,6 @@
   <!-- Supabase SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Scripts -->
-  <script type="module" src="js/app.js?v=2.2.1"></script>
+  <script type="module" src="js/app.js?v=2.3.0"></script>
 </body>
 </html>

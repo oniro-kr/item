@@ -1,0 +1,144 @@
+{
+  "공격 범위 (Attack Area)": {
+    "설명": "기본공격의 히트 판정 영역. Ability 클래스의 maxAngle/rectWidth와 BaseAttack의 collisionMode로 결정",
+    "시스템": {
+      "collisionMode": {
+        "설명": "BaseAttack 충돌 판정 모드. 기본공격은 collisionMode=1 (사각형)",
+        "모드": "0=원추형(Cone), 1=사각형(Rectangle)"
+      },
+      "maxAngle": "원추형 공격의 최대 각도 (도). Ability ScriptableObject에 설정됨",
+      "rectWidth": "사각형 공격의 너비. Ability ScriptableObject에 설정됨",
+      "RECT_WEAPON_TYPES": "사각형 충돌을 사용하는 무기 타입 비트마스크 (BaseAttack 클래스)"
+    },
+    "근접 무기 히트 판정": {
+      "설명": "근접 무기는 캐릭터 전방에 사각형 또는 원추형 충돌 영역을 생성. collisionMode=1(기본)은 사각형 판정",
+      "참고": "maxAngle, rectWidth의 실제 값은 Ability ScriptableObject에 설정되며, Addressables 번들에서 동적 로드됨. 추출된 슬래시 이펙트 파티클은 shape_type=4(Circle), angle=25°"
+    },
+    "원거리 투사체 히트 판정": {
+      "화살/창/마법탄": {
+        "충돌체": "BoxCollider",
+        "크기": {
+          "x": 0.2,
+          "y": 0.2,
+          "z": 0.7
+        },
+        "단위": "게임 유닛"
+      },
+      "수리검/쿠나이": {
+        "충돌체": "SphereCollider",
+        "반지름": 0.15,
+        "단위": "게임 유닛"
+      }
+    },
+    "한계": "Ability ScriptableObject에 설정된 maxAngle/rectWidth 실제 값은 런타임 동적 로드되어 정적 추출 불가. Addressables 번들 내 해당 에셋 위치 미확인"
+  },
+  "공격 속도 시스템 (Attack Speed System)": {
+    "구성요소": {
+      "무기_기본속도 (weaponBaseSpeed)": {
+        "설명": "각 무기에 고유한 기본 공격 속도 값. 애니메이션 재생 속도의 기준",
+        "범위": "0.6 ~ 1.35",
+        "무기별_기본속도": {
+          "검 (Sword)": [
+            0.95,
+            1.2,
+            1.3,
+            1.32
+          ],
+          "양손검 (Sword2H)": [
+            0.95
+          ],
+          "도끼 (Axe)": [
+            1.05,
+            1.2
+          ],
+          "양손도끼 (Axe2H)": [
+            0.85
+          ],
+          "망치 (Mace)": [
+            0.95,
+            1.15
+          ],
+          "두 손 망치 (Mace2H)": [
+            0.65
+          ],
+          "장창 (Polearm)": [
+            1.0,
+            1.1
+          ],
+          "봉 (Daibo)": [
+            1.0,
+            1.2
+          ],
+          "단검 (Dagger)": [
+            1.0,
+            1.3,
+            1.35
+          ],
+          "너클 (Knuckles)": [
+            1.0,
+            1.25
+          ],
+          "활 (Bow)": [
+            1.15
+          ],
+          "석궁 (Crossbow)": [
+            0.6,
+            0.85,
+            0.9,
+            1.1
+          ],
+          "수리검 (Shuriken)": [
+            1.3
+          ],
+          "쿠나이 (Kunai)": [
+            1.3
+          ],
+          "투창 (Javelin)": [
+            1.0
+          ],
+          "완드 (Wand)": [
+            1.1
+          ],
+          "지팡이 (Staff)": [
+            0.9
+          ]
+        }
+      },
+      "공격속도_스탯 (AttackSpeed Stat)": {
+        "설명": "장비/버프/패시브에서 얻는 공격속도 보너스 (StatisticType.AttackSpeed)",
+        "적용": "EntityActor.attackSpeed 필드에 합산됨",
+        "관련메서드": [
+          "get_AttackSpeed",
+          "OnAttackSpeedChanged",
+          "SetAttackSpeed",
+          "AppendWeaponAttackSpeed"
+        ]
+      },
+      "이도류_보너스 (Dual Wield Bonus)": {
+        "상수": "DUAL_WIELD_BONUS_SPEED = 0.15",
+        "설명": "이도류 장착 시 추가 15% 공격속도 보너스",
+        "소속클래스": "PlayerActor"
+      },
+      "애니메이션_속도 (Animation Speed)": {
+        "설명": "최종 공격속도가 Unity Animator의 speed 파라미터로 적용됨",
+        "관련메서드": [
+          "SetAnimatorSpeed",
+          "EntityAnimations.ATTACK_SPEED (Animator parameter hash)"
+        ],
+        "관련상수": "EntityAnimations.SPEED, EntityAnimations.ATTACK_SPEED (Animator 파라미터 해시값)"
+      }
+    },
+    "추정_공식": {
+      "공식": "최종_공격속도 = 무기_기본속도 × (1 + 공격속도_보너스% / 100 + 이도류_보너스)",
+      "예시": "활(1.15) + 공격속도 20% + 이도류(0.15) = 1.15 × (1 + 0.20 + 0.15) = 1.15 × 1.35 = 1.5525",
+      "참고": "정확한 공식은 컴파일된 ARM 바이너리(libil2cpp.so)에 있어 완전한 디컴파일 필요. 위 공식은 메타데이터 구조 분석과 일반적인 ARPG 공식에 기반한 추정",
+      "주의": "이도류 보너스(0.15)가 곱셈인지 덧셈인지는 바이너리 분석 없이는 확정 불가"
+    },
+    "방어 공식 (참고)": {
+      "DEFENCE_REDUCTION_PARAMETER": 55.0,
+      "RESISTENCE_REDUCTION_PARAMETER": 3.0,
+      "추정_방어공식": "피해감소 = 방어력 / (방어력 + 55)",
+      "추정_저항공식": "저항감소 = 저항 × 3 관련 계산"
+    }
+  }
+}
