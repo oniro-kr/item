@@ -45,6 +45,13 @@ export async function renderGuide(container) {
     </details>`;
   }
 
+  // 장비별 보조 옵션 풀 (별도 JSON)
+  try {
+    const slotRes = await fetch('/item/json/Oniro_ItemOptions_BySlot.json');
+    const slotData = await slotRes.json();
+    html += renderSlotOptions(slotData);
+  } catch { /* 파일 없으면 무시 */ }
+
   // Limitations
   const limits = data['데이터 한계 및 미확인'];
   if (limits) {
@@ -104,6 +111,61 @@ function renderValue(val, depth = 0) {
     }
   }
   html += '</div>';
+  return html;
+}
+
+function renderSlotOptions(data) {
+  const pools = data['장비별 옵션 풀'];
+  if (!pools) return '';
+
+  let html = `<details class="guide-section" open>
+    <summary class="guide-section-title">장비별 보조 옵션 풀 (희귀 아이템)</summary>
+    <div class="guide-section-body">
+      <p class="guide-slot-desc">${data['설명'] || ''}</p>
+      <p class="guide-slot-source">출처: ${data['추출 방법'] || ''}</p>
+      <div class="table-wrapper"><table class="item-table wr-table">
+        <thead><tr>
+          <th>장비</th>
+          <th>카테고리</th>
+          <th>옵션 수</th>
+          <th>보조 옵션 목록</th>
+          <th>상태</th>
+        </tr></thead><tbody>`;
+
+  for (const [name, info] of Object.entries(pools)) {
+    const optList = Array.isArray(info['옵션 목록'])
+      ? info['옵션 목록'].map(o => {
+          const optName = typeof o === 'string' ? o : o['옵션명'];
+          return `<span class="guide-tag">${optName}</span>`;
+        }).join('')
+      : `<span class="guide-val" style="font-size:0.75rem;color:var(--text-muted)">${info['옵션 목록'] || '—'}</span>`;
+
+    const status = info['추출 상태'] === '완료'
+      ? '<span style="color:var(--success)">완료</span>'
+      : `<span style="color:var(--warning)">${info['추출 상태']}</span>`;
+
+    html += `<tr>
+      <td><strong>${name}</strong></td>
+      <td>${info['카테고리'] || ''}</td>
+      <td style="text-align:center">${info['옵션 수']}</td>
+      <td><div class="guide-tags">${optList}</div></td>
+      <td>${status}</td>
+    </tr>`;
+  }
+
+  html += `</tbody></table></div>`;
+
+  // 참고사항
+  const ref = data['참고'];
+  if (ref) {
+    html += `<div class="guide-entries" style="margin-top:var(--gap-md)">`;
+    for (const [k, v] of Object.entries(ref)) {
+      html += `<div class="guide-entry"><span class="guide-key">${k}</span><span class="guide-val">${v}</span></div>`;
+    }
+    html += '</div>';
+  }
+
+  html += '</div></details>';
   return html;
 }
 
