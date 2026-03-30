@@ -31,7 +31,7 @@ function detectLanguage() {
 /** Load UI strings JSON */
 async function loadUIStrings() {
   try {
-    const resp = await fetch(getBasePath() + 'json/ui-strings.json?v=3.1.0');
+    const resp = await fetch(getBasePath() + 'json/ui-strings.json?v=3.2.0');
     uiStrings = await resp.json();
   } catch (e) {
     console.warn('Failed to load ui-strings.json:', e);
@@ -41,7 +41,7 @@ async function loadUIStrings() {
 /** Load game language pack and build ko→{lang} index */
 async function loadGameLanguagePack() {
   try {
-    const resp = await fetch(getBasePath() + 'json/Oniro_LanguagePack_Full.json?v=3.1.0');
+    const resp = await fetch(getBasePath() + 'json/Oniro_LanguagePack_Full.json?v=3.2.0');
     const pack = await resp.json();
     const entries = pack['데이터'] || [];
     for (const entry of entries) {

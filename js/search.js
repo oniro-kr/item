@@ -1,4 +1,4 @@
-import { getRatingSummary } from './supabase.js?v=3.1.0';
+import { getRatingSummary } from './supabase.js?v=3.2.0';
 
 /**
  * Filter and sort items based on current state.

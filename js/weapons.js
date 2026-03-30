@@ -1,4 +1,4 @@
-import { t, tGame } from './i18n.js?v=3.1.0';
+import { t, tGame } from './i18n.js?v=3.2.0';
 
 const CAT_STYLES = {
   '근접': { cls: 'wr-cat-melee', labelKey: 'weapons.catMelee' },

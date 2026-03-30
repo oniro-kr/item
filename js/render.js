@@ -1,6 +1,6 @@
-import { rarityClass, optionDisplayName, formatOptionValue, OPTION_NAMES } from './utils.js?v=3.1.0';
-import { getRatingSummary } from './supabase.js?v=3.1.0';
-import { t, tGame, tGameBlock, tSkillName } from './i18n.js?v=3.1.0';
+import { rarityClass, optionDisplayName, formatOptionValue, OPTION_NAMES } from './utils.js?v=3.2.0';
+import { getRatingSummary } from './supabase.js?v=3.2.0';
+import { t, tGame, tGameBlock, tSkillName } from './i18n.js?v=3.2.0';
 
 const tbody = document.getElementById('itemTableBody');
 const paginationEl = document.getElementById('pagination');
