@@ -1,21 +1,24 @@
-/* ====== Main Page Tabs ====== */
+/* ====== Main Page Tabs (in header) ====== */
 .main-tabs {
   display: flex;
   gap: 0;
-  border-bottom: 2px solid var(--border);
+  margin-left: auto;
+  height: 100%;
+  align-items: stretch;
 }
 
 .main-tab {
-  padding: 10px 24px;
-  font-size: 0.95rem;
+  padding: 0 16px;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-muted);
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
   cursor: pointer;
   transition: all 0.15s;
+  display: flex;
+  align-items: center;
 }
 
 .main-tab:hover {
