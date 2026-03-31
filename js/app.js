@@ -14,7 +14,7 @@ import {
 import { initModal, openItemDetail, setOnRatingSubmitted } from './item-detail.js?v=3.2.0';
 import { debounce, parseHash, writeHash } from './utils.js?v=3.2.0';
 import { initSupabase, fetchAllRatingSummaries } from './supabase.js?v=3.2.0';
-import { initI18n, createLanguageSelector, translatePage, t } from './i18n.js?v=3.2.0';
+import { initI18n, createLanguageSelector, translatePage, t, initHamburgerMenu } from './i18n.js?v=3.2.0';
 
 /** Application state */
 const state = {
@@ -52,6 +52,7 @@ async function init() {
       }
     });
     createLanguageSelector('langSelector');
+    initHamburgerMenu();
     translatePage();
 
     const db = await loadData();

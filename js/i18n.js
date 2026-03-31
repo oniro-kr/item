@@ -13,6 +13,10 @@ const LANG_LABELS = {
   pt: 'Português', ru: 'Русский', tr: 'Türkçe', ar: 'العربية',
   id: 'Indonesia', pl: 'Polski',
 };
+const LANG_COUNTRY = {
+  ko:'kr', en:'us', ja:'jp', zh:'cn', fr:'fr', de:'de', es:'es',
+  it:'it', pt:'br', ru:'ru', tr:'tr', ar:'sa', id:'id', pl:'pl',
+};
 
 let currentLang = 'ko';
 let uiStrings = {};          // { lang: { key: value } }
@@ -189,26 +193,70 @@ export function getSupportedLanguages() {
   return SUPPORTED_LANGS.map(code => ({ code, label: LANG_LABELS[code] }));
 }
 
-/** Build and insert language selector into a container */
+/** Build and insert language selector with flag icons into a container */
 export function createLanguageSelector(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  const select = document.createElement('select');
-  select.className = 'lang-select';
-  select.id = 'langSelect';
-  select.setAttribute('aria-label', 'Language');
+  const flagUrl = (code) => `https://flagcdn.com/w40/${LANG_COUNTRY[code] || code}.png`;
+
+  // Toggle button (shows current language)
+  const toggle = document.createElement('button');
+  toggle.className = 'lang-toggle';
+  toggle.setAttribute('aria-label', 'Language');
+  toggle.setAttribute('aria-expanded', 'false');
+
+  const toggleFlag = document.createElement('img');
+  toggleFlag.className = 'lang-flag';
+  toggleFlag.src = flagUrl(currentLang);
+  toggleFlag.alt = '';
+  const toggleText = document.createElement('span');
+  toggleText.textContent = LANG_LABELS[currentLang];
+  toggle.append(toggleFlag, toggleText);
+
+  // Dropdown list
+  const dropdown = document.createElement('div');
+  dropdown.className = 'lang-dropdown';
 
   for (const { code, label } of getSupportedLanguages()) {
-    const opt = document.createElement('option');
-    opt.value = code;
-    opt.textContent = label;
-    if (code === currentLang) opt.selected = true;
-    select.appendChild(opt);
+    const btn = document.createElement('button');
+    btn.className = 'lang-option' + (code === currentLang ? ' active' : '');
+    btn.dataset.lang = code;
+
+    const flag = document.createElement('img');
+    flag.className = 'lang-flag';
+    flag.src = flagUrl(code);
+    flag.alt = '';
+    const name = document.createElement('span');
+    name.textContent = label;
+    btn.append(flag, name);
+
+    btn.addEventListener('click', () => {
+      setLanguage(code);
+      toggleFlag.src = flagUrl(code);
+      toggleText.textContent = LANG_LABELS[code];
+      dropdown.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('active', o.dataset.lang === code));
+      dropdown.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+    dropdown.appendChild(btn);
   }
 
-  select.addEventListener('change', (e) => setLanguage(e.target.value));
-  container.appendChild(select);
+  // Toggle open/close
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = dropdown.classList.contains('open');
+    dropdown.classList.toggle('open', !isOpen);
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  // Close on outside click
+  document.addEventListener('click', () => {
+    dropdown.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+
+  container.append(toggle, dropdown);
 }
 
 /** Translate a skill name by parsing its structure.
@@ -604,3 +652,45 @@ const SUPPLEMENTARY = {
   '어둠': { en:'Dark', ja:'闇', zh:'暗', fr:'Ténèbres', de:'Dunkelheit', es:'Oscuridad', it:'Oscurità', pt:'Trevas', ru:'Тьма', tr:'Karanlık', ar:'ظلام', id:'Kegelapan', pl:'Ciemność' },
   '물리': { en:'Physical', ja:'物理', zh:'物理', fr:'Physique', de:'Physisch', es:'Físico', it:'Fisico', pt:'Físico', ru:'Физич.', tr:'Fiziksel', ar:'فيزيائي', id:'Fisik', pl:'Fizyczny' },
 };
+
+/** Initialize hamburger menu for mobile navigation */
+export function initHamburgerMenu() {
+  const btn = document.getElementById('hamburgerBtn');
+  const nav = document.querySelector('.main-tabs');
+  const backdrop = document.getElementById('menuBackdrop');
+  if (!btn || !nav || !backdrop) return;
+
+  function open() {
+    btn.classList.add('open');
+    nav.classList.add('open');
+    backdrop.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    btn.classList.remove('open');
+    nav.classList.remove('open');
+    backdrop.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', () => {
+    btn.classList.contains('open') ? close() : open();
+  });
+
+  backdrop.addEventListener('click', close);
+
+  nav.querySelectorAll('.main-tab').forEach(link => {
+    link.addEventListener('click', close);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && btn.classList.contains('open')) close();
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && btn.classList.contains('open')) close();
+  });
+}
