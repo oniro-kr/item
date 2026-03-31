@@ -23,13 +23,51 @@ let uiStrings = {};          // { lang: { key: value } }
 let gameIndex = new Map();   // Map<koText, { lang: translatedText }>
 let onLanguageChange = null; // callback
 
-/** Detect initial language */
+/** Country code → language code mapping */
+const COUNTRY_TO_LANG = {
+  KR:'ko', US:'en', GB:'en', AU:'en', CA:'en', NZ:'en',
+  JP:'ja', CN:'zh', TW:'zh', HK:'zh',
+  FR:'fr', DE:'de', AT:'de', CH:'de',
+  ES:'es', MX:'es', AR:'es', CO:'es', CL:'es', PE:'es',
+  IT:'it', PT:'pt', BR:'pt',
+  RU:'ru', TR:'tr', SA:'ar', AE:'ar', EG:'ar',
+  ID:'id', PL:'pl',
+};
+
+/** Detect initial language (sync, without GeoIP) */
 function detectLanguage() {
   const saved = localStorage.getItem('oniro_lang');
   if (saved && SUPPORTED_LANGS.includes(saved)) return saved;
   const nav = (navigator.language || '').slice(0, 2).toLowerCase();
   if (SUPPORTED_LANGS.includes(nav)) return nav;
   return 'ko';
+}
+
+/** Detect country via GeoIP and apply language if no saved preference */
+async function detectCountryLanguage() {
+  if (localStorage.getItem('oniro_lang')) return; // user already chose
+  try {
+    const resp = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+    const data = await resp.json();
+    const country = (data.country_code || '').toUpperCase();
+    const lang = COUNTRY_TO_LANG[country];
+    if (lang && SUPPORTED_LANGS.includes(lang) && lang !== currentLang) {
+      setLanguage(lang);
+      // Update language selector toggle if it exists
+      const toggle = document.querySelector('.lang-toggle');
+      if (toggle) {
+        const flag = toggle.querySelector('.lang-flag');
+        const text = toggle.querySelector('span');
+        if (flag) flag.src = `https://flagcdn.com/w40/${LANG_COUNTRY[lang] || lang}.png`;
+        if (text) text.textContent = LANG_LABELS[lang];
+        document.querySelectorAll('.lang-option').forEach(o =>
+          o.classList.toggle('active', o.dataset.lang === lang)
+        );
+      }
+    }
+  } catch (e) {
+    // GeoIP failed silently, keep current language
+  }
 }
 
 /** Load UI strings JSON */
@@ -72,6 +110,8 @@ export async function initI18n(onChangeCb) {
   await Promise.all([loadUIStrings(), loadGameLanguagePack()]);
   document.documentElement.lang = currentLang;
   if (currentLang === 'ar') document.documentElement.dir = 'rtl';
+  // GeoIP detection runs in background (non-blocking)
+  detectCountryLanguage();
   return currentLang;
 }
 
