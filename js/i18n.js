@@ -691,6 +691,8 @@ const SUPPLEMENTARY = {
   '빛': { en:'Light', ja:'光', zh:'光', fr:'Lumière', de:'Licht', es:'Luz', it:'Luce', pt:'Luz', ru:'Свет', tr:'Işık', ar:'نور', id:'Cahaya', pl:'Światło' },
   '어둠': { en:'Dark', ja:'闇', zh:'暗', fr:'Ténèbres', de:'Dunkelheit', es:'Oscuridad', it:'Oscurità', pt:'Trevas', ru:'Тьма', tr:'Karanlık', ar:'ظلام', id:'Kegelapan', pl:'Ciemność' },
   '물리': { en:'Physical', ja:'物理', zh:'物理', fr:'Physique', de:'Physisch', es:'Físico', it:'Fisico', pt:'Físico', ru:'Физич.', tr:'Fiziksel', ar:'فيزيائي', id:'Fisik', pl:'Fizyczny' },
+  // Easter egg descriptions
+  '이스터에그 : 양손검이지만 한손착용 가능': { en:'Easter Egg: Two-handed sword but can be equipped one-handed', ja:'イースターエッグ：両手剣だが片手で装備可能', zh:'彩蛋：双手剑但可单手装备', fr:'Easter Egg : Épée à deux mains mais équipable à une main', de:'Easter Egg: Zweihänder, aber einhändig tragbar', es:'Easter Egg: Espada a dos manos pero equipable a una mano', it:'Easter Egg: Spadone a due mani ma equipaggiabile a una mano', pt:'Easter Egg: Espada de duas mãos mas equipável com uma mão', ru:'Пасхалка: Двуручный меч, но можно экипировать одной рукой', tr:'Sürpriz: İki el kılıcı ama tek elle kuşanılabilir', ar:'مفاجأة: سيف بيدين لكن يمكن تجهيزه بيد واحدة', id:'Easter Egg: Pedang dua tangan tapi bisa dipakai satu tangan', pl:'Easter Egg: Miecz dwuręczny, ale można go nosić jednoręcznie' },
 };
 
 /** Initialize hamburger menu for mobile navigation */
