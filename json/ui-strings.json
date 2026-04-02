@@ -113,6 +113,19 @@
     "rating.errPasswordMatch": "비밀번호가 일치하지 않습니다",
     "rating.errAlready": "이미 이 아이템에 평가를 등록하셨습니다",
     "rating.errThrottle": "너무 빠른 등록입니다. {0}초 후 다시 시도해주세요",
+    "bugReport.title": "오류 수정",
+    "bugReport.desc": "설명",
+    "bugReport.descPlaceholder": "오류 내용을 간단히 설명해주세요 (최대 500자)",
+    "bugReport.imageGuide": "정확한 데이터 검증을 위해 아이템 이미지를 첨부해 주세요.",
+    "bugReport.imageSelect": "아이템 이미지",
+    "bugReport.imageSelected": "이미지 선택됨: {0}",
+    "bugReport.submit": "오류 제보",
+    "bugReport.submitting": "전송 중...",
+    "bugReport.success": "오류 제보가 전송되었습니다. 감사합니다!",
+    "bugReport.fail": "전송 실패: {0}",
+    "bugReport.errDesc": "오류 설명을 입력해주세요",
+    "bugReport.errImage": "아이템 이미지를 첨부해주세요",
+    "bugReport.errImageSize": "이미지 크기는 5MB 이하여야 합니다",
     "guide.title": "게임 가이드 - Oniro Item DB",
     "guide.description": "Oniro ARPG 게임 가이드 - 능력치, 속성, 상태이상, 전투 공식, 몬스터, 던전 시스템",
     "guide.loadFailed": "데이터를 불러올 수 없습니다.",
@@ -285,6 +298,19 @@
     "rating.errPasswordMatch": "Password does not match",
     "rating.errAlready": "You have already rated this item",
     "rating.errThrottle": "Too many submissions. Try again in {0} seconds",
+    "bugReport.title": "Bug Report",
+    "bugReport.desc": "Description",
+    "bugReport.descPlaceholder": "Briefly describe the issue (max 500 chars)",
+    "bugReport.imageGuide": "Please attach an item image for accurate data verification.",
+    "bugReport.imageSelect": "Item Image",
+    "bugReport.imageSelected": "Image selected: {0}",
+    "bugReport.submit": "Submit Report",
+    "bugReport.submitting": "Sending...",
+    "bugReport.success": "Bug report sent successfully. Thank you!",
+    "bugReport.fail": "Failed to send: {0}",
+    "bugReport.errDesc": "Please enter a description",
+    "bugReport.errImage": "Please attach an item image",
+    "bugReport.errImageSize": "Image must be under 5MB",
     "guide.title": "Game Guide - Oniro Item DB",
     "guide.description": "Oniro ARPG Game Guide - Stats, elements, status effects, combat formulas, monsters, dungeons",
     "guide.loadFailed": "Failed to load data.",
@@ -443,7 +469,19 @@
     "rating.errPassword": "パスワードを入力してください",
     "rating.successSubmit": "評価が登録されました",
     "rating.successEdit": "評価が更新されました",
-    "rating.successDelete": "評価が削除されました"
+    "rating.successDelete": "評価が削除されました",
+    "bugReport.title": "バグ報告",
+    "bugReport.descPlaceholder": "問題を簡単に説明してください (最大500文字)",
+    "bugReport.imageGuide": "正確なデータ検証のため、アイテム画像を添付してください。",
+    "bugReport.imageSelect": "アイテム画像",
+    "bugReport.imageSelected": "画像選択済み: {0}",
+    "bugReport.submit": "報告を送信",
+    "bugReport.submitting": "送信中...",
+    "bugReport.success": "バグ報告が送信されました。ありがとうございます！",
+    "bugReport.fail": "送信失敗: {0}",
+    "bugReport.errDesc": "説明を入力してください",
+    "bugReport.errImage": "アイテム画像を添付してください",
+    "bugReport.errImageSize": "画像は5MB以下にしてください"
   },
   "zh": {
     "site.title": "Oniro Item DB - 物品数据库",
@@ -498,7 +536,15 @@
     "rating.title": "评价",
     "rating.noRatings": "暂无评价",
     "rating.submit": "提交评价",
-    "rating.cancel": "取消"
+    "rating.cancel": "取消",
+    "bugReport.title": "错误报告",
+    "bugReport.descPlaceholder": "请简要描述问题 (最多500字)",
+    "bugReport.imageGuide": "为了准确验证数据，请附上物品图片。",
+    "bugReport.imageSelect": "物品图片",
+    "bugReport.submit": "提交报告",
+    "bugReport.success": "错误报告已发送，谢谢！",
+    "bugReport.errDesc": "请输入描述",
+    "bugReport.errImage": "请附上物品图片"
   },
   "fr": {
     "nav.items": "Équipement",
@@ -525,7 +571,13 @@
     "detail.basicInfo": "Infos de base",
     "rating.title": "Évaluations",
     "rating.submit": "Soumettre",
-    "rating.cancel": "Annuler"
+    "rating.cancel": "Annuler",
+    "bugReport.title": "Signaler un bug",
+    "bugReport.imageGuide": "Veuillez joindre une image de l'objet pour une vérification précise des données.",
+    "bugReport.imageSelect": "Image de l'objet",
+    "bugReport.submit": "Envoyer",
+    "bugReport.errDesc": "Veuillez entrer une description",
+    "bugReport.errImage": "Veuillez joindre une image de l'objet"
   },
   "de": {
     "nav.items": "Ausrüstung",
@@ -549,7 +601,13 @@
     "modal.close": "Schließen",
     "rating.title": "Bewertungen",
     "rating.submit": "Bewerten",
-    "rating.cancel": "Abbrechen"
+    "rating.cancel": "Abbrechen",
+    "bugReport.title": "Fehler melden",
+    "bugReport.imageGuide": "Bitte fügen Sie ein Gegenstandsbild zur genauen Datenüberprüfung bei.",
+    "bugReport.imageSelect": "Gegenstandsbild",
+    "bugReport.submit": "Senden",
+    "bugReport.errDesc": "Bitte Beschreibung eingeben",
+    "bugReport.errImage": "Bitte Gegenstandsbild anhängen"
   },
   "es": {
     "nav.items": "Equipamiento",
@@ -567,7 +625,13 @@
     "modal.close": "Cerrar",
     "rating.title": "Valoraciones",
     "rating.submit": "Enviar",
-    "rating.cancel": "Cancelar"
+    "rating.cancel": "Cancelar",
+    "bugReport.title": "Reportar error",
+    "bugReport.imageGuide": "Adjunte una imagen del objeto para una verificación precisa de datos.",
+    "bugReport.imageSelect": "Imagen del objeto",
+    "bugReport.submit": "Enviar reporte",
+    "bugReport.errDesc": "Por favor ingrese una descripción",
+    "bugReport.errImage": "Por favor adjunte una imagen del objeto"
   },
   "it": {
     "nav.items": "Equipaggiamento",
@@ -579,7 +643,13 @@
     "modal.close": "Chiudi",
     "rating.title": "Valutazioni",
     "rating.submit": "Invia",
-    "rating.cancel": "Annulla"
+    "rating.cancel": "Annulla",
+    "bugReport.title": "Segnala bug",
+    "bugReport.imageGuide": "Allega un'immagine dell'oggetto per una verifica accurata dei dati.",
+    "bugReport.imageSelect": "Immagine oggetto",
+    "bugReport.submit": "Invia segnalazione",
+    "bugReport.errDesc": "Inserisci una descrizione",
+    "bugReport.errImage": "Allega un'immagine dell'oggetto"
   },
   "pt": {
     "nav.items": "Equipamento",
@@ -591,7 +661,13 @@
     "modal.close": "Fechar",
     "rating.title": "Avaliações",
     "rating.submit": "Enviar",
-    "rating.cancel": "Cancelar"
+    "rating.cancel": "Cancelar",
+    "bugReport.title": "Reportar erro",
+    "bugReport.imageGuide": "Anexe uma imagem do item para verificação precisa dos dados.",
+    "bugReport.imageSelect": "Imagem do item",
+    "bugReport.submit": "Enviar relatório",
+    "bugReport.errDesc": "Por favor insira uma descrição",
+    "bugReport.errImage": "Anexe uma imagem do item"
   },
   "ru": {
     "nav.items": "Снаряжение",
@@ -603,7 +679,13 @@
     "modal.close": "Закрыть",
     "rating.title": "Оценки",
     "rating.submit": "Отправить",
-    "rating.cancel": "Отмена"
+    "rating.cancel": "Отмена",
+    "bugReport.title": "Сообщить об ошибке",
+    "bugReport.imageGuide": "Прикрепите изображение предмета для точной проверки данных.",
+    "bugReport.imageSelect": "Изображение предмета",
+    "bugReport.submit": "Отправить",
+    "bugReport.errDesc": "Введите описание",
+    "bugReport.errImage": "Прикрепите изображение предмета"
   },
   "tr": {
     "nav.items": "Ekipman",
@@ -615,7 +697,13 @@
     "modal.close": "Kapat",
     "rating.title": "Değerlendirmeler",
     "rating.submit": "Gönder",
-    "rating.cancel": "İptal"
+    "rating.cancel": "İptal",
+    "bugReport.title": "Hata bildirin",
+    "bugReport.imageGuide": "Doğru veri doğrulaması için lütfen eşya görselini ekleyin.",
+    "bugReport.imageSelect": "Eşya görseli",
+    "bugReport.submit": "Rapor gönder",
+    "bugReport.errDesc": "Lütfen açıklama girin",
+    "bugReport.errImage": "Lütfen eşya görseli ekleyin"
   },
   "ar": {
     "nav.items": "المعدات",
@@ -627,7 +715,13 @@
     "modal.close": "إغلاق",
     "rating.title": "التقييمات",
     "rating.submit": "إرسال",
-    "rating.cancel": "إلغاء"
+    "rating.cancel": "إلغاء",
+    "bugReport.title": "الإبلاغ عن خطأ",
+    "bugReport.imageGuide": "يرجى إرفاق صورة العنصر للتحقق الدقيق من البيانات.",
+    "bugReport.imageSelect": "صورة العنصر",
+    "bugReport.submit": "إرسال",
+    "bugReport.errDesc": "يرجى إدخال وصف",
+    "bugReport.errImage": "يرجى إرفاق صورة العنصر"
   },
   "id": {
     "nav.items": "Perlengkapan",
@@ -639,7 +733,13 @@
     "modal.close": "Tutup",
     "rating.title": "Penilaian",
     "rating.submit": "Kirim",
-    "rating.cancel": "Batal"
+    "rating.cancel": "Batal",
+    "bugReport.title": "Laporkan bug",
+    "bugReport.imageGuide": "Lampirkan gambar item untuk verifikasi data yang akurat.",
+    "bugReport.imageSelect": "Gambar item",
+    "bugReport.submit": "Kirim laporan",
+    "bugReport.errDesc": "Masukkan deskripsi",
+    "bugReport.errImage": "Lampirkan gambar item"
   },
   "pl": {
     "nav.items": "Wyposażenie",
@@ -651,6 +751,12 @@
     "modal.close": "Zamknij",
     "rating.title": "Oceny",
     "rating.submit": "Wyślij",
-    "rating.cancel": "Anuluj"
+    "rating.cancel": "Anuluj",
+    "bugReport.title": "Zgłoś błąd",
+    "bugReport.imageGuide": "Dołącz zdjęcie przedmiotu w celu dokładnej weryfikacji danych.",
+    "bugReport.imageSelect": "Zdjęcie przedmiotu",
+    "bugReport.submit": "Wyślij zgłoszenie",
+    "bugReport.errDesc": "Wprowadź opis",
+    "bugReport.errImage": "Dołącz zdjęcie przedmiotu"
   }
 }

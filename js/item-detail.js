@@ -192,13 +192,14 @@ export function openItemDetail(item) {
 
   layout.appendChild(leftCol);
 
-  // Right column: rating
+  // Right column: rating + bug report
+  const rightCol = document.createElement('div');
+  rightCol.className = 'modal-col-right';
   if (isSupabaseReady()) {
-    const rightCol = document.createElement('div');
-    rightCol.className = 'modal-col-right';
     rightCol.appendChild(buildRatingSection(item.아이템ID));
-    layout.appendChild(rightCol);
   }
+  rightCol.appendChild(buildBugReportSection(item.아이템ID, item.한국어이름));
+  layout.appendChild(rightCol);
 
   bodyEl.appendChild(layout);
 
@@ -476,6 +477,127 @@ function buildRatingForm(itemId, summaryEl, listEl) {
 
   form.append(starInput, nicknameInput, commentInput, passwordInput, submitBtn, errorMsg);
   return form;
+}
+
+// ── Telegram Bug Report Config ──
+const TELEGRAM_BOT_TOKEN = '8731453747:AAFFG9lISyc7XlarNWkjYa_9O_3SgNekQPw';
+const TELEGRAM_CHAT_ID = '290471427';
+
+/** Build bug report section */
+function buildBugReportSection(itemId, itemName) {
+  const section = createSection(t('bugReport.title'));
+
+  const form = document.createElement('div');
+  form.className = 'bugreport-form';
+
+  // Description
+  const descInput = document.createElement('textarea');
+  descInput.className = 'bugreport-desc';
+  descInput.placeholder = t('bugReport.descPlaceholder');
+  descInput.maxLength = 500;
+  descInput.rows = 3;
+
+  // Image guide text
+  const imageGuide = document.createElement('p');
+  imageGuide.className = 'bugreport-image-guide';
+  imageGuide.textContent = t('bugReport.imageGuide');
+
+  // Image upload
+  const imageRow = document.createElement('div');
+  imageRow.className = 'bugreport-image-row';
+
+  const imageLabel = document.createElement('label');
+  imageLabel.className = 'bugreport-image-label';
+  imageLabel.textContent = t('bugReport.imageSelect');
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*';
+  fileInput.className = 'bugreport-file-input';
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+      const name = fileInput.files[0].name;
+      imageLabel.textContent = t('bugReport.imageSelected', name.length > 20 ? name.slice(0, 17) + '...' : name);
+      imageLabel.classList.add('has-file');
+    } else {
+      imageLabel.textContent = t('bugReport.imageSelect');
+      imageLabel.classList.remove('has-file');
+    }
+  });
+  imageLabel.appendChild(fileInput);
+  imageRow.appendChild(imageLabel);
+
+  // Submit
+  const submitBtn = document.createElement('button');
+  submitBtn.className = 'bugreport-submit';
+  submitBtn.textContent = t('bugReport.submit');
+
+  const errorMsg = document.createElement('p');
+  errorMsg.className = 'bugreport-error';
+
+  submitBtn.addEventListener('click', async () => {
+    errorMsg.textContent = '';
+    const desc = descInput.value.trim();
+    if (!desc) { errorMsg.textContent = t('bugReport.errDesc'); return; }
+
+    const file = fileInput.files[0] || null;
+    if (!file) { errorMsg.textContent = t('bugReport.errImage'); return; }
+    if (file.size > 5 * 1024 * 1024) {
+      errorMsg.textContent = t('bugReport.errImageSize');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = t('bugReport.submitting');
+
+    try {
+      await sendTelegramBugReport(itemId, itemName, desc, file);
+      showToast(t('bugReport.success'));
+      descInput.value = '';
+      fileInput.value = '';
+      imageLabel.textContent = t('bugReport.imageSelect');
+      imageLabel.classList.remove('has-file');
+    } catch (err) {
+      errorMsg.textContent = t('bugReport.fail', err.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = t('bugReport.submit');
+    }
+  });
+
+  form.append(descInput, imageGuide, imageRow, submitBtn, errorMsg);
+  section.appendChild(form);
+  return section;
+}
+
+/** Send bug report to Telegram */
+async function sendTelegramBugReport(itemId, itemName, description, imageFile) {
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    throw new Error('Telegram not configured');
+  }
+
+  let ip = 'unknown';
+  try { ip = (await (await fetch('https://api.ipify.org?format=json')).json()).ip; } catch {}
+  const text = `🐛 *오류 제보*\n\n*아이템:* ${itemName} (ID: ${itemId})\n\n*설명:*\n${description}\n\n*IP:* ${ip}`;
+
+  if (imageFile) {
+    const formData = new FormData();
+    formData.append('chat_id', TELEGRAM_CHAT_ID);
+    formData.append('caption', text);
+    formData.append('parse_mode', 'Markdown');
+    formData.append('photo', imageFile);
+    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+      method: 'POST', body: formData
+    });
+    if (!res.ok) throw new Error((await res.json()).description || res.statusText);
+  } else {
+    const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text, parse_mode: 'Markdown' })
+    });
+    if (!res.ok) throw new Error((await res.json()).description || res.statusText);
+  }
 }
 
 /** Refresh summary element with latest cache data */
